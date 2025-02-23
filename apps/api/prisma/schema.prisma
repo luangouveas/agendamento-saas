@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  ATENDENTE
+  CLIENTE
+  FINANCEIRO
+  RECEPCIONISTA
+}
+
+model Usuario {
+  id             String   @id @default(uuid())
+  nome           String
+  rua            String?
+  bairro         String?
+  cidade         String?
+  estado         String?
+  cep            String?
+  dataNascimento DateTime
+  numeroCelular  Int      @unique
+  email          String?  @unique
+  passwordHash   String?  @map("password_hash")
+  avatarUrl      String?  @map("avatar_url")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  tokens            Token[]
+  owns_organizacoes Organizacao[]
+  membros           Membro[]
+
+  @@map("usuarios")
+}
+
+model Organizacao {
+  id          String @id @default(uuid())
+  cnpj        String @unique
+  razaoSocial String @unique
+  nome        String
+  slug        String @unique
+  rua         String
+  bairro      String
+  cidade      String
+  estado      String
+  cep         String
+
+  avatarUrl String?  @map("avatar_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  owner   Usuario  @relation(fields: [ownerId], references: [id])
+  ownerId String   @map("owner_id")
+  membros Membro[]
+
+  @@map("organizacoes")
+}
+
+enum TipoMembro {
+  CLIENTE
+  FUNCIONARIO
+}
+
+model Membro {
+  id   String     @id @default(uuid())
+  role Role
+  tipo TipoMembro
+
+  organizacao   Organizacao @relation(fields: [organizacaoId], references: [id], onDelete: Cascade)
+  organizacaoId String      @map("organizacao_id")
+
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuarioId String  @map("usuario_id")
+
+  @@unique([organizacaoId, usuarioId])
+  @@map("membros")
+}
+
+enum TipoToken {
+  PASSORD_RECOVER
+}
+
+model Token {
+  id        String    @id @default(uuid())
+  tipo      TipoToken
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuarioId String  @map("usuario_id")
+
+  @@map("tokens")
+}
