@@ -1,0 +1,17 @@
+{
+  "name": "@agendamento-saas/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "files": [
+    "library.json",
+    "node.json",
+    "nextjs.json"
+  ],
+  "prettier": "@agendamento-saas/prettier",
+  "eslintConfig": {
+    "extends": [
+        "@agendamento-saas/eslint-config/node"
+    ]
+  }
+}
