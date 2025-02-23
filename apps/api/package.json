@@ -1,0 +1,28 @@
+{
+  "name": "@agendamento-saas/api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "env:load": "dotenv -e ../../.env --",
+    "dev": "pnpm env:load tsx watch src/http/server.ts"
+  },
+  "author": "Luan Gouveas",
+  "dependencies": {
+    "fastify": "^5.2.1"
+  },
+  "devDependencies": {
+    "@agendamento-saas/eslint-config": "workspace:*",
+    "@agendamento-saas/prettier": "workspace:*",
+    "@agendamento-saas/tsconfig": "workspace:*",
+    "@types/node": "^22.13.5",
+    "dotenv-cli": "^8.0.0",
+    "prisma": "^6.4.1",
+    "tsx": "^4.19.3"
+  },
+  "prettier": "@agendamento-saas/prettier",
+  "eslintConfig": {
+    "extends": [
+      "@agendamento-saas/eslint-config/node"
+    ]
+  }
+}
