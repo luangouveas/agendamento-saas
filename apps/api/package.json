@@ -9,6 +9,7 @@
   "author": "Luan Gouveas",
   "dependencies": {
     "@prisma/client": "^6.4.1",
+    "bcryptjs": "^3.0.2",
     "fastify": "^5.2.1"
   },
   "devDependencies": {
@@ -19,6 +20,9 @@
     "dotenv-cli": "^8.0.0",
     "prisma": "^6.4.1",
     "tsx": "^4.19.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "prettier": "@agendamento-saas/prettier",
   "eslintConfig": {
