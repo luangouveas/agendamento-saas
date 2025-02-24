@@ -1,0 +1,22 @@
+{
+    "name": "@agendamento-saas/auth",
+    "version": "0.0.0",
+    "private": true,
+    "main": "src/index.ts",
+    "types": "src/index.ts",
+    "devDependencies": {
+        "@agendamento-saas/eslint-config": "workspace:*",
+        "@agendamento-saas/prettier": "workspace:*",
+        "@agendamento-saas/tsconfig": "workspace:*"
+    },
+    "dependencies": {
+        "@casl/ability": "^6.7.3",
+        "zod": "^3.24.2"
+    },
+    "eslintConfig": {
+        "extends": [
+            "@agendamento-saas/eslint-config/library"
+        ]
+    },
+    "prettier": "@agendamento-saas/prettier"
+}
