@@ -1,0 +1,22 @@
+{
+    "name": "@agendamento-saas/env",
+    "version": "0.0.0",
+    "private": true,
+    "main": "index.ts",
+    "devDependencies": {
+        "@agendamento-saas/eslint-config": "workspace:*",
+        "@agendamento-saas/prettier": "workspace:*",
+        "@agendamento-saas/tsconfig": "workspace:*",
+        "@types/node": "^22.13.5"
+    },
+    "dependencies": {
+        "@t3-oss/env-nextjs": "^0.12.0",
+        "zod": "^3.24.2"
+    },
+    "eslintConfig": {
+        "extends": [
+            "@agendamento-saas/eslint-config/library"
+        ]
+    },
+    "prettier": "@agendamento-saas/prettier"
+}
