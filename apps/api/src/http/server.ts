@@ -13,6 +13,7 @@ import {
 
 import { errorHandler } from './error-handler'
 import { autenticarComEmailSenha } from './routes/auth/autenticar-com-email-senha'
+import { requisitaAutenticacaoComOTP } from './routes/auth/requisita-autenticacao-otp'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -51,6 +52,7 @@ app.register(fastifyJwt, {
 })
 
 app.register(autenticarComEmailSenha)
+app.register(requisitaAutenticacaoComOTP)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
