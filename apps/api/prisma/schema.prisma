@@ -24,7 +24,7 @@ model Usuario {
   estado         String?
   cep            String?
   dataNascimento DateTime
-  numeroCelular  Int      @unique
+  numeroCelular  BigInt   @unique
   email          String?  @unique
   passwordHash   String?  @map("password_hash")
   avatarUrl      String?  @map("avatar_url")
@@ -34,6 +34,9 @@ model Usuario {
   tokens            Token[]
   owns_organizacoes Organizacao[]
   membros           Membro[]
+
+  agendamentos_cliente      Agendamento[] @relation("ClienteAgendamentos")
+  agendamentos_profissional Agendamento[] @relation("ProfissionalAgendamentos")
 
   @@map("usuarios")
 }
@@ -54,9 +57,10 @@ model Organizacao {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  owner   Usuario  @relation(fields: [ownerId], references: [id])
-  ownerId String   @map("owner_id")
-  membros Membro[]
+  owner    Usuario   @relation(fields: [ownerId], references: [id])
+  ownerId  String    @map("owner_id")
+  membros  Membro[]
+  servicos Servico[]
 
   @@map("organizacoes")
 }
@@ -94,4 +98,46 @@ model Token {
   usuarioId String  @map("usuario_id")
 
   @@map("tokens")
+}
+
+model Servico {
+  id        String  @id @default(uuid())
+  nome      String
+  descricao String
+  tempo     Int
+  valor     Decimal
+
+  organizacao   Organizacao @relation(fields: [organizacaoId], references: [id], onDelete: Cascade)
+  organizacaoId String      @map("organizacao_id")
+
+  agendamentos Agendamento[]
+
+  @@map("servicos")
+}
+
+enum StatusAgendamento {
+  AGENDADO
+  CONFIRMADO
+  CANCELADO
+  CONCLUIDO
+}
+
+model Agendamento {
+  id        String            @id @default(uuid())
+  dataHora  DateTime
+  status    StatusAgendamento @default(AGENDADO)
+  valor     Decimal
+  createdAt DateTime          @default(now()) @map("created_at")
+  updatedAt DateTime          @updatedAt @map("updated_at")
+
+  servico   Servico @relation(fields: [servicoId], references: [id], onDelete: Cascade)
+  servicoId String  @map("servico_id")
+
+  cliente   Usuario @relation("ClienteAgendamentos", fields: [clienteId], references: [id], onDelete: Cascade)
+  clienteId String  @map("cliente_id")
+
+  profissional   Usuario @relation("ProfissionalAgendamentos", fields: [profissionalId], references: [id], onDelete: Cascade)
+  profissionalId String  @map("profissional_Id")
+
+  @@map("agendamentos")
 }
