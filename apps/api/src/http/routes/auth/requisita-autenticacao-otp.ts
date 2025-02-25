@@ -20,7 +20,7 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
         }),
         response: {
           201: z.object({
-            tokenOtp: z.string(),
+            tokenOtp: z.number(),
           }),
         },
       },
@@ -39,9 +39,15 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
         throw new BadRequestError('Usuário não existe com este telefone')
       }
 
-      const tokenOtp = randomInt(100000, 999999).toString()
+      const tokenOtp = randomInt(100000, 999999)
 
-      // salvar relação token vs usuario no banco
+      await prisma.token.create({
+        data: {
+          tipo: 'OTP_ACCESS',
+          otpNumber: tokenOtp,
+          usuarioId: usuarioBytelefone.id,
+        },
+      })
 
       // enviar token via wpp
       console.log({ tokenOtp })
