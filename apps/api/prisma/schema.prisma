@@ -87,11 +87,13 @@ model Membro {
 
 enum TipoToken {
   PASSORD_RECOVER
+  OTP_ACCESS
 }
 
 model Token {
   id        String    @id @default(uuid())
   tipo      TipoToken
+  otpNumber BigInt
   createdAt DateTime  @default(now()) @map("created_at")
 
   usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
