@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "env:load": "dotenv -e ../../.env --",
+    "db:generate": "pnpm env:load prisma generate",
     "db:migrate": "pnpm env:load prisma migrate dev",
     "db:studio": "pnpm env:load prisma studio",
     "dev": "pnpm env:load tsx watch src/http/server.ts"
