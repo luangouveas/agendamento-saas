@@ -36,4 +36,7 @@ export const permissoes: Record<Role, PermissionsByRole> = {
       clienteId: { $eq: usuario.id },
     })
   },
+  FINANCEIRO(_, { can }) {
+    return can
+  },
 }
