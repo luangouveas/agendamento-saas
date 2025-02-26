@@ -93,7 +93,7 @@ enum TipoToken {
 model Token {
   id        String    @id @default(uuid())
   tipo      TipoToken
-  otpNumber BigInt
+  otpNumber BigInt?
   createdAt DateTime  @default(now()) @map("created_at")
 
   usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
