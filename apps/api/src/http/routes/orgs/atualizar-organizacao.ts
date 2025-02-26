@@ -32,6 +32,9 @@ export function AtualizarOrganizacao(app: FastifyInstance) {
           params: z.object({
             slug: z.string(),
           }),
+          response: {
+            204: z.null(),
+          },
         },
       },
       async (request, reply) => {
