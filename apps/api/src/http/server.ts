@@ -16,6 +16,8 @@ import { autenticarComEmailSenha } from './routes/auth/autenticar-com-email-senh
 import { AutenticarComOtp } from './routes/auth/autenticar-com-otp'
 import { CriarContaUsuario } from './routes/auth/criar-conta'
 import { requisitaAutenticacaoComOTP } from './routes/auth/requisita-autenticacao-otp'
+import { RequisitarRecuperacaoSenha } from './routes/auth/requisitar-recuperacao-senha'
+import { ResetarSenha } from './routes/auth/resetar-senha'
 import { AtualizarOrganizacao } from './routes/orgs/atualizar-organizacao'
 import { CriarOrganizacao } from './routes/orgs/criar-organizacao'
 
@@ -59,6 +61,8 @@ app.register(autenticarComEmailSenha)
 app.register(requisitaAutenticacaoComOTP)
 app.register(AutenticarComOtp)
 app.register(CriarContaUsuario)
+app.register(RequisitarRecuperacaoSenha)
+app.register(ResetarSenha)
 
 app.register(CriarOrganizacao)
 app.register(AtualizarOrganizacao)
