@@ -15,6 +15,7 @@ import { errorHandler } from './error-handler'
 import { autenticarComEmailSenha } from './routes/auth/autenticar-com-email-senha'
 import { AutenticarComOtp } from './routes/auth/autenticar-com-otp'
 import { requisitaAutenticacaoComOTP } from './routes/auth/requisita-autenticacao-otp'
+import { AtualizarOrganizacao } from './routes/orgs/atualizar-organizacao'
 import { CriarOrganizacao } from './routes/orgs/criar-organizacao'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -58,6 +59,7 @@ app.register(requisitaAutenticacaoComOTP)
 app.register(AutenticarComOtp)
 
 app.register(CriarOrganizacao)
+app.register(AtualizarOrganizacao)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
