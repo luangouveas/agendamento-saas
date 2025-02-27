@@ -15,6 +15,7 @@ import { errorHandler } from './error-handler'
 import { autenticarComEmailSenha } from './routes/auth/autenticar-com-email-senha'
 import { AutenticarComOtp } from './routes/auth/autenticar-com-otp'
 import { CriarContaUsuario } from './routes/auth/criar-conta'
+import { CriarContaUsuarioCliente } from './routes/auth/criar-conta-cliente'
 import { requisitaAutenticacaoComOTP } from './routes/auth/requisita-autenticacao-otp'
 import { RequisitarRecuperacaoSenha } from './routes/auth/requisitar-recuperacao-senha'
 import { ResetarSenha } from './routes/auth/resetar-senha'
@@ -62,6 +63,7 @@ app.register(autenticarComEmailSenha)
 app.register(requisitaAutenticacaoComOTP)
 app.register(AutenticarComOtp)
 app.register(CriarContaUsuario)
+app.register(CriarContaUsuarioCliente)
 app.register(RequisitarRecuperacaoSenha)
 app.register(ResetarSenha)
 
