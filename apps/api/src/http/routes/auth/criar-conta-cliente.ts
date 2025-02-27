@@ -18,9 +18,6 @@ export function CriarContaUsuarioCliente(app: FastifyInstance) {
           numeroCelular: z.number(),
           email: z.string().optional().nullable(),
         }),
-        params: z.object({
-          slug: z.string(),
-        }),
         response: {
           201: z.null(),
         },
