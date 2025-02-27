@@ -57,10 +57,11 @@ model Organizacao {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  owner    Usuario   @relation(fields: [ownerId], references: [id])
-  ownerId  String    @map("owner_id")
-  membros  Membro[]
-  servicos Servico[]
+  owner        Usuario       @relation(fields: [ownerId], references: [id])
+  ownerId      String        @map("owner_id")
+  membros      Membro[]
+  servicos     Servico[]
+  agendamentos Agendamento[]
 
   @@map("organizacoes")
 }
@@ -128,7 +129,7 @@ model Agendamento {
   id        String            @id @default(uuid())
   dataHora  DateTime
   status    StatusAgendamento @default(AGENDADO)
-  valor     Decimal
+  valor     Float
   createdAt DateTime          @default(now()) @map("created_at")
   updatedAt DateTime          @updatedAt @map("updated_at")
 
@@ -140,6 +141,9 @@ model Agendamento {
 
   profissional   Usuario @relation("ProfissionalAgendamentos", fields: [profissionalId], references: [id], onDelete: Cascade)
   profissionalId String  @map("profissional_Id")
+
+  organizacao   Organizacao @relation(fields: [organizacaoId], references: [id], onDelete: Cascade)
+  organizacaoId String      @map("organizacao_id")
 
   @@map("agendamentos")
 }
