@@ -16,20 +16,20 @@ enum Role {
 }
 
 model Usuario {
-  id             String   @id @default(uuid())
+  id             String    @id @default(uuid())
   nome           String
   rua            String?
   bairro         String?
   cidade         String?
   estado         String?
   cep            String?
-  dataNascimento DateTime
-  numeroCelular  BigInt   @unique
-  email          String?  @unique
-  passwordHash   String?  @map("password_hash")
-  avatarUrl      String?  @map("avatar_url")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  dataNascimento DateTime?
+  numeroCelular  BigInt    @unique
+  email          String?   @unique
+  passwordHash   String?   @map("password_hash")
+  avatarUrl      String?   @map("avatar_url")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
 
   tokens            Token[]
   owns_organizacoes Organizacao[]
