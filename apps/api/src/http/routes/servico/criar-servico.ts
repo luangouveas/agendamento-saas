@@ -13,7 +13,7 @@ export function CriarServico(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .post(
-      '/servico',
+      '/organizacao/:slug/servico',
       {
         schema: {
           tags: ['Serviço'],

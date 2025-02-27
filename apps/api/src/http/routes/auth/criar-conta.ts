@@ -16,7 +16,7 @@ export function CriarContaUsuario(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .post(
-      '/usuario',
+      '/:slug/usuario',
       {
         schema: {
           tags: ['Auth'],

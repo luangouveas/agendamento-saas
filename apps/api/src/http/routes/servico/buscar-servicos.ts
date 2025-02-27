@@ -13,7 +13,7 @@ export function BuscarServicos(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/organization/:slug/servicos',
+      '/organizacao/:slug/servicos',
       {
         schema: {
           tags: ['Serviço'],

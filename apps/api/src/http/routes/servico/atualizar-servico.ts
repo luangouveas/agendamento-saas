@@ -14,7 +14,7 @@ export function AtualizarServico(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .put(
-      '/servico',
+      '/organizacao/:slug/servico/:servicoId',
       {
         schema: {
           tags: ['Serviço'],

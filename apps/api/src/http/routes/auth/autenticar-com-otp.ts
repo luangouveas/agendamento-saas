@@ -9,7 +9,7 @@ import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export function AutenticarComOtp(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
-    '/auth/otp',
+    '/:slug/auth/otp',
     {
       schema: {
         tags: ['Auth'],
