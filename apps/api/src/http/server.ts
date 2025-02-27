@@ -20,6 +20,7 @@ import { CriarContaUsuarioCliente } from './routes/auth/criar-conta-cliente'
 import { requisitaAutenticacaoComOTP } from './routes/auth/requisita-autenticacao-otp'
 import { RequisitarRecuperacaoSenha } from './routes/auth/requisitar-recuperacao-senha'
 import { ResetarSenha } from './routes/auth/resetar-senha'
+import { BuscarAfiliacao } from './routes/membro/buscar-afiliacao'
 import { AtualizarOrganizacao } from './routes/orgs/atualizar-organizacao'
 import { BuscarMembros } from './routes/orgs/buscar-membros'
 import { BuscarOrganizacao } from './routes/orgs/buscar-organizacao'
@@ -85,6 +86,8 @@ app.register(CriarServico)
 app.register(AtualizarServico)
 app.register(BuscarServico)
 app.register(BuscarServicos)
+
+app.register(BuscarAfiliacao)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
