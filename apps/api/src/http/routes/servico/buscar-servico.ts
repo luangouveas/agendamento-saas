@@ -6,6 +6,7 @@ import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 import { buscarPermissoesUsuario } from '@/utils/buscar-permissoes-usuario'
 
+import { BadRequestError } from '../_errors/bad-request-error'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export function BuscarServico(app: FastifyInstance) {
@@ -24,16 +25,16 @@ export function BuscarServico(app: FastifyInstance) {
             servicoId: z.string().uuid(),
           }),
           response: {
-            200: z
-              .object({
+            200: z.object({
+              servico: z.object({
                 id: z.string().uuid(),
                 nome: z.string(),
                 organizacaoId: z.string(),
                 descricao: z.string(),
                 tempo: z.number(),
                 valor: z.number(),
-              })
-              .nullable(),
+              }),
+            }),
           },
         },
       },
@@ -59,7 +60,11 @@ export function BuscarServico(app: FastifyInstance) {
           },
         })
 
-        return servico
+        if (!servico) {
+          throw new BadRequestError('Serviço não encontrado.')
+        }
+
+        return { servico }
       },
     )
 }
