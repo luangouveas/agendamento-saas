@@ -20,6 +20,8 @@ import { requisitaAutenticacaoComOTP } from './routes/auth/requisita-autenticaca
 import { RequisitarRecuperacaoSenha } from './routes/auth/requisitar-recuperacao-senha'
 import { ResetarSenha } from './routes/auth/resetar-senha'
 import { AtualizarOrganizacao } from './routes/orgs/atualizar-organizacao'
+import { BuscarOrganizacao } from './routes/orgs/buscar-organizacao'
+import { BuscarOrganizacoes } from './routes/orgs/buscar-organizacoes'
 import { CriarOrganizacao } from './routes/orgs/criar-organizacao'
 import { AtualizarServico } from './routes/servico/atualizar-servico'
 import { BuscarServico } from './routes/servico/buscar-servico'
@@ -72,6 +74,8 @@ app.register(ResetarSenha)
 
 app.register(CriarOrganizacao)
 app.register(AtualizarOrganizacao)
+app.register(BuscarOrganizacao)
+app.register(BuscarOrganizacoes)
 
 app.register(CriarServico)
 app.register(AtualizarServico)
