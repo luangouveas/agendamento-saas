@@ -103,11 +103,11 @@ model Token {
 }
 
 model Servico {
-  id        String  @id @default(uuid())
+  id        String @id @default(uuid())
   nome      String
   descricao String
   tempo     Int
-  valor     Decimal
+  valor     Float
 
   organizacao   Organizacao @relation(fields: [organizacaoId], references: [id], onDelete: Cascade)
   organizacaoId String      @map("organizacao_id")
