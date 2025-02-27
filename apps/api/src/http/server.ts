@@ -20,7 +20,9 @@ import { CriarContaUsuarioCliente } from './routes/auth/criar-conta-cliente'
 import { requisitaAutenticacaoComOTP } from './routes/auth/requisita-autenticacao-otp'
 import { RequisitarRecuperacaoSenha } from './routes/auth/requisitar-recuperacao-senha'
 import { ResetarSenha } from './routes/auth/resetar-senha'
+import { AtualizarAfiliacao } from './routes/membro/atualizar-afiliacao'
 import { BuscarAfiliacao } from './routes/membro/buscar-afiliacao'
+import { CriarAfiliacao } from './routes/membro/criar-afiliacao'
 import { AtualizarOrganizacao } from './routes/orgs/atualizar-organizacao'
 import { BuscarMembros } from './routes/orgs/buscar-membros'
 import { BuscarOrganizacao } from './routes/orgs/buscar-organizacao'
@@ -87,6 +89,8 @@ app.register(AtualizarServico)
 app.register(BuscarServico)
 app.register(BuscarServicos)
 
+app.register(CriarAfiliacao)
+app.register(AtualizarAfiliacao)
 app.register(BuscarAfiliacao)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
