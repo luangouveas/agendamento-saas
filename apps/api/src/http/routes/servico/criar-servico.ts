@@ -61,7 +61,7 @@ export function CriarServico(app: FastifyInstance) {
           },
         })
 
-        reply.status(201).send({ servicoId })
+        return reply.status(201).send({ servicoId })
       },
     )
 }

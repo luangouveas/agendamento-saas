@@ -60,7 +60,7 @@ export function CriarOrganizacao(app: FastifyInstance) {
           },
         })
 
-        reply.status(201).send({ organizacaoId })
+        return reply.status(201).send({ organizacaoId })
       },
     )
 }

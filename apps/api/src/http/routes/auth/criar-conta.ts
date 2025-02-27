@@ -21,6 +21,7 @@ export function CriarContaUsuario(app: FastifyInstance) {
         schema: {
           tags: ['Auth'],
           summary: 'Cria uma conta de usuário',
+          security: [{ bearerAuth: [] }],
           body: z.object({
             nome: z.string(),
             rua: z.string().optional().nullable(),

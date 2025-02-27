@@ -52,7 +52,7 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
       // enviar token via wpp
       console.log({ tokenOtp })
 
-      reply.status(201).send({ tokenOtp })
+      return reply.status(201).send({ tokenOtp })
     },
   )
 }

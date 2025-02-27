@@ -17,8 +17,9 @@ export function AtualizarOrganizacao(app: FastifyInstance) {
       '/organizacao',
       {
         schema: {
-          tags: ['Organizacoes'],
+          tags: ['Organizações'],
           summary: 'Atualiza os dados de uma organização',
+          security: [{ bearerAuth: [] }],
           body: z.object({
             cnpj: z.string().min(14).max(14),
             razaoSocial: z.string(),
