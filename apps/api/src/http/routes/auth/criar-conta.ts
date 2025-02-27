@@ -33,7 +33,6 @@ export function CriarContaUsuario(app: FastifyInstance) {
             numeroCelular: z.number(),
             email: z.string().optional().nullable(),
             avatarUrl: z.string().optional().nullable(),
-            tipo: z.union([z.literal('CLIENTE'), z.literal('FUNCIONARIO')]),
             role: roleSchema,
           }),
           params: z.object({
@@ -57,7 +56,6 @@ export function CriarContaUsuario(app: FastifyInstance) {
           numeroCelular,
           email,
           avatarUrl,
-          tipo,
           role,
         } = request.body
 
@@ -65,7 +63,6 @@ export function CriarContaUsuario(app: FastifyInstance) {
         const { membership, organizacao } =
           await request.getUserMembership(slug)
 
-        // const authOrganizacao = organizacaoSchema.parse(organizacao)
         const { cannot } = buscarPermissoesUsuario(usuarioId, membership.role)
 
         if (cannot('create', 'Usuario')) {
@@ -88,27 +85,22 @@ export function CriarContaUsuario(app: FastifyInstance) {
             numeroCelular,
             email,
             avatarUrl,
-            passwordHash:
-              tipo === 'FUNCIONARIO'
-                ? await hash(senhaProvisoria, 6)
-                : undefined,
+            passwordHash: await hash(senhaProvisoria, 6),
             membros: {
               create: {
                 role,
-                tipo,
+                tipo: 'FUNCIONARIO',
                 organizacaoId: organizacao.id,
               },
             },
           },
         })
 
-        if (tipo === 'FUNCIONARIO') {
-          // Envia dados de login por email para o usuário
-          console.log({
-            emial: usuario.email,
-            senha: senhaProvisoria,
-          })
-        }
+        // Envia dados de login por email para o usuário
+        console.log({
+          emial: usuario.email,
+          senha: senhaProvisoria,
+        })
 
         return reply.status(201).send()
       },
