@@ -22,9 +22,7 @@ export function CriarContaUsuarioCliente(app: FastifyInstance) {
           slug: z.string(),
         }),
         response: {
-          201: z.object({
-            token: z.string().uuid(),
-          }),
+          201: z.null(),
         },
       },
     },
@@ -55,33 +53,15 @@ export function CriarContaUsuarioCliente(app: FastifyInstance) {
         )
       }
 
-      const usuario = await prisma.usuario.create({
+      await prisma.usuario.create({
         data: {
           nome,
           numeroCelular,
           email,
-          membros: {
-            create: {
-              role: 'CLIENTE',
-              tipo: 'CLIENTE',
-              organizacaoId: organizacao.id,
-            },
-          },
         },
       })
 
-      const token = await reply.jwtSign(
-        {
-          sub: usuario.id,
-        },
-        {
-          sign: {
-            expiresIn: '7d',
-          },
-        },
-      )
-
-      return reply.status(201).send({ token })
+      return reply.status(201).send()
     },
   )
 }

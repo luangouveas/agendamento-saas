@@ -18,6 +18,9 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
         body: z.object({
           telefone: z.number(),
         }),
+        params: z.object({
+          slug: z.string(),
+        }),
         response: {
           201: z.object({
             tokenOtp: z.number(),
@@ -28,6 +31,7 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
 
     async (request, reply) => {
       const { telefone } = request.body
+      const { slug } = request.params
 
       const usuarioBytelefone = await prisma.usuario.findUnique({
         where: {
@@ -50,9 +54,9 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
       })
 
       // enviar token via wpp
-      console.log({ tokenOtp })
+      console.log({ slug, tokenOtp })
 
-      return reply.status(201).send({ tokenOtp })
+      return reply.status(201).send()
     },
   )
 }
