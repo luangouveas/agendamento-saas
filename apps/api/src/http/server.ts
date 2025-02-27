@@ -22,6 +22,8 @@ import { ResetarSenha } from './routes/auth/resetar-senha'
 import { AtualizarOrganizacao } from './routes/orgs/atualizar-organizacao'
 import { CriarOrganizacao } from './routes/orgs/criar-organizacao'
 import { AtualizarServico } from './routes/servico/atualizar-servico'
+import { BuscarServico } from './routes/servico/buscar-servico'
+import { BuscarServicos } from './routes/servico/buscar-servicos'
 import { CriarServico } from './routes/servico/criar-servico'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -73,6 +75,8 @@ app.register(AtualizarOrganizacao)
 
 app.register(CriarServico)
 app.register(AtualizarServico)
+app.register(BuscarServico)
+app.register(BuscarServicos)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
