@@ -27,18 +27,6 @@ export function CriarContaUsuarioCliente(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const { slug } = request.params
-
-      const organizacao = await prisma.organizacao.findUnique({
-        where: {
-          slug,
-        },
-      })
-
-      if (!organizacao) {
-        throw new BadRequestError('Organização não localizada.')
-      }
-
       const { nome, numeroCelular, email } = request.body
 
       const usuarioByTelefone = await prisma.usuario.findUnique({
