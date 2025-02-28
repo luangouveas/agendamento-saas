@@ -12,6 +12,7 @@ import {
 } from 'fastify-type-provider-zod'
 
 import { errorHandler } from './error-handler'
+import { AtualizarAgendamento } from './routes/agendamento/atualizar-agendamento'
 import { BuscarAgendamento } from './routes/agendamento/buscar-agendamentos'
 import { CriarAgendamento } from './routes/agendamento/criar-agendamento'
 import { autenticarComEmailSenha } from './routes/auth/autenticar-com-email-senha'
@@ -97,6 +98,7 @@ app.register(BuscarAfiliacao)
 
 app.register(CriarAgendamento)
 app.register(BuscarAgendamento)
+app.register(AtualizarAgendamento)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
