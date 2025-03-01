@@ -20,21 +20,68 @@ export const permissoes: Record<Role, PermissionsByRole> = {
     can('get', 'Usuario')
     can('get', 'Servico')
 
-    cannot(['create', 'get', 'update'], 'Agendamento')
-    can(['create', 'get', 'update', 'cancelar_agendamento'], 'Agendamento', {
-      profissionalId: { $eq: usuario.id },
-    })
+    cannot(
+      [
+        'create',
+        'get',
+        'update',
+        'concluir_agendamento',
+        'cancelar_agendamento',
+        'confirmar_agendamento',
+        'reabrir_agendamento',
+        'transferir_agendamento',
+      ],
+      'Agendamento',
+    )
+    can(
+      [
+        'create',
+        'get',
+        'update',
+        'concluir_agendamento',
+        'cancelar_agendamento',
+        'confirmar_agendamento',
+        'transferir_agendamento',
+      ],
+      'Agendamento',
+      {
+        profissionalId: { $eq: usuario.id },
+      },
+    )
   },
   RECEPCIONISTA(_, { can }) {
     can('get', 'Usuario')
     can('get', 'Servico')
-    can(['create', 'get', 'update'], 'Agendamento')
+    can('manage', 'Agendamento')
   },
   CLIENTE(usuario, { can, cannot }) {
-    cannot(['create', 'get', 'update'], 'Agendamento')
-    can(['create', 'get', 'update', 'cancelar_agendamento'], 'Agendamento', {
-      clienteId: { $eq: usuario.id },
-    })
+    cannot(
+      [
+        'create',
+        'get',
+        'update',
+        'concluir_agendamento',
+        'cancelar_agendamento',
+        'confirmar_agendamento',
+        'reabrir_agendamento',
+        'transferir_agendamento',
+      ],
+      'Agendamento',
+    )
+    can(
+      [
+        'create',
+        'get',
+        'update',
+        'concluir_agendamento',
+        'cancelar_agendamento',
+        'confirmar_agendamento',
+      ],
+      'Agendamento',
+      {
+        clienteId: { $eq: usuario.id },
+      },
+    )
   },
   FINANCEIRO(_, { can }) {
     return can
