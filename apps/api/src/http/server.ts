@@ -13,10 +13,8 @@ import {
 
 import { errorHandler } from './error-handler'
 import { AtualizarAgendamento } from './routes/agendamento/atualizar-agendamento'
-import {
-  BuscarAgendamento,
-  BuscarAgendamentos,
-} from './routes/agendamento/buscar-agendamentos'
+import { BuscarAgendamento } from './routes/agendamento/buscar-agendamento'
+import { BuscarAgendamentos } from './routes/agendamento/buscar-agendamentos'
 import { CancelarAgendamento } from './routes/agendamento/cancelar-agendamento'
 import { ConcluirAgendamento } from './routes/agendamento/concluir-agendamento'
 import { CriarAgendamento } from './routes/agendamento/criar-agendamento'
