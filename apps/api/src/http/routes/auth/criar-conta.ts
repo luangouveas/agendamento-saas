@@ -71,6 +71,13 @@ export function CriarContaUsuario(app: FastifyInstance) {
           )
         }
 
+        /*
+         * verificar:
+         * 1 usuario ja existe com relação de funcionario: retornar erro
+         * 2 usuario ja existe mas nao é membro: criar relação como funcionario
+         * 3 usuario ja existe com relação cliente: atualizar relação para funcionario
+         */
+
         const senhaProvisoria = gerarSenhaAleatoria(7)
 
         const usuario = await prisma.usuario.create({

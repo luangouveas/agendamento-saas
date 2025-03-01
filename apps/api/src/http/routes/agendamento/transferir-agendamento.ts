@@ -10,17 +10,20 @@ import { buscarPermissoesUsuario } from '@/utils/buscar-permissoes-usuario'
 import { BadRequestError } from '../_errors/bad-request-error'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
-export function CancelarAgendamento(app: FastifyInstance) {
+export function TransferirAgendamento(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .patch(
-      '/organizacao/:slug/cancelar-agendamento/:id',
+      '/organizacao/:slug/transferir-agendamento/:id',
       {
         schema: {
           tags: ['Agendamento'],
-          summary: 'Cancela um agendamento',
+          summary: 'Transfere um agendamento para outro atendente',
           security: [{ bearerAuth: [] }],
+          body: z.object({
+            profissionalId: z.string().uuid(),
+          }),
           params: z.object({
             slug: z.string(),
             id: z.string(),
@@ -32,6 +35,7 @@ export function CancelarAgendamento(app: FastifyInstance) {
       },
       async (request, reply) => {
         const { slug, id } = request.params
+        const { profissionalId } = request.body
 
         const usuarioId = await request.getCurrentUserId()
         const { membership } = await request.getUserMembership(slug)
@@ -51,12 +55,14 @@ export function CancelarAgendamento(app: FastifyInstance) {
         const { cannot } = buscarPermissoesUsuario(usuarioId, membership.role)
 
         if (agendamento.status === 'CONCLUIDO') {
-          throw new BadRequestError('Não é possível cancelar este agendamento.')
+          throw new BadRequestError(
+            'Não é possível transferir este agendamento.',
+          )
         }
 
-        if (cannot('cancelar_agendamento', authAgendamento)) {
+        if (cannot('transferir_agendamento', authAgendamento)) {
           throw new UnauthorizedError(
-            'Você não possui permissão para cancelar este agendamento.',
+            'Você não possui permissão para transferir este agendamento.',
           )
         }
 
@@ -65,7 +71,7 @@ export function CancelarAgendamento(app: FastifyInstance) {
             id,
           },
           data: {
-            status: 'CANCELADO',
+            profissionalId,
           },
         })
 

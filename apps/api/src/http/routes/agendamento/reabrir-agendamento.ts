@@ -10,16 +10,16 @@ import { buscarPermissoesUsuario } from '@/utils/buscar-permissoes-usuario'
 import { BadRequestError } from '../_errors/bad-request-error'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
-export function CancelarAgendamento(app: FastifyInstance) {
+export function ReabrirAgendamento(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .patch(
-      '/organizacao/:slug/cancelar-agendamento/:id',
+      '/organizacao/:slug/reabrir-agendamento/:id',
       {
         schema: {
           tags: ['Agendamento'],
-          summary: 'Cancela um agendamento',
+          summary: 'Reabre um agendamento',
           security: [{ bearerAuth: [] }],
           params: z.object({
             slug: z.string(),
@@ -51,12 +51,12 @@ export function CancelarAgendamento(app: FastifyInstance) {
         const { cannot } = buscarPermissoesUsuario(usuarioId, membership.role)
 
         if (agendamento.status === 'CONCLUIDO') {
-          throw new BadRequestError('Não é possível cancelar este agendamento.')
+          throw new BadRequestError('Não é possível reabrir este agendamento.')
         }
 
-        if (cannot('cancelar_agendamento', authAgendamento)) {
+        if (cannot('reabrir_agendamento', authAgendamento)) {
           throw new UnauthorizedError(
-            'Você não possui permissão para cancelar este agendamento.',
+            'Você não possui permissão para reabrir este agendamento.',
           )
         }
 
@@ -65,7 +65,7 @@ export function CancelarAgendamento(app: FastifyInstance) {
             id,
           },
           data: {
-            status: 'CANCELADO',
+            status: 'AGENDADO',
           },
         })
 

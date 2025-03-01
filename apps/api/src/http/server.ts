@@ -15,7 +15,10 @@ import { errorHandler } from './error-handler'
 import { AtualizarAgendamento } from './routes/agendamento/atualizar-agendamento'
 import { BuscarAgendamento } from './routes/agendamento/buscar-agendamentos'
 import { CancelarAgendamento } from './routes/agendamento/cancelar-agendamento'
+import { ConcluirAgendamento } from './routes/agendamento/concluir-agendamento'
 import { CriarAgendamento } from './routes/agendamento/criar-agendamento'
+import { ReabrirAgendamento } from './routes/agendamento/reabrir-agendamento'
+import { TransferirAgendamento } from './routes/agendamento/transferir-agendamento'
 import { autenticarComEmailSenha } from './routes/auth/autenticar-com-email-senha'
 import { AutenticarComOtp } from './routes/auth/autenticar-com-otp'
 import { BuscarPerfil } from './routes/auth/buscar-perfil'
@@ -101,6 +104,9 @@ app.register(CriarAgendamento)
 app.register(BuscarAgendamento)
 app.register(AtualizarAgendamento)
 app.register(CancelarAgendamento)
+app.register(TransferirAgendamento)
+app.register(ConcluirAgendamento)
+app.register(ReabrirAgendamento)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
