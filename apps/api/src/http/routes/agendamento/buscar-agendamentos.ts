@@ -8,7 +8,7 @@ import { buscarPermissoesUsuario } from '@/utils/buscar-permissoes-usuario'
 
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
-export function BuscarAgendamento(app: FastifyInstance) {
+export function BuscarAgendamentos(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)

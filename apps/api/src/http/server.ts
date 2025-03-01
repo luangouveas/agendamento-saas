@@ -13,7 +13,10 @@ import {
 
 import { errorHandler } from './error-handler'
 import { AtualizarAgendamento } from './routes/agendamento/atualizar-agendamento'
-import { BuscarAgendamento } from './routes/agendamento/buscar-agendamentos'
+import {
+  BuscarAgendamento,
+  BuscarAgendamentos,
+} from './routes/agendamento/buscar-agendamentos'
 import { CancelarAgendamento } from './routes/agendamento/cancelar-agendamento'
 import { ConcluirAgendamento } from './routes/agendamento/concluir-agendamento'
 import { CriarAgendamento } from './routes/agendamento/criar-agendamento'
@@ -102,6 +105,7 @@ app.register(BuscarAfiliacao)
 
 app.register(CriarAgendamento)
 app.register(BuscarAgendamento)
+app.register(BuscarAgendamentos)
 app.register(AtualizarAgendamento)
 app.register(CancelarAgendamento)
 app.register(TransferirAgendamento)
