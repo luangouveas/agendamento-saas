@@ -42,20 +42,20 @@ model Usuario {
 }
 
 model Organizacao {
-  id          String @id @default(uuid())
-  cnpj        String @unique
-  razaoSocial String @unique
-  nome        String
-  slug        String @unique
-  rua         String
-  bairro      String
-  cidade      String
-  estado      String
-  cep         String
-
-  avatarUrl String?  @map("avatar_url")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id              String   @id @default(uuid())
+  cnpj            String   @unique
+  razaoSocial     String   @unique
+  nome            String
+  slug            String   @unique
+  rua             String
+  bairro          String
+  cidade          String
+  estado          String
+  cep             String
+  avatarUrl       String?  @map("avatar_url")
+  intervaloAgenda Int      @default(30)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   owner        Usuario       @relation(fields: [ownerId], references: [id])
   ownerId      String        @map("owner_id")
@@ -81,6 +81,8 @@ model Membro {
 
   usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   usuarioId String  @map("usuario_id")
+
+  expedientes Expediente[]
 
   @@unique([organizacaoId, usuarioId])
   @@map("membros")
@@ -146,4 +148,36 @@ model Agendamento {
   organizacaoId String      @map("organizacao_id")
 
   @@map("agendamentos")
+}
+
+model Expediente {
+  id                  String   @id @default(uuid())
+  nome                String
+  expedientePrincipal Boolean
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  membroProfissional Membro @relation(fields: [membroId], references: [id], onDelete: Cascade)
+  membroId           String @map("profissional_Id")
+
+  diasExpediente DiasExpediente[]
+
+  @@map("expedientes")
+}
+
+model DiasExpediente {
+  id              String   @id @default(uuid())
+  diaSemana       Int
+  inicio          String
+  fim             String
+  inicioIntervalo String?
+  fimIntervalo    String?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  expediente   Expediente @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
+  expedienteId String     @map("expediente_id")
+
+  @@unique([expedienteId, diaSemana])
+  @@map("diasExpediente")
 }
