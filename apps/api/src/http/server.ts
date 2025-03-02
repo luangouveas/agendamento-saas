@@ -28,6 +28,12 @@ import { CriarContaUsuarioCliente } from './routes/auth/criar-conta-cliente'
 import { requisitaAutenticacaoComOTP } from './routes/auth/requisita-autenticacao-otp'
 import { RequisitarRecuperacaoSenha } from './routes/auth/requisitar-recuperacao-senha'
 import { ResetarSenha } from './routes/auth/resetar-senha'
+import { AtualizarExpediente } from './routes/expediente/atualizar-expediente'
+import { BuscarExpediente } from './routes/expediente/buscar-expediente'
+import { BuscarExpedientes } from './routes/expediente/buscar-expedientes'
+import { CriarExpediente } from './routes/expediente/criar-expediente'
+import { DeletarExpediente } from './routes/expediente/deletar-expediente'
+import { MarcarExpedientePrincipal } from './routes/expediente/marcar-expediente-principal'
 import { AtualizarAfiliacao } from './routes/membro/atualizar-afiliacao'
 import { BuscarAfiliacao } from './routes/membro/buscar-afiliacao'
 import { CriarAfiliacao } from './routes/membro/criar-afiliacao'
@@ -109,6 +115,13 @@ app.register(CancelarAgendamento)
 app.register(TransferirAgendamento)
 app.register(ConcluirAgendamento)
 app.register(ReabrirAgendamento)
+
+app.register(CriarExpediente)
+app.register(AtualizarExpediente)
+app.register(DeletarExpediente)
+app.register(MarcarExpedientePrincipal)
+app.register(BuscarExpediente)
+app.register(BuscarExpedientes)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
