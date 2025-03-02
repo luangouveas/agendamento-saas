@@ -8,11 +8,12 @@ export const agendamentoSubject = z.tuple([
     z.literal('get'),
     z.literal('create'),
     z.literal('update'),
+    z.literal('concluir_agendamento'),
     z.literal('confirmar_agendamento'),
     z.literal('cancelar_agendamento'),
     z.literal('reabrir_agendamento'),
     z.literal('transferir_agendamento'),
-    z.literal('concluir_agendamento'),
+    z.literal('reagendar_agendamento'),
   ]),
   z.union([z.literal('Agendamento'), agendamentoSchema]),
 ])
