@@ -2,6 +2,7 @@ import { CreateAbility, createMongoAbility, MongoAbility } from '@casl/ability'
 import { z } from 'zod'
 
 import { agendamentoSubject } from './subjects/agendamento'
+import { expedienteSubject } from './subjects/expediente'
 import { membroSubject } from './subjects/membro'
 import { organizacaoSubject } from './subjects/organizacao'
 import { servicoSubject } from './subjects/servico'
@@ -13,6 +14,7 @@ const appAbilitiesSchema = z.union([
   servicoSubject,
   usuarioSubject,
   membroSubject,
+  expedienteSubject,
   z.tuple([z.literal('manage'), z.literal('all')]),
 ])
 

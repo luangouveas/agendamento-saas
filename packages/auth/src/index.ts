@@ -8,6 +8,7 @@ export * from './roles'
 export * from './models/agendamento'
 export * from './models/organizacao'
 export * from './models/usuario'
+export * from './models/expediente'
 
 export function defineAbilityFor(usuario: Usuario) {
   const builder = new AbilityBuilder(criarAppAbility)

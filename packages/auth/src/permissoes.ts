@@ -48,6 +48,15 @@ export const permissoes: Record<Role, PermissionsByRole> = {
         profissionalId: { $eq: usuario.id },
       },
     )
+
+    cannot(
+      ['get', 'create', 'delete', 'update', 'marcar_principal'],
+      'Expediente',
+    )
+    can('create', 'Expediente')
+    can(['get', 'update', 'marcar_principal', 'delete'], 'Expediente', {
+      usuarioId: { $eq: usuario.id },
+    })
   },
   RECEPCIONISTA(_, { can }) {
     can('get', 'Usuario')
