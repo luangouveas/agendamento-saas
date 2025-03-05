@@ -24,7 +24,7 @@ model Usuario {
   estado         String?
   cep            String?
   dataNascimento DateTime?
-  numeroCelular  BigInt    @unique
+  numeroCelular  String    @unique
   email          String?   @unique
   passwordHash   String?   @map("password_hash")
   avatarUrl      String?   @map("avatar_url")
