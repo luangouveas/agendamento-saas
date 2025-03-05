@@ -6,8 +6,6 @@ import { z } from 'zod'
 
 import { prisma } from '@/lib/prisma'
 
-import { BadRequestError } from '../_errors/bad-request-error'
-
 export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     '/auth/request-otp',
@@ -16,10 +14,7 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
         tags: ['Auth'],
         summary: 'Requisita autenticação de cliente via OTP',
         body: z.object({
-          telefone: z.number(),
-        }),
-        params: z.object({
-          slug: z.string(),
+          telefone: z.string(),
         }),
         response: {
           201: z.object({
@@ -31,16 +26,21 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
 
     async (request, reply) => {
       const { telefone } = request.body
-      const { slug } = request.params
 
-      const usuarioBytelefone = await prisma.usuario.findUnique({
+      let usuarioBytelefone = await prisma.usuario.findUnique({
         where: {
           numeroCelular: telefone,
         },
       })
 
       if (!usuarioBytelefone) {
-        throw new BadRequestError('Usuário não existe com este telefone')
+        //   throw new BadRequestError('Usuário não existe com este telefone')
+        usuarioBytelefone = await prisma.usuario.create({
+          data: {
+            nome: '',
+            numeroCelular: telefone,
+          },
+        })
       }
 
       const tokenOtp = randomInt(100000, 999999)
@@ -54,7 +54,7 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
       })
 
       // enviar token via wpp
-      console.log({ slug, tokenOtp })
+      console.log(`Olá este é seu código de verificação de acesso: ${tokenOtp}`)
 
       return reply.status(201).send()
     },
