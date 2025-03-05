@@ -30,7 +30,7 @@ export function CriarContaUsuario(app: FastifyInstance) {
             estado: z.string().optional().nullable(),
             cep: z.string().optional().nullable(),
             dataNascimento: z.date(),
-            numeroCelular: z.number(),
+            numeroCelular: z.string(),
             email: z.string().optional().nullable(),
             avatarUrl: z.string().optional().nullable(),
             role: roleSchema,

@@ -15,7 +15,7 @@ export function AutenticarComOtp(app: FastifyInstance) {
         tags: ['Auth'],
         summary: 'Realiza autenticação via OTP',
         body: z.object({
-          telefone: z.number(),
+          telefone: z.string(),
           tokenOtp: z.number(),
         }),
         params: z.object({
@@ -29,6 +29,7 @@ export function AutenticarComOtp(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
+      console.log('chegou aqui')
       const { telefone, tokenOtp } = request.body
       const { slug } = request.params
 

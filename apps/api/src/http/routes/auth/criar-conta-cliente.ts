@@ -15,7 +15,7 @@ export function CriarContaUsuarioCliente(app: FastifyInstance) {
         summary: 'Cria uma conta de usuário cliente',
         body: z.object({
           nome: z.string(),
-          numeroCelular: z.number(),
+          numeroCelular: z.string(),
           email: z.string().optional().nullable(),
         }),
         response: {

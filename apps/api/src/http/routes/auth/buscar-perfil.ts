@@ -25,7 +25,7 @@ export function BuscarPerfil(app: FastifyInstance) {
                 nome: z.string(),
                 dataNascimento: z.date().nullable(),
                 email: z.string().email().nullable(),
-                numeroCelular: z.bigint(),
+                numeroCelular: z.string(),
                 avatarUrl: z.string().url().nullable(),
                 cep: z.string().nullable(),
                 rua: z.string().nullable(),
