@@ -1,6 +1,7 @@
 'use server'
 
 import { HTTPError } from 'ky'
+import { cookies } from 'next/headers'
 
 import { entrarComCodigoVerificacao } from '@/http/entrar-com-codigo-verificacao'
 import { requisitarCodigoVerificacao } from '@/http/requisitar-codigo-verificacao'
@@ -35,13 +36,21 @@ export async function entrarComTelefone(
   slug: string,
 ) {
   try {
-    const result = await entrarComCodigoVerificacao({
+    const { token } = await entrarComCodigoVerificacao({
       telefone,
       codigo,
       slug,
     })
+    console.log(token)
 
-    console.log(result)
+    const ck = await cookies()
+
+    ck.set('agendador-token', token, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
+    })
+
+    ck.set('agendador-organizacao', slug)
 
     return { success: true, message: null }
   } catch (err) {
