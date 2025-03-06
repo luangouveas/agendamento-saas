@@ -4,14 +4,14 @@ import { usuarioEstaAutenticado } from '@/app/auth/auth'
 import { AgendadorFooter } from '@/components/agendador-footer'
 import { AgendadorHeader } from '@/components/agendador-header'
 
-export default function AppLayout({
+export default async function AppLayout({
   children,
   sheet,
 }: {
   children: React.ReactNode
   sheet: React.ReactNode
 }) {
-  if (!usuarioEstaAutenticado()) {
+  if (!(await usuarioEstaAutenticado())) {
     return redirect('sign-in')
   }
 

@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { DropdownMenu, DropdownMenuTrigger } from './ui/dropdown-menu'
 
 export default async function ComutadorEmpresa() {
-  const slug = getSlugOrganizacaoAtual()
+  const slug = await getSlugOrganizacaoAtual()
   const { organizacoes } = await buscarOrganizacoes()
 
   const organizacaoAtual = organizacoes.find((org) => org.slug === slug)

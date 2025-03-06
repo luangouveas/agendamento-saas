@@ -1,9 +1,9 @@
 import { cookies } from 'next/headers'
 
-export function usuarioEstaAutenticado() {
-  return !!cookies().get('agendador-token')?.value
+export async function usuarioEstaAutenticado() {
+  return !!(await cookies()).get('agendador-token')?.value
 }
 
-export function getSlugOrganizacaoAtual() {
-  return cookies().get('agendador-organizacao')?.value ?? null
+export async function getSlugOrganizacaoAtual() {
+  return (await cookies()).get('agendador-organizacao')?.value ?? null
 }
