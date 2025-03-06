@@ -29,7 +29,6 @@ export function AutenticarComOtp(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      console.log('chegou aqui')
       const { telefone, tokenOtp } = request.body
       const { slug } = request.params
 
@@ -59,6 +58,10 @@ export function AutenticarComOtp(app: FastifyInstance) {
           slug,
         },
       })
+
+      if (!org) {
+        throw new BadRequestError('O estabelecimento não foi localizado.')
+      }
 
       const membro = await prisma.membro.findFirst({
         where: {
