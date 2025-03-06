@@ -34,29 +34,6 @@ import {
 
 import { entrarComTelefone, solicitarEntrarComTelefone } from './actions'
 
-/*
- AJUSTES A SEREM FEITOS:
-
- API
-  - Ao tentar logar com celular, verificar se o celular tem usuario com vinculo de FUNCIONARIO com a sempresa,
-    caso possua, deve retornar um erro informando que o login deve ser no painel
-  
-  - Ajustar arquivo de seed para teste com valores que permitam testes mais faceis 
-    (Documentar os dados de acesso e empresa para facilitar)
-
-  - Ao reenviar codigo de verificação, deve apagar os anteriores, se houver
-
- SITE
-  - Exibir informações nos botões com status (Enviando, validando, etc...) e bloquear
-    quando estiver com esses estados
-  - Separar formulários de login em componentes
-
- TESTES
-  - Criar dados com seed
-  - Autenticar com usuario inexistente
-  - Autenticar com usuario existente
-*/
-
 const formLoginComCelularSchema = z.object({
   ddi: z.string(),
   telefone: z.string().min(5, {
