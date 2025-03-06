@@ -1,13 +1,27 @@
-import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
+import { redirect } from 'next/navigation'
+
+import {
+  getSlugOrganizacaoAtual,
+  usuarioEstaAutenticado,
+} from '@/app/auth/auth'
 import { AgendadorFooter } from '@/components/agendador-footer'
 import { AgendadorHeader } from '@/components/agendador-header'
 
+type Params = Promise<{ slug: string }>
+
 export default async function AppLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: Params
 }) {
-  const slug = await getSlugOrganizacaoAtual()
+  if (!(await usuarioEstaAutenticado())) {
+    const { slug } = await params
+    return redirect(`/agendador/${slug}/sign-in`)
+  }
+
+  const authSlug = await getSlugOrganizacaoAtual()
 
   return (
     <div>
@@ -19,7 +33,7 @@ export default async function AppLayout({
       <main className="mx-auto w-full max-w-[1200px] py-4">{children}</main>
 
       <div>
-        <AgendadorFooter slug={slug!} />
+        <AgendadorFooter slug={authSlug!} />
       </div>
     </div>
   )
