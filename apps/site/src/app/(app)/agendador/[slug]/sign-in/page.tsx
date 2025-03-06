@@ -129,7 +129,7 @@ export default function SignInPage(props: { params: Params }) {
         setSuccess(false)
         setMessage(result!.message)
       } else {
-        router.push(`/novo-agendamento`)
+        router.push(`/agendador/${slug}`)
       }
     })
   }
