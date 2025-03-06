@@ -5,5 +5,5 @@ export async function usuarioEstaAutenticado() {
 }
 
 export async function getSlugOrganizacaoAtual() {
-  return (await cookies()).get('agendador-organizacao')?.value ?? null
+  return (await cookies()).get('agendador-organizacao')?.value
 }
