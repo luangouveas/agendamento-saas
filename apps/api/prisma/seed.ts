@@ -13,7 +13,7 @@ async function seed() {
     data: {
       dataNascimento: new Date(),
       nome: 'Administrador',
-      numeroCelular: 5521912345670,
+      numeroCelular: '5521912345670',
       email: 'adm@teste.com',
       passwordHash,
     },
@@ -23,7 +23,7 @@ async function seed() {
     data: {
       dataNascimento: new Date(),
       nome: 'Funcionario Padrão Salao',
-      numeroCelular: 5521912345671,
+      numeroCelular: '5521912345671',
       email: 'teste@teste.com',
       passwordHash,
     },
@@ -33,7 +33,7 @@ async function seed() {
     data: {
       dataNascimento: new Date(),
       nome: 'Funcionario Padrão Estetica',
-      numeroCelular: 5521912345675,
+      numeroCelular: '5521912345675',
       email: 'teste2@teste.com',
       passwordHash,
     },
@@ -43,7 +43,7 @@ async function seed() {
     data: {
       dataNascimento: new Date(),
       nome: 'Cliente',
-      numeroCelular: 5521912345672,
+      numeroCelular: '5521912345672',
     },
   })
 
@@ -152,25 +152,6 @@ async function seed() {
       valor: 80,
       organizacaoId: orgSalao.id,
     },
-  })
-
-  await prisma.agendamento.createMany({
-    data: [
-      {
-        clienteId: usuarioCliente.id,
-        profissionalId: usuarioFuncionarioSalao.id,
-        servicoId: servicoAplicacao.id,
-        valor: 120,
-        dataHora: new Date(),
-      },
-      {
-        clienteId: usuarioCliente.id,
-        profissionalId: usuarioFuncionarioEstetica.id,
-        servicoId: servicoLavagemSimples.id,
-        valor: 50,
-        dataHora: new Date(),
-      },
-    ],
   })
 }
 
