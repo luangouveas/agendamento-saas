@@ -4,6 +4,7 @@ import Image from 'next/image'
 import appIcon from '@/assets/app-icon.svg'
 
 import ComutadorEmpresa from './comutador-empresa'
+import { ComutadorTema } from './theme/comutador-tema'
 
 export async function AgendadorHeader() {
   return (
@@ -20,9 +21,8 @@ export async function AgendadorHeader() {
         <ComutadorEmpresa />
       </div>
 
-      <div className="hidden items-center lg:flex">
-        <img src="/logo.png" alt="Logo" className="mr-2 h-8 w-8" />
-        <span className="text-lg font-bold">Nome do Sistema</span>
+      <div className="flex items-center gap-4">
+        <ComutadorTema />
       </div>
     </div>
   )
