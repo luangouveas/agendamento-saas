@@ -1,6 +1,6 @@
 'use client'
 
-import { CalendarDays, Grip, ListChecks } from 'lucide-react'
+import { CalendarDays, Grip, ListChecks, LogOut } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -12,7 +12,11 @@ import {
   TooltipTrigger,
 } from './ui/tooltip'
 
-export function AgendadorFooter() {
+interface AgendadorFooterProps {
+  slug: string
+}
+
+export function AgendadorFooter(props: AgendadorFooterProps) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   return (
     <footer className="fixed bottom-0 flex h-16 w-full flex-row items-center justify-between border-t border-gray-700 bg-background p-4">
@@ -20,7 +24,7 @@ export function AgendadorFooter() {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Link href="/agendamento">
+              <Link href={`/agendador/${props.slug}`}>
                 <CalendarDays width={32} />
               </Link>
             </TooltipTrigger>
@@ -35,7 +39,7 @@ export function AgendadorFooter() {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Link href="/meus-agendamentos" className="">
+              <Link href={`/agendador/${props.slug}/meus-agendamentos`}>
                 <ListChecks width={32} />
               </Link>
             </TooltipTrigger>
@@ -65,13 +69,12 @@ export function AgendadorFooter() {
               <h3 className="mb-2 text-lg font-bold">Mais Opções</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/opcao1">Opção 1</Link>
-                </li>
-                <li>
-                  <Link href="/opcao2">Opção 2</Link>
-                </li>
-                <li>
-                  <Link href="/opcao3">Opção 3</Link>
+                  <Link
+                    href={`/agendador/${props.slug}/api/sign-out`}
+                    className="flex items-center gap-2"
+                  >
+                    <LogOut className="mr-2 size-4" /> Sair
+                  </Link>
                 </li>
               </ul>
             </div>

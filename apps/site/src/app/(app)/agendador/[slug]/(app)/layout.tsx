@@ -1,19 +1,29 @@
 import { redirect } from 'next/navigation'
 
-import { usuarioEstaAutenticado } from '@/app/auth/auth'
+import {
+  getSlugOrganizacaoAtual,
+  usuarioEstaAutenticado,
+} from '@/app/auth/auth'
 import { AgendadorFooter } from '@/components/agendador-footer'
 import { AgendadorHeader } from '@/components/agendador-header'
+
+type Params = Promise<{ slug: string }>
 
 export default async function AppLayout({
   children,
   sheet,
+  params,
 }: {
   children: React.ReactNode
   sheet: React.ReactNode
+  params: Params
 }) {
   if (!(await usuarioEstaAutenticado())) {
     return redirect('sign-in')
   }
+
+  const slugAth = await getSlugOrganizacaoAtual()
+  const { slug } = await params
 
   return (
     <div>
@@ -24,7 +34,7 @@ export default async function AppLayout({
         {sheet}
       </main>
 
-      <AgendadorFooter />
+      <AgendadorFooter slug={slugAth ?? slug} />
     </div>
   )
 }
