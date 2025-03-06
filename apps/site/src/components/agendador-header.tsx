@@ -8,7 +8,7 @@ import { ComutadorTema } from './theme/comutador-tema'
 
 export async function AgendadorHeader() {
   return (
-    <div className="mx-auto flex items-center justify-between border-b border-gray-700 p-4">
+    <div className="mx-auto flex max-w-[1200px] items-center justify-between">
       <div className="flex items-center gap-3">
         <Image
           src={appIcon}

@@ -70,7 +70,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href={`/agendador/${props.slug}/api/sign-out`}
+                    href={`/agendador/api/sign-out`}
                     className="flex items-center gap-2"
                   >
                     <LogOut className="mr-2 size-4" /> Sair
