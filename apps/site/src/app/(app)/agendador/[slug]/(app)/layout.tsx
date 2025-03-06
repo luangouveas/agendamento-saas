@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation'
 
 import { usuarioEstaAutenticado } from '@/app/auth/auth'
+import { AgendadorFooter } from '@/components/agendador-footer'
+import { AgendadorHeader } from '@/components/agendador-header'
 
 export default function AppLayout({
   children,
@@ -14,9 +16,15 @@ export default function AppLayout({
   }
 
   return (
-    <>
-      {children}
-      {sheet}
-    </>
+    <div>
+      <AgendadorHeader />
+
+      <main className="p-4 pb-20">
+        {children}
+        {sheet}
+      </main>
+
+      <AgendadorFooter />
+    </div>
   )
 }
