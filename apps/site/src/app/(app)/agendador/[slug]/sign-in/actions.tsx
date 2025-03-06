@@ -1,0 +1,60 @@
+'use server'
+
+import { HTTPError } from 'ky'
+
+import { entrarComCodigoVerificacao } from '@/http/entrar-com-codigo-verificacao'
+import { requisitarCodigoVerificacao } from '@/http/requisitar-codigo-verificacao'
+
+export async function solicitarEntrarComTelefone(telefone: string) {
+  try {
+    const result = await requisitarCodigoVerificacao({
+      telefone,
+    })
+
+    console.log(result)
+
+    return { success: true, message: null }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+      return { success: false, message }
+    }
+
+    console.error(err)
+
+    return {
+      success: false,
+      message: 'Unexpected error, try again in a few minutes.',
+    }
+  }
+}
+
+export async function entrarComTelefone(
+  telefone: string,
+  codigo: number,
+  slug: string,
+) {
+  try {
+    const result = await entrarComCodigoVerificacao({
+      telefone,
+      codigo,
+      slug,
+    })
+
+    console.log(result)
+
+    return { success: true, message: null }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+      return { success: false, message }
+    }
+
+    console.error(err)
+
+    return {
+      success: false,
+      message: 'Unexpected error, try again in a few minutes.',
+    }
+  }
+}
