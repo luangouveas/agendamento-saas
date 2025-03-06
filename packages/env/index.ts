@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url(),
     JWT_SECRET: z.string(),
-    SERVER_PORT: z.coerce.number().default(3333),
+    SERVER_PORT: z.coerce.number().default(3031),
   },
   client: {},
   shared: {
