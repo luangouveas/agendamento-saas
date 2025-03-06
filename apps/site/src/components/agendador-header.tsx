@@ -3,15 +3,9 @@ import Image from 'next/image'
 
 import appIcon from '@/assets/app-icon.svg'
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './ui/select'
+import ComutadorEmpresa from './comutador-empresa'
 
-export function AgendadorHeader() {
+export async function AgendadorHeader() {
   return (
     <div className="mx-auto flex items-center justify-between border-b border-gray-700 p-4">
       <div className="flex items-center gap-3">
@@ -23,16 +17,7 @@ export function AgendadorHeader() {
 
         <Slash className="size-3 -rotate-[24deg] text-border" />
 
-        <Select>
-          <SelectTrigger className="w-full lg:w-[280px]">
-            <SelectValue placeholder="Nome da empresa..." />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Empresa 01</SelectItem>
-            <SelectItem value="dark">Empresa 02</SelectItem>
-            <SelectItem value="system">Empresa 03</SelectItem>
-          </SelectContent>
-        </Select>
+        <ComutadorEmpresa />
       </div>
 
       <div className="hidden items-center lg:flex">
