@@ -2,6 +2,7 @@ import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 
+import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 const profissionais = [
@@ -22,11 +23,23 @@ const profissionais = [
   },
 ]
 
-export default function ListaProfissionais() {
+interface ListaProfissionaisProps {
+  servicoId: string
+}
+
+export default async function ListaProfissionais(
+  props: ListaProfissionaisProps,
+) {
+  const slug = await getSlugOrganizacaoAtual()
+  // const { profissionais } = await buscarProfissionais(organizacaoAtual!)
+
   return (
     <div className="flex flex-col gap-5">
       {profissionais.map((profissional) => (
-        <Link key={profissional.id} href="">
+        <Link
+          key={profissional.id}
+          href={`/agendador/${slug}/escolher-data?servicoId=${props.servicoId}&profissionalId=${profissional.id}`}
+        >
           <div className="flex items-center justify-between border-b pb-3">
             <div className="flex flex-row items-center">
               <div>
