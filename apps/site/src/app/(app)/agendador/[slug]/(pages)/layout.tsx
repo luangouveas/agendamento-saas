@@ -25,17 +25,9 @@ export default async function AppLayout({
 
   return (
     <div>
-      <div className="p-6">
-        <AgendadorHeader />
-      </div>
-
-      <div className="w-full border-b border-gray-700"></div>
-
-      <main className="w-full p-6 py-4">{children}</main>
-
-      <div>
-        <AgendadorFooter slug={authSlug!} />
-      </div>
+      <AgendadorHeader />
+      <main className="w-full pb-20 pt-24">{children}</main>
+      <AgendadorFooter slug={authSlug!} />
     </div>
   )
 }

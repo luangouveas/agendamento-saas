@@ -8,7 +8,7 @@ import { ComutadorTema } from './theme/comutador-tema'
 
 export async function AgendadorHeader() {
   return (
-    <div className="flex items-center justify-between">
+    <header className="fixed top-0 flex h-16 w-full items-center justify-between border bg-background p-6">
       <div className="flex items-center gap-3">
         <Image
           src={appIcon}
@@ -24,6 +24,6 @@ export async function AgendadorHeader() {
       <div className="flex items-center gap-4">
         <ComutadorTema />
       </div>
-    </div>
+    </header>
   )
 }
