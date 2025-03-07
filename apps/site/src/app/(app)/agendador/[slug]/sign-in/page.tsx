@@ -80,7 +80,7 @@ export default function SignInPage(props: { params: Params }) {
   function handleSubmitLoginComCelular(
     values: z.infer<typeof formLoginComCelularSchema>,
   ) {
-    const telefone = `${values.ddi} ${values.telefone}`
+    const telefone = `${values.ddi}${values.telefone}`
 
     solicitarEntrarComTelefone(telefone).then((result) => {
       if (!result?.success) {
