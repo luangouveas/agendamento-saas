@@ -12,7 +12,6 @@ export async function GET(request: NextRequest) {
   const ck = await cookies()
 
   ck.delete('agendador-token')
-  ck.delete('agendador-organizacao')
 
   return NextResponse.redirect(redirectUrl)
 }

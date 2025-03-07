@@ -41,7 +41,6 @@ export async function entrarComTelefone(
       codigo,
       slug,
     })
-    console.log(token)
 
     const ck = await cookies()
 
