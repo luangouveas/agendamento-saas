@@ -17,8 +17,8 @@ export async function ListaServicos() {
         >
           <div className="flex items-center justify-between border-b pb-3">
             <div className="flex flex-col">
-              <span>{servico.nome}</span>
-              <span className="text-xs">
+              <span className="text-foreground">{servico.nome}</span>
+              <span className="text-xs text-muted-foreground">
                 {servico.tempo}min - R$ {servico.valor}
               </span>
             </div>
