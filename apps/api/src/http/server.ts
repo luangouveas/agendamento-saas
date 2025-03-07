@@ -42,6 +42,7 @@ import { BuscarMembros } from './routes/orgs/buscar-membros'
 import { BuscarOrganizacao } from './routes/orgs/buscar-organizacao'
 import { BuscarOrganizacoes } from './routes/orgs/buscar-organizacoes'
 import { CriarOrganizacao } from './routes/orgs/criar-organizacao'
+import { BuscarProfissionais } from './routes/profissional/buscar-profissionais'
 import { AtualizarServico } from './routes/servico/atualizar-servico'
 import { BuscarServico } from './routes/servico/buscar-servico'
 import { BuscarServicos } from './routes/servico/buscar-servicos'
@@ -122,6 +123,8 @@ app.register(DeletarExpediente)
 app.register(MarcarExpedientePrincipal)
 app.register(BuscarExpediente)
 app.register(BuscarExpedientes)
+
+app.register(BuscarProfissionais)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
