@@ -31,6 +31,7 @@ import { ResetarSenha } from './routes/auth/resetar-senha'
 import { AtualizarExpediente } from './routes/expediente/atualizar-expediente'
 import { BuscarExpediente } from './routes/expediente/buscar-expediente'
 import { BuscarExpedientes } from './routes/expediente/buscar-expedientes'
+import { BuscarHorariosDisponiveis } from './routes/expediente/buscar-horarios-disponiveis'
 import { CriarExpediente } from './routes/expediente/criar-expediente'
 import { DeletarExpediente } from './routes/expediente/deletar-expediente'
 import { MarcarExpedientePrincipal } from './routes/expediente/marcar-expediente-principal'
@@ -125,6 +126,7 @@ app.register(BuscarExpediente)
 app.register(BuscarExpedientes)
 
 app.register(BuscarProfissionais)
+app.register(BuscarHorariosDisponiveis)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
