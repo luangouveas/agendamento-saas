@@ -91,6 +91,8 @@ export const permissoes: Record<Role, PermissionsByRole> = {
         clienteId: { $eq: usuario.id },
       },
     )
+    can('get', ['Servico', 'Expediente'])
+    can('create', 'Agendamento', { clienteId: { $eq: usuario.id } })
   },
   FINANCEIRO(_, { can }) {
     return can
