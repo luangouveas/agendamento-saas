@@ -21,7 +21,7 @@ export default async function ListaProfissionais(
       {profissionais.map((profissional) => (
         <Link
           key={profissional.id}
-          href={`/agendador/${slug}/escolher-data?servicoId=${props.servicoId}&profissionalId=${profissional.id}`}
+          href={`/agendador/${slug}/escolher-data?servicoId=${props.servicoId}&profissionalId=${profissional.membroId}`}
         >
           <div className="flex items-center justify-between border-b pb-3">
             <div className="flex flex-row items-center">

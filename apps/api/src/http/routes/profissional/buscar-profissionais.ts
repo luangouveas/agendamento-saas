@@ -25,22 +25,25 @@ export function BuscarProfissionais(app: FastifyInstance) {
           }),
           response: {
             200: z.object({
-              profissionais: z.array(
-                z.object({
-                  id: z.string().uuid(),
-                  nome: z.string(),
-                  rua: z.string().nullable(),
-                  bairro: z.string().nullable(),
-                  cidade: z.string().nullable(),
-                  estado: z.string().nullable(),
-                  cep: z.string().nullable(),
-                  avatarUrl: z.string().url().nullable(),
-                  createdAt: z.date(),
-                  dataNascimento: z.date().nullable(),
-                  numeroCelular: z.string(),
-                  email: z.string().email().nullable(),
-                }),
-              ),
+              profissionais: z
+                .array(
+                  z.object({
+                    id: z.string().uuid(),
+                    membroId: z.string().uuid(),
+                    nome: z.string(),
+                    rua: z.string().nullable(),
+                    bairro: z.string().nullable(),
+                    cidade: z.string().nullable(),
+                    estado: z.string().nullable(),
+                    cep: z.string().nullable(),
+                    avatarUrl: z.string().url().nullable(),
+                    createdAt: z.date(),
+                    dataNascimento: z.date().nullable(),
+                    numeroCelular: z.string(),
+                    email: z.string().email().nullable(),
+                  }),
+                )
+                .nullable(),
             }),
           },
         },
@@ -65,8 +68,8 @@ export function BuscarProfissionais(app: FastifyInstance) {
             role: 'ATENDENTE',
             tipo: 'FUNCIONARIO',
           },
-
           select: {
+            id: true,
             usuario: {
               select: {
                 id: true,
@@ -90,22 +93,25 @@ export function BuscarProfissionais(app: FastifyInstance) {
           throw new BadRequestError('Nenhum profissional encontrado.')
         }
 
-        const profissionais = membrosProfissionais.map(({ usuario }) => {
-          return {
-            id: usuario.id,
-            nome: usuario.nome,
-            rua: usuario.rua,
-            bairro: usuario.bairro,
-            cidade: usuario.cidade,
-            estado: usuario.estado,
-            cep: usuario.cep,
-            avatarUrl: usuario.avatarUrl,
-            createdAt: usuario.createdAt,
-            dataNascimento: usuario.dataNascimento,
-            numeroCelular: usuario.numeroCelular,
-            email: usuario.email,
-          }
-        })
+        const profissionais = membrosProfissionais.map(
+          ({ usuario: { id: usuarioId, ...usuario }, ...membro }) => {
+            return {
+              id: usuarioId,
+              membroId: membro.id,
+              nome: usuario.nome,
+              rua: usuario.rua,
+              bairro: usuario.bairro,
+              cidade: usuario.cidade,
+              estado: usuario.estado,
+              cep: usuario.cep,
+              avatarUrl: usuario.avatarUrl,
+              createdAt: usuario.createdAt,
+              dataNascimento: usuario.dataNascimento,
+              numeroCelular: usuario.numeroCelular,
+              email: usuario.email,
+            }
+          },
+        )
 
         return { profissionais }
       },

@@ -3,6 +3,7 @@ import { api } from './api-client'
 interface BuscarProfissionaisResponse {
   profissionais: {
     id: string
+    membroId: string
     nome: string
     rua: string | null
     bairro: string | null
