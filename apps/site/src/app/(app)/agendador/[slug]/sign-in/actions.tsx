@@ -46,7 +46,7 @@ export async function entrarComTelefone(
 
     ck.set('agendador-token', token, {
       path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7 dias
+      maxAge: 60 * 60 * 24, // 1 dia
     })
 
     ck.set('agendador-organizacao', slug)
