@@ -44,6 +44,7 @@ import { BuscarOrganizacao } from './routes/orgs/buscar-organizacao'
 import { BuscarOrganizacoes } from './routes/orgs/buscar-organizacoes'
 import { CriarOrganizacao } from './routes/orgs/criar-organizacao'
 import { BuscarProfissionais } from './routes/profissional/buscar-profissionais'
+import { BuscarProfissional } from './routes/profissional/buscar-profissional'
 import { AtualizarServico } from './routes/servico/atualizar-servico'
 import { BuscarServico } from './routes/servico/buscar-servico'
 import { BuscarServicos } from './routes/servico/buscar-servicos'
@@ -126,6 +127,7 @@ app.register(BuscarExpediente)
 app.register(BuscarExpedientes)
 
 app.register(BuscarProfissionais)
+app.register(BuscarProfissional)
 app.register(BuscarHorariosDisponiveis)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
