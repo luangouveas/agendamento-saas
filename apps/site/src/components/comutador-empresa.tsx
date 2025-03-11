@@ -24,7 +24,7 @@ export default async function ComutadorEmpresa() {
       <DropdownMenuTrigger className="flex w-[220px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
         {organizacaoAtual ? (
           <>
-            <Avatar className="size-4">
+            <Avatar className="size-6">
               {organizacaoAtual.avatarUrl && (
                 <AvatarImage
                   src={organizacaoAtual.avatarUrl}
