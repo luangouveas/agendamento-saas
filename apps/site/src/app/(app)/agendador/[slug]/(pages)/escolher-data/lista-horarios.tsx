@@ -1,4 +1,5 @@
 import { AlertTriangle } from 'lucide-react'
+import Link from 'next/link'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
 
@@ -31,9 +32,19 @@ export default async function ListaDeHorariosDisponiveis({
             </span>
             <div className="mt-2 grid grid-cols-3 items-center justify-center gap-3 p-4">
               {d.horarios.map((h) => (
-                <span id={d.data + h} className="flex justify-center">
-                  {h}
-                </span>
+                <Link
+                  href={`/agendador/${slug}/finalizar-agendamento?servicoId=${servicoId}
+                &profissionalId=${profissionalId}
+                `}
+                  className="w-full hover:text-muted-foreground"
+                >
+                  <span
+                    id={d.data + h}
+                    className="flex justify-center border-b p-2"
+                  >
+                    {h}
+                  </span>
+                </Link>
               ))}
             </div>
           </div>
