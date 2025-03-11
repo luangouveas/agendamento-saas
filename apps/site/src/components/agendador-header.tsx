@@ -8,15 +8,15 @@ import { ComutadorTema } from './theme/comutador-tema'
 
 export async function AgendadorHeader() {
   return (
-    <header className="fixed top-0 flex h-16 w-full items-center justify-between border bg-background p-6">
+    <header className="fixed top-0 flex h-16 w-full items-center justify-between border-b bg-background p-6">
       <div className="flex items-center gap-3">
         <Image
           src={appIcon}
-          className="size-6 dark:invert"
+          className="hidden size-6 dark:invert sm:block"
           alt="Logo do portal agendador"
         />
 
-        <Slash className="size-3 -rotate-[24deg] text-border" />
+        <Slash className="hidden size-3 -rotate-[24deg] text-border sm:block" />
 
         <ComutadorEmpresa />
       </div>
