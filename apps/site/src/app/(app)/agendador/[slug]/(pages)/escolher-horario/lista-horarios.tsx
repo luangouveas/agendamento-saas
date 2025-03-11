@@ -24,7 +24,7 @@ export default async function ListaDeHorariosDisponiveis({
       {diasDisponiveis ? (
         diasDisponiveis.map((d) => (
           <div
-            id={d.data}
+            key={d.data}
             className="g-2 mt-6 flex flex-col rounded-tl-lg rounded-tr-lg border-2"
           >
             <span className="rounded-tl-lg rounded-tr-lg bg-slate-200 p-2 pl-6 font-medium dark:bg-muted">
@@ -33,17 +33,13 @@ export default async function ListaDeHorariosDisponiveis({
             <div className="mt-2 grid grid-cols-3 items-center justify-center gap-3 p-4">
               {d.horarios.map((h) => (
                 <Link
+                  key={d.data + h}
                   href={`/agendador/${slug}/finalizar-agendamento?servicoId=${servicoId}
                 &profissionalId=${profissionalId}
                 `}
                   className="w-full hover:text-muted-foreground"
                 >
-                  <span
-                    id={d.data + h}
-                    className="flex justify-center border-b p-2"
-                  >
-                    {h}
-                  </span>
+                  <span className="flex justify-center border-b p-2">{h}</span>
                 </Link>
               ))}
             </div>
