@@ -2,7 +2,7 @@ import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
 
 import ListaDeHorariosDisponiveis from './lista-horarios'
 
-export default async function EscolherDataPage({
+export default async function EscolherHorarioPage({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>
