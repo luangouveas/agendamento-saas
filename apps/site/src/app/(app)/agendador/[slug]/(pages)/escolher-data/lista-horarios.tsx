@@ -19,24 +19,25 @@ export default async function ListaDeHorariosDisponiveis({
     await buscarListaDeHorariosDisponiveis(slug, servicoId, profissionalId)
 
   return (
-    <div>
+    <div className="flex flex-col gap-5">
       {diasDisponiveis ? (
-        <div>
-          <h1>Escolha o dia desejado</h1>
-
-          {diasDisponiveis.map((d) => (
-            <div className="g-2 mt-6 flex flex-col border-b">
-              <span>
-                {d.data} - {d.diaSemana}
-              </span>
-              <div className="mt-2">
-                {d.horarios.map((h) => (
-                  <span className="flex gap-2">{h}</span>
-                ))}
-              </div>
+        diasDisponiveis.map((d) => (
+          <div
+            id={d.data}
+            className="g-2 mt-6 flex flex-col rounded-tl-lg rounded-tr-lg border-2"
+          >
+            <span className="rounded-tl-lg rounded-tr-lg bg-slate-200 p-2 pl-6 font-medium dark:bg-muted">
+              {d.data} - {d.diaSemana}
+            </span>
+            <div className="mt-2 grid grid-cols-3 items-center justify-center gap-3 p-4">
+              {d.horarios.map((h) => (
+                <span id={d.data + h} className="flex justify-center">
+                  {h}
+                </span>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ))
       ) : (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
