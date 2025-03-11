@@ -35,7 +35,7 @@ export default async function ListaDeHorariosDisponiveis({
                 <Link
                   key={d.data + h}
                   href={`/agendador/${slug}/finalizar-agendamento?servicoId=${servicoId}
-                &profissionalId=${profissionalId}
+                &profissionalId=${profissionalId}&data=${d.data}&hora=${h}
                 `}
                   className="w-full hover:text-muted-foreground"
                 >
