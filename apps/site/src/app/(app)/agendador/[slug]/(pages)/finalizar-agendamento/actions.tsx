@@ -2,8 +2,11 @@
 
 import { HTTPError } from 'ky'
 
+import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
+import { buscarPerfil } from '@/http/buscar-perfil'
 import { buscarProfissionalPorId } from '@/http/buscar-profissional'
 import { buscarServicoPorId } from '@/http/buscar-servico'
+import { criarAgendamento } from '@/http/criar-agendamento'
 
 export async function buscarDadosDoAgendamentoParaFinalizar(
   slug: string,
@@ -32,6 +35,37 @@ export async function buscarDadosDoAgendamentoParaFinalizar(
       success: false,
       message: 'Unexpected error, try again in a few minutes.',
       data: null,
+    }
+  }
+}
+
+interface DadosCriarAgendamento {
+  profissionalId: string
+  servicoId: string
+  dataHora: string
+}
+
+export async function finalizarAgendamento(
+  dadosAgendamento: DadosCriarAgendamento,
+) {
+  try {
+    const slug = await getSlugOrganizacaoAtual()
+    const { usuario } = await buscarPerfil()
+
+    const result = await criarAgendamento({
+      clienteId: usuario.id,
+      slug: slug!,
+      profissionalId: dadosAgendamento.profissionalId,
+      servicoId: dadosAgendamento.servicoId,
+      dataHora: dadosAgendamento.dataHora,
+    })
+
+    return { success: true, message: null }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message, errors } = await err.response.json()
+      console.log('errors', errors)
+      return { success: false, message }
     }
   }
 }

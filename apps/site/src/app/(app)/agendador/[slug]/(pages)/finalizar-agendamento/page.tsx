@@ -1,43 +1,46 @@
 import { AlertTriangle } from 'lucide-react'
 
-import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 
 import { buscarDadosDoAgendamentoParaFinalizar } from './actions'
+import ConfirmarAgendamentoClienteForm from './confirmacao-agendamento'
 
-export default async function FinalizarAgendamentoPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>
+type Params = Promise<{ slug: string }>
+type SearchParams = Promise<{ [key: string]: string | undefined }>
+
+export default async function FinalizarAgendamentoPage(props: {
+  params: Params
+  searchParams: SearchParams
 }) {
-  const slug = await getSlugOrganizacaoAtual()
+  const { slug } = await props.params
   const {
     servicoId = '',
     profissionalId = '',
     data = '',
     hora = '',
-  } = await searchParams
+  } = await props.searchParams
 
   const { data: dados, message } = await buscarDadosDoAgendamentoParaFinalizar(
-    slug!,
-    servicoId,
-    profissionalId,
+    slug,
+    servicoId!,
+    profissionalId!,
   )
+
+  const dadosAgendamento = {
+    data,
+    hora,
+    servicoId: dados?.dadosServico.id,
+    nomeServico: dados?.dadosServico.nome,
+    profissionalId: dados?.dadosProfissional.id,
+    nomeProfissional: dados?.dadosProfissional.nome,
+  }
+
+  console.log(dadosAgendamento)
 
   return (
     <div className="space-y-4 px-4">
       {dados ? (
-        <>
-          <h2 className="text-center font-semibold">
-            Confirme os dados do agendamento
-          </h2>
-
-          <div>{dados.dadosServico.nome}</div>
-          <div>
-            {data} - {hora}
-          </div>
-          <div>{dados.dadosProfissional.nome}</div>
-        </>
+        <ConfirmarAgendamentoClienteForm dadosAgendamento={dadosAgendamento} />
       ) : (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
