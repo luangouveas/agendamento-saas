@@ -8,6 +8,7 @@ interface BuscarServicosResponse {
     descricao: string
     valor: number
     tempo: number
+    avatarUrl?: string | null
   }[]
 }
 

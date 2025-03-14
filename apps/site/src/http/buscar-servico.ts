@@ -8,6 +8,7 @@ interface BuscarServicoPorIdResponse {
     descricao: string
     tempo: number
     valor: number
+    avatarUrl?: string | null
   }
 }
 
