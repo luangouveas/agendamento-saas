@@ -32,15 +32,16 @@ export default async function EscolherHorarioPage({
       </div>
       {servicoId && (
         <div>
-          <div className="mt-10">
-            <span className="text-base font-medium">{servico.nome}</span>
-            <div className="mt-2 flex flex-row gap-2">
-              <Avatar className="size-7">
-                {profissional.avatarUrl && (
-                  <AvatarImage src={profissional.avatarUrl} />
-                )}
-                <AvatarFallback />
-              </Avatar>
+          <div className="mt-10 flex flex-row items-center gap-2">
+            <Avatar className="size-10">
+              {profissional.avatarUrl && (
+                <AvatarImage src={profissional.avatarUrl} />
+              )}
+              <AvatarFallback />
+            </Avatar>
+
+            <div className="flex flex-col">
+              <span className="text-base font-medium">{servico.nome}</span>
               <span className="text-muted-foreground">{profissional.nome}</span>
             </div>
           </div>

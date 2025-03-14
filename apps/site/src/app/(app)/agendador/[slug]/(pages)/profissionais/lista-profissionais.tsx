@@ -28,18 +28,16 @@ export default async function ListaProfissionais(
             href={`/agendador/${slug}/escolher-horario?servicoId=${props.servicoId}&profissionalId=${profissional.membroId}`}
           >
             <div className="flex items-center justify-between border-b pb-3">
-              <div className="flex flex-row items-center">
-                <div>
-                  <Avatar className="mr-2 size-8">
-                    {profissional.avatarUrl && (
-                      <AvatarImage
-                        src={profissional.avatarUrl}
-                        alt={profissional.nome}
-                      />
-                    )}
-                    <AvatarFallback />
-                  </Avatar>
-                </div>
+              <div className="flex flex-row items-center gap-2">
+                <Avatar className="size-9">
+                  {profissional.avatarUrl && (
+                    <AvatarImage
+                      src={profissional.avatarUrl}
+                      alt={profissional.nome}
+                    />
+                  )}
+                  <AvatarFallback />
+                </Avatar>
                 <span className="text-foreground">{profissional.nome}</span>
               </div>
               <ChevronRight size={24} className="text-muted-foreground" />

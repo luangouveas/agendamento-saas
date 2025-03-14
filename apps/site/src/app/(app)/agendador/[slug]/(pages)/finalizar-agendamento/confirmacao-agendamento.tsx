@@ -52,22 +52,23 @@ export default function ConfirmarAgendamentoClienteForm({
     <div className="flex h-[530px] flex-col justify-between">
       <div>
         <div className="mt-8 flex flex-col">
-          <span className="text-base font-medium">
-            {dadosAgendamento.nomeServico}
-          </span>
-          <div className="flex flex-row gap-2">
-            <Avatar className="size-7">
+          <div className="flex flex-row items-center gap-2">
+            <Avatar className="size-16">
               {dadosAgendamento.avatarProfissionalUrl && (
                 <AvatarImage src={dadosAgendamento.avatarProfissionalUrl} />
               )}
               <AvatarFallback />
             </Avatar>
-            <span>{dadosAgendamento.nomeProfissional}</span>
+            <div className="flex flex-col">
+              <span className="text-xl font-medium">
+                {dadosAgendamento.nomeServico}
+              </span>
+              <span>{dadosAgendamento.nomeProfissional}</span>
+              <span className="text-sm text-muted-foreground">
+                {dadosAgendamento.data} - {dadosAgendamento.hora}
+              </span>
+            </div>
           </div>
-
-          <span className="text-muted-foreground">
-            {dadosAgendamento.data} - {dadosAgendamento.hora}
-          </span>
         </div>
 
         {!success && message && (
