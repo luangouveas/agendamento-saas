@@ -46,6 +46,15 @@ export const permissoes: Record<Role, PermissionsByRole> = {
       'Agendamento',
       {
         profissionalId: { $eq: usuario.id },
+        clienteId: { $ne: usuario.id },
+      },
+    )
+    can(
+      ['create', 'get', 'confirmar_agendamento', 'cancelar_agendamento'],
+      'Agendamento',
+      {
+        profissionalId: { $ne: usuario.id },
+        clienteId: { $eq: usuario.id },
       },
     )
 
