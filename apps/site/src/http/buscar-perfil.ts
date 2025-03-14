@@ -1,9 +1,9 @@
 import { api } from './api-client'
 
-interface BuscarPerfilResponse {
+export interface BuscarPerfilResponse {
   usuario: {
     id: string
-    nome: string
+    nome: string | null
     dataNascimento: string | null
     email: string | null
     numeroCelular: string

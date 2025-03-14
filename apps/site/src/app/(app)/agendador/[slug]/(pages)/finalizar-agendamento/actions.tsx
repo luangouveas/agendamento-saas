@@ -52,7 +52,7 @@ export async function finalizarAgendamento(
     const slug = await getSlugOrganizacaoAtual()
     const { usuario } = await buscarPerfil()
 
-    const result = await criarAgendamento({
+    await criarAgendamento({
       clienteId: usuario.id,
       slug: slug!,
       profissionalId: dadosAgendamento.profissionalId,

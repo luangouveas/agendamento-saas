@@ -1,0 +1,152 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AlertTriangle } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { Alert, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { BuscarPerfilResponse } from '@/http/buscar-perfil'
+
+import { atualizarDadosDoPerfilDoUsuario } from './actions'
+
+const formPerfilUsuarioSchema = z.object({
+  nome: z.string().min(3, {
+    message: 'O nome é obrigatório.',
+  }),
+  email: z.string(),
+  avatarUrl: z.string(),
+  numeroCelular: z.string().min(5, {
+    message: 'O número do celular é obrigatório.',
+  }),
+})
+
+export default function MeuPerfilForm({ usuario }: BuscarPerfilResponse) {
+  const [message, setMessage] = useState<string | null>('TESTE')
+  const [success, setSuccess] = useState<boolean | null>(null)
+
+  const form = useForm<z.infer<typeof formPerfilUsuarioSchema>>({
+    resolver: zodResolver(formPerfilUsuarioSchema),
+    defaultValues: {
+      numeroCelular: usuario.numeroCelular,
+      nome: usuario.nome || '',
+      email: usuario.email || '',
+      avatarUrl: usuario.avatarUrl || '',
+    },
+  })
+
+  function handleUpdatePerfil(
+    formData: z.infer<typeof formPerfilUsuarioSchema>,
+  ) {
+    atualizarDadosDoPerfilDoUsuario(formData).then((result) => {
+      if (result.success) {
+        setMessage('')
+        setSuccess(true)
+      } else {
+        setMessage(result.message)
+        setSuccess(true)
+      }
+    })
+  }
+
+  return (
+    <div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleUpdatePerfil)}
+          className="space-y-2"
+        >
+          <div className="space-y-1">
+            <FormField
+              control={form.control}
+              name="nome"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="nome">Nome</Label>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="email">E-mail</Label>
+                  <FormControl>
+                    <Input type="email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <FormField
+              control={form.control}
+              name="numeroCelular"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="numeroCelular">Telefone</Label>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="space-y-1">
+            <FormField
+              control={form.control}
+              name="avatarUrl"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="avatarUrl">URL Avatar</Label>
+                  <FormControl>
+                    <Input type="url" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="mt-4">
+            <Button type="submit" className="w-full">
+              Salvar dados
+            </Button>
+          </div>
+        </form>
+      </Form>
+
+      {!success && message && (
+        <div className="mt-14">
+          <Alert variant="destructive">
+            <AlertTriangle className="size-4" />
+            <AlertTitle className="">
+              <p>{message}</p>
+            </AlertTitle>
+          </Alert>
+        </div>
+      )}
+    </div>
+  )
+}

@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
 
+import { buscarPerfilDoUsuarioLogado } from '../actions'
 import { buscarDadosDoAgendamentoParaFinalizar } from './actions'
 import ConfirmarAgendamentoClienteForm from './confirmacao-agendamento'
 
@@ -21,11 +22,21 @@ export default async function FinalizarAgendamentoPage(props: {
     hora = '',
   } = await props.searchParams
 
-  const { data: dados, message } = await buscarDadosDoAgendamentoParaFinalizar(
+  const {
+    success,
+    data: dados,
+    message,
+  } = await buscarDadosDoAgendamentoParaFinalizar(
     slug,
     servicoId!,
     profissionalId!,
   )
+
+  const {
+    success: successPerfilUsuario,
+    usuario,
+    message: messagePerfilUsuario,
+  } = await buscarPerfilDoUsuarioLogado()
 
   const dadosAgendamento = {
     data,
@@ -35,6 +46,7 @@ export default async function FinalizarAgendamentoPage(props: {
     profissionalId: dados?.dadosProfissional.id,
     nomeProfissional: dados?.dadosProfissional.nome,
     avatarProfissionalUrl: dados?.dadosProfissional.avatarUrl,
+    usuario,
   }
 
   return (
@@ -50,13 +62,13 @@ export default async function FinalizarAgendamentoPage(props: {
         </h2>
         <div className="min-w-6" />
       </div>
-      {dados ? (
+      {success && successPerfilUsuario ? (
         <ConfirmarAgendamentoClienteForm dadosAgendamento={dadosAgendamento} />
       ) : (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
           <AlertTitle>
-            <p>{message}</p>
+            <p>{message || messagePerfilUsuario}</p>
           </AlertTitle>
         </Alert>
       )}
