@@ -25,7 +25,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
           <Tooltip>
             <TooltipTrigger>
               <Link href={`/agendador/${props.slug}`}>
-                <CalendarDays width={32} />
+                <CalendarDays size={30} />
               </Link>
             </TooltipTrigger>
             <TooltipContent>
@@ -40,7 +40,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
           <Tooltip>
             <TooltipTrigger>
               <Link href={`/agendador/${props.slug}/meus-agendamentos`}>
-                <ListChecks width={32} />
+                <ListChecks size={30} />
               </Link>
             </TooltipTrigger>
             <TooltipContent>
@@ -56,7 +56,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
             <Tooltip>
               <TooltipTrigger>
                 <SheetTrigger asChild>
-                  <Grip width={32} />
+                  <Grip size={30} />
                 </SheetTrigger>
               </TooltipTrigger>
               <TooltipContent>

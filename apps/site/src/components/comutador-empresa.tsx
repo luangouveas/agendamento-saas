@@ -21,10 +21,10 @@ export default async function ComutadorEmpresa() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex w-[220px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
+      <DropdownMenuTrigger className="flex w-[320px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
         {organizacaoAtual ? (
           <>
-            <Avatar className="size-6">
+            <Avatar className="size-8">
               {organizacaoAtual.avatarUrl && (
                 <AvatarImage
                   src={organizacaoAtual.avatarUrl}
@@ -33,7 +33,9 @@ export default async function ComutadorEmpresa() {
               )}
               <AvatarFallback />
             </Avatar>
-            <span className="truncate text-left">{organizacaoAtual.nome}</span>
+            <span className="truncate text-left text-base font-normal">
+              {organizacaoAtual.nome}
+            </span>
           </>
         ) : (
           <span className="text-muted-foreground">
@@ -42,13 +44,13 @@ export default async function ComutadorEmpresa() {
         )}
         <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="w-[320px]">
         <DropdownMenuLabel>Estabelecimentos</DropdownMenuLabel>
         {organizacoes.map((org) => {
           return (
-            <DropdownMenuItem key={org.id} asChild>
+            <DropdownMenuItem key={org.id} asChild className="cursor-pointer">
               <Link href={`/agendador/${org.slug}`}>
-                <Avatar className="mr-2 size-4">
+                <Avatar className="mr-2 size-5">
                   {org.avatarUrl && (
                     <AvatarImage src={org.avatarUrl} alt={org.nome} />
                   )}
