@@ -67,10 +67,13 @@ export const permissoes: Record<Role, PermissionsByRole> = {
       usuarioId: { $eq: usuario.id },
     })
   },
-  RECEPCIONISTA(_, { can }) {
-    can('get', 'Usuario')
+  RECEPCIONISTA(usuario, { can, cannot }) {
     can('get', 'Servico')
+    can('get', 'Usuario')
     can('manage', 'Agendamento')
+
+    cannot('update', 'Usuario')
+    can('update', 'Usuario', { id: { $eq: usuario.id } })
   },
   CLIENTE(usuario, { can, cannot }) {
     cannot(
@@ -102,6 +105,9 @@ export const permissoes: Record<Role, PermissionsByRole> = {
     )
     can('get', ['Servico', 'Expediente', 'Usuario'])
     can('create', 'Agendamento', { clienteId: { $eq: usuario.id } })
+
+    cannot(['update', 'get'], 'Usuario')
+    can(['update', 'get'], 'Usuario', { id: { $eq: usuario.id } })
   },
   FINANCEIRO(_, { can }) {
     return can
