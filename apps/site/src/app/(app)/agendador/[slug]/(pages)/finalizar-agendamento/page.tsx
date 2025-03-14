@@ -1,4 +1,5 @@
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, ChevronLeft } from 'lucide-react'
+import Link from 'next/link'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
 
@@ -35,10 +36,19 @@ export default async function FinalizarAgendamentoPage(props: {
     nomeProfissional: dados?.dadosProfissional.nome,
   }
 
-  console.log(dadosAgendamento)
-
   return (
     <div className="space-y-4 px-4">
+      <div className="flex flex-row justify-between">
+        <Link
+          href={`/agendador/${slug}/escolher-horario?servicoId=${servicoId}&profissionalId=${profissionalId}`}
+        >
+          <ChevronLeft size={24} className="text-muted-foreground" />
+        </Link>
+        <h2 className="text-center font-semibold">
+          Confirme os dados do agendamento
+        </h2>
+        <div className="min-w-6" />
+      </div>
       {dados ? (
         <ConfirmarAgendamentoClienteForm dadosAgendamento={dadosAgendamento} />
       ) : (

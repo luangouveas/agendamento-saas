@@ -47,12 +47,8 @@ export default function ConfirmarAgendamentoClienteForm({
   }
 
   return (
-    <div className="flex h-[580px] flex-col justify-between">
+    <div className="flex h-[530px] flex-col justify-between">
       <div>
-        <h2 className="text-center font-semibold">
-          Confirme os dados do agendamento
-        </h2>
-
         <div className="mt-8">
           <div>{dadosAgendamento.nomeServico}</div>
           <div>{dadosAgendamento.nomeProfissional}</div>
@@ -60,8 +56,6 @@ export default function ConfirmarAgendamentoClienteForm({
             {dadosAgendamento.data} - {dadosAgendamento.hora}
           </div>
         </div>
-
-        <div></div>
 
         {!success && message && (
           <div className="mt-8 flex w-full items-center justify-center">
