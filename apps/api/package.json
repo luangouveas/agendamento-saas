@@ -7,6 +7,7 @@
     "db:generate": "pnpm env:load prisma generate",
     "db:migrate": "pnpm env:load prisma migrate dev",
     "db:studio": "pnpm env:load prisma studio",
+    "db:seed": "npx prisma db seed",
     "dev": "pnpm env:load tsx watch src/http/server.ts"
   },
   "author": "Luan Gouveas",
