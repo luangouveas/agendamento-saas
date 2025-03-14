@@ -49,6 +49,7 @@ import { AtualizarServico } from './routes/servico/atualizar-servico'
 import { BuscarServico } from './routes/servico/buscar-servico'
 import { BuscarServicos } from './routes/servico/buscar-servicos'
 import { CriarServico } from './routes/servico/criar-servico'
+import { AtualizarPerfil } from './routes/usuario/atualizar-perfil'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -93,7 +94,9 @@ app.register(CriarContaUsuario)
 app.register(CriarContaUsuarioCliente)
 app.register(RequisitarRecuperacaoSenha)
 app.register(ResetarSenha)
+
 app.register(BuscarPerfil)
+app.register(AtualizarPerfil)
 
 app.register(CriarOrganizacao)
 app.register(AtualizarOrganizacao)
