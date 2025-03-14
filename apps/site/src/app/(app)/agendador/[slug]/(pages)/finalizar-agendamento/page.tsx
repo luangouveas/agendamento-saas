@@ -34,6 +34,7 @@ export default async function FinalizarAgendamentoPage(props: {
     nomeServico: dados?.dadosServico.nome,
     profissionalId: dados?.dadosProfissional.id,
     nomeProfissional: dados?.dadosProfissional.nome,
+    avatarProfissionalUrl: dados?.dadosProfissional.avatarUrl,
   }
 
   return (

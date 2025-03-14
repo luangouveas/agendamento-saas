@@ -3,6 +3,7 @@
 import { HTTPError } from 'ky'
 
 import { buscarProfissionais } from '@/http/buscar-profissionais'
+import { buscarProfissionalPorId } from '@/http/buscar-profissional'
 
 export async function consultarListaDeProfissionaisDaOrganizacao(slug: string) {
   try {
@@ -21,4 +22,15 @@ export async function consultarListaDeProfissionaisDaOrganizacao(slug: string) {
       data: null,
     }
   }
+}
+
+export async function buscarDadosDoProfissional(
+  slug: string,
+  profissionalId: string,
+) {
+  'use server'
+
+  const { profissional } = await buscarProfissionalPorId(slug, profissionalId)
+
+  return profissional
 }

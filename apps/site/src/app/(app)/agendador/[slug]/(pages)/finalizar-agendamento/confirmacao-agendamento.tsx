@@ -4,6 +4,7 @@ import { AlertTriangle } from 'lucide-react'
 import { useState } from 'react'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 
 import { finalizarAgendamento } from './actions'
@@ -14,6 +15,7 @@ interface ConfirmarAgendamentoClienteFormProps {
     nomeServico?: string
     profissionalId?: string
     nomeProfissional?: string
+    avatarProfissionalUrl?: string | null
     data: string
     hora: string
   }
@@ -49,12 +51,23 @@ export default function ConfirmarAgendamentoClienteForm({
   return (
     <div className="flex h-[530px] flex-col justify-between">
       <div>
-        <div className="mt-8">
-          <div>{dadosAgendamento.nomeServico}</div>
-          <div>{dadosAgendamento.nomeProfissional}</div>
-          <div>
-            {dadosAgendamento.data} - {dadosAgendamento.hora}
+        <div className="mt-8 flex flex-col">
+          <span className="text-base font-medium">
+            {dadosAgendamento.nomeServico}
+          </span>
+          <div className="flex flex-row gap-2">
+            <Avatar className="size-7">
+              {dadosAgendamento.avatarProfissionalUrl && (
+                <AvatarImage src={dadosAgendamento.avatarProfissionalUrl} />
+              )}
+              <AvatarFallback />
+            </Avatar>
+            <span>{dadosAgendamento.nomeProfissional}</span>
           </div>
+
+          <span className="text-muted-foreground">
+            {dadosAgendamento.data} - {dadosAgendamento.hora}
+          </span>
         </div>
 
         {!success && message && (

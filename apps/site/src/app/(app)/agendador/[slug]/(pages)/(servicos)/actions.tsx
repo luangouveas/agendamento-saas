@@ -2,6 +2,7 @@
 
 import { HTTPError } from 'ky'
 
+import { buscarServicoPorId } from '@/http/buscar-servico'
 import { buscarServicos } from '@/http/buscar-servicos'
 
 export async function consultarListaDeServicosDaOrganizacao(slug: string) {
@@ -21,4 +22,12 @@ export async function consultarListaDeServicosDaOrganizacao(slug: string) {
       data: null,
     }
   }
+}
+
+export async function buscarDadosDoServico(slug: string, servicoId: string) {
+  'use server'
+
+  const { servico } = await buscarServicoPorId(slug, servicoId)
+
+  return servico
 }

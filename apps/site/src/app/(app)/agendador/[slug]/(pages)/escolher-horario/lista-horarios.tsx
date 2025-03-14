@@ -20,12 +20,12 @@ export default async function ListaDeHorariosDisponiveis({
     await buscarListaDeHorariosDisponiveis(slug, servicoId, profissionalId)
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="mt-6 flex flex-col gap-5">
       {diasDisponiveis ? (
         diasDisponiveis.map((d) => (
           <div
             key={d.data}
-            className="g-2 mt-6 flex flex-col rounded-tl-lg rounded-tr-lg border-2"
+            className="g-2 flex flex-col rounded-tl-lg rounded-tr-lg border-2"
           >
             <span className="rounded-tl-lg rounded-tr-lg bg-slate-200 p-2 pl-6 font-medium dark:bg-muted">
               {d.data} - {d.diaSemana}
