@@ -32,6 +32,7 @@ export function BuscarServicos(app: FastifyInstance) {
                   descricao: z.string(),
                   tempo: z.number(),
                   valor: z.number(),
+                  avatarUrl: z.string().url().nullable(),
                 }),
               ),
             }),
