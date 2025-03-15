@@ -19,6 +19,7 @@ export function AtualizarPerfil(app: FastifyInstance) {
         schema: {
           tags: ['Membros'],
           summary: 'Atualiza o perfil do usuário autenticado',
+          security: [{ bearerAuth: [] }],
           params: z.object({
             slug: z.string(),
           }),
