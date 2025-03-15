@@ -78,7 +78,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
               <ul className="space-y-4">
                 <li>
                   <Link
-                    href={`/agendador/#`}
+                    href={`/agendador/${props.slug}/meu-perfil`}
                     className="flex items-center gap-2"
                   >
                     <User className="mr-2 size-7" /> Meus dados
