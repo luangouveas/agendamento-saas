@@ -1,10 +1,16 @@
 'use client'
 
-import { CalendarDays, Grip, ListChecks, LogOut } from 'lucide-react'
+import { CalendarDays, Grip, ListChecks, LogOut, User } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from './ui/sheet'
 import {
   Tooltip,
   TooltipContent,
@@ -65,15 +71,25 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
             </Tooltip>
           </TooltipProvider>
           <SheetContent side="right">
+            <SheetHeader className="text-left">
+              <SheetTitle>Menu</SheetTitle>
+            </SheetHeader>
             <div className="p-4">
-              <h3 className="mb-2 text-lg font-bold">Mais Opções</h3>
-              <ul className="space-y-2">
+              <ul className="space-y-4">
+                <li>
+                  <Link
+                    href={`/agendador/#`}
+                    className="flex items-center gap-2"
+                  >
+                    <User className="mr-2 size-7" /> Meus dados
+                  </Link>
+                </li>
                 <li>
                   <Link
                     href={`/agendador/api/sign-out`}
                     className="flex items-center gap-2"
                   >
-                    <LogOut className="mr-2 size-4" /> Sair
+                    <LogOut className="mr-2 size-6" /> Sair
                   </Link>
                 </li>
               </ul>
