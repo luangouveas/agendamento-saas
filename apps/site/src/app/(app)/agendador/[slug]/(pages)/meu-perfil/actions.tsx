@@ -4,7 +4,7 @@ import { HTTPError } from 'ky'
 
 import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
 import {
-  AtualizarPerfil,
+  AtualizarDadosPerfil,
   AtualizarPerfilRequest,
 } from '@/http/atualizar-perfil'
 
@@ -19,7 +19,7 @@ export async function atualizarDadosDoPerfilDoUsuario(
       ...dadosPerfilForm,
     }
 
-    await AtualizarPerfil(dadosPerfil)
+    await AtualizarDadosPerfil(dadosPerfil)
 
     return {
       success: true,

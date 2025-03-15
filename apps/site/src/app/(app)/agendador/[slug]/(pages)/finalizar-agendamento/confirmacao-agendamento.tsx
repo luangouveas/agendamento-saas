@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { BuscarPerfilResponse } from '@/http/buscar-perfil'
+import { DadosUsuario } from '@/http/buscar-perfil'
 
 import MeuPerfilForm from '../meu-perfil/meu-perfil-form'
 import { finalizarAgendamento } from './actions'
@@ -20,7 +20,7 @@ interface ConfirmarAgendamentoClienteFormProps {
     avatarProfissionalUrl?: string | null
     data: string
     hora: string
-    usuario?: BuscarPerfilResponse | null
+    usuario?: DadosUsuario | null
   }
 }
 
@@ -53,7 +53,7 @@ export default function ConfirmarAgendamentoClienteForm({
 
   return (
     <>
-      {dadosAgendamento.usuario?.usuario.nome === '' ? (
+      {dadosAgendamento.usuario?.nome !== '' ? (
         <div className="flex h-[530px] flex-col justify-between">
           <div>
             <div className="mt-8 flex flex-col">
@@ -101,16 +101,16 @@ export default function ConfirmarAgendamentoClienteForm({
       ) : (
         <>
           <Alert
-            variant="default"
+            variant="alert"
             className="flex w-full items-center justify-center"
           >
             <AlertTriangle className="size-4" />
-            <AlertTitle className="">
+            <AlertTitle>
               Você precisa confirmar seus dados antes de prosseguir !
             </AlertTitle>
           </Alert>
 
-          <MeuPerfilForm usuario={dadosAgendamento.usuario!.usuario} />
+          <MeuPerfilForm usuario={dadosAgendamento.usuario!} />
         </>
       )}
     </>

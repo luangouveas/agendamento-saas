@@ -1,3 +1,5 @@
+'use client'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertTriangle } from 'lucide-react'
 import { useState } from 'react'
@@ -15,7 +17,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { BuscarPerfilResponse } from '@/http/buscar-perfil'
+import { DadosUsuario } from '@/http/buscar-perfil'
 
 import { atualizarDadosDoPerfilDoUsuario } from './actions'
 
@@ -23,15 +25,15 @@ const formPerfilUsuarioSchema = z.object({
   nome: z.string().min(3, {
     message: 'O nome é obrigatório.',
   }),
-  email: z.string(),
-  avatarUrl: z.string(),
+  email: z.string().optional(),
+  avatarUrl: z.string().optional(),
   numeroCelular: z.string().min(5, {
     message: 'O número do celular é obrigatório.',
   }),
 })
 
-export default function MeuPerfilForm({ usuario }: BuscarPerfilResponse) {
-  const [message, setMessage] = useState<string | null>('TESTE')
+export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
+  const [message, setMessage] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean | null>(null)
 
   const form = useForm<z.infer<typeof formPerfilUsuarioSchema>>({
@@ -39,8 +41,8 @@ export default function MeuPerfilForm({ usuario }: BuscarPerfilResponse) {
     defaultValues: {
       numeroCelular: usuario.numeroCelular,
       nome: usuario.nome || '',
-      email: usuario.email || '',
-      avatarUrl: usuario.avatarUrl || '',
+      email: usuario.email || undefined,
+      avatarUrl: usuario.avatarUrl || undefined,
     },
   })
 
@@ -48,11 +50,11 @@ export default function MeuPerfilForm({ usuario }: BuscarPerfilResponse) {
     formData: z.infer<typeof formPerfilUsuarioSchema>,
   ) {
     atualizarDadosDoPerfilDoUsuario(formData).then((result) => {
-      if (result.success) {
-        setMessage('')
-        setSuccess(true)
-      } else {
+      if (!result?.success) {
         setMessage(result.message)
+        setSuccess(false)
+      } else {
+        setMessage(null)
         setSuccess(true)
       }
     })
@@ -138,7 +140,7 @@ export default function MeuPerfilForm({ usuario }: BuscarPerfilResponse) {
       </Form>
 
       {!success && message && (
-        <div className="mt-14">
+        <div className="mt-2">
           <Alert variant="destructive">
             <AlertTriangle className="size-4" />
             <AlertTitle className="">

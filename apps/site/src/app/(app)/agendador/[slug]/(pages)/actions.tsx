@@ -4,7 +4,7 @@ import { buscarPerfil } from '@/http/buscar-perfil'
 
 export async function buscarPerfilDoUsuarioLogado() {
   try {
-    const usuario = await buscarPerfil()
+    const { usuario } = await buscarPerfil()
 
     return {
       success: true,
