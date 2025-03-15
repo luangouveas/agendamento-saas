@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, CheckCircle2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -54,7 +54,7 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
         setMessage(result.message)
         setSuccess(false)
       } else {
-        setMessage(null)
+        setMessage('Dados atualizados com sucesso!')
         setSuccess(true)
       }
     })
@@ -139,10 +139,14 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
         </form>
       </Form>
 
-      {!success && message && (
+      {message && (
         <div className="mt-2">
-          <Alert variant="destructive">
-            <AlertTriangle className="size-4" />
+          <Alert variant={success ? 'success' : 'destructive'}>
+            {success ? (
+              <CheckCircle2 className="size-4" />
+            ) : (
+              <AlertTriangle className="size-4" />
+            )}
             <AlertTitle className="">
               <p>{message}</p>
             </AlertTitle>
