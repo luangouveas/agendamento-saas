@@ -45,6 +45,13 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
 
       const tokenOtp = randomInt(100000, 999999)
 
+      await prisma.token.deleteMany({
+        where: {
+          tipo: 'OTP_ACCESS',
+          usuarioId: usuarioBytelefone.id,
+        },
+      })
+
       await prisma.token.create({
         data: {
           tipo: 'OTP_ACCESS',
