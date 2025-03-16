@@ -24,7 +24,7 @@ export function CriarAgendamento(app: FastifyInstance) {
             clienteId: z.string().uuid(),
             profissionalId: z.string().uuid(),
             servicoId: z.string().uuid(),
-            dataHora: z.date(),
+            dataHora: z.string().datetime(),
             valor: z.coerce.number(),
           }),
           params: z.object({

@@ -6,6 +6,7 @@ export interface CriarAgendamentoRequest {
   profissionalId: string
   servicoId: string
   dataHora: string
+  valor: number
 }
 
 interface CriarAgendamentoResponse {
@@ -22,6 +23,7 @@ export async function criarAgendamento(
         profissionalId: dadosAgendamento.profissionalId,
         servicoId: dadosAgendamento.servicoId,
         dataHora: dadosAgendamento.dataHora,
+        valor: dadosAgendamento.valor,
       },
     })
     .json<CriarAgendamentoResponse>()

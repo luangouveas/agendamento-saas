@@ -43,6 +43,7 @@ interface DadosCriarAgendamento {
   profissionalId: string
   servicoId: string
   dataHora: string
+  valor: number
 }
 
 export async function finalizarAgendamento(
@@ -58,9 +59,10 @@ export async function finalizarAgendamento(
       profissionalId: dadosAgendamento.profissionalId,
       servicoId: dadosAgendamento.servicoId,
       dataHora: dadosAgendamento.dataHora,
+      valor: dadosAgendamento.valor,
     })
 
-    return { success: true, message: null }
+    return { success: true, message: 'Agendamento realizado com sucesso!' }
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message, errors } = await err.response.json()

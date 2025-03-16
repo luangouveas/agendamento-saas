@@ -39,6 +39,7 @@ export default async function FinalizarAgendamentoPage(props: {
   } = await buscarPerfilDoUsuarioLogado()
 
   const dadosAgendamento = {
+    slug,
     data,
     hora,
     servicoId: dados?.dadosServico.id,
@@ -47,6 +48,7 @@ export default async function FinalizarAgendamentoPage(props: {
     nomeProfissional: dados?.dadosProfissional.nome,
     avatarProfissionalUrl: dados?.dadosProfissional.avatarUrl,
     usuario,
+    valor: dados?.dadosServico.valor,
   }
 
   return (

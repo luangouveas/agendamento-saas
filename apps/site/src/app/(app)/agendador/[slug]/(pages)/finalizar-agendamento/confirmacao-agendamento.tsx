@@ -1,6 +1,7 @@
 'use client'
 
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, CheckCircle2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -13,6 +14,7 @@ import { finalizarAgendamento } from './actions'
 
 interface ConfirmarAgendamentoClienteFormProps {
   dadosAgendamento: {
+    slug: string
     servicoId?: string
     nomeServico?: string
     profissionalId?: string
@@ -21,12 +23,15 @@ interface ConfirmarAgendamentoClienteFormProps {
     data: string
     hora: string
     usuario?: DadosUsuario | null
+    valor?: number
   }
 }
 
 export default function ConfirmarAgendamentoClienteForm({
   dadosAgendamento,
 }: ConfirmarAgendamentoClienteFormProps) {
+  const router = useRouter()
+
   const [message, setMessage] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean | null>(null)
 
@@ -40,13 +45,16 @@ export default function ConfirmarAgendamentoClienteForm({
       servicoId: dadosAgendamento.servicoId!,
       profissionalId: dadosAgendamento.profissionalId!,
       dataHora,
+      valor: dadosAgendamento.valor!,
     }).then((result) => {
       if (!result?.success) {
         setSuccess(false)
         setMessage(result!.message)
       } else {
         setSuccess(true)
-        setMessage(null)
+        setMessage(result!.message)
+
+        router.push(`/agendador/${dadosAgendamento.slug}/meus-agendamentos`)
       }
     })
   }
@@ -76,10 +84,17 @@ export default function ConfirmarAgendamentoClienteForm({
               </div>
             </div>
 
-            {!success && message && (
+            {message && (
               <div className="mt-8 flex w-full items-center justify-center">
-                <Alert variant="destructive" className="max-w-md">
-                  <AlertTriangle className="size-4" />
+                <Alert
+                  variant={success ? 'success' : 'danger'}
+                  className="max-w-md"
+                >
+                  {success ? (
+                    <CheckCircle2 className="size-4" />
+                  ) : (
+                    <AlertTriangle className="size-4" />
+                  )}
                   <AlertTitle>
                     <p>{message}</p>
                   </AlertTitle>
