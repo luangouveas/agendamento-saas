@@ -216,7 +216,7 @@ export default function SignInPage(props: { params: Params }) {
                     <FormControl>
                       <InputOTP width={100} maxLength={6} {...field}>
                         <InputOTPGroup>
-                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={0} autoFocus={true} />
                           <InputOTPSlot index={1} />
                           <InputOTPSlot index={2} />
                           <InputOTPSlot index={3} />
