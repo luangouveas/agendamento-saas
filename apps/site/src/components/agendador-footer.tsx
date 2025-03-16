@@ -80,6 +80,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
                   <Link
                     href={`/agendador/${props.slug}/meu-perfil`}
                     className="flex items-center gap-2"
+                    onClick={() => setIsSheetOpen(false)}
                   >
                     <User className="mr-2 size-7" /> Meus dados
                   </Link>
