@@ -26,7 +26,5 @@ export async function buscarPerfil() {
     })
     .json<BuscarPerfilResponse>()
 
-  console.log(result)
-
   return result
 }
