@@ -54,7 +54,7 @@ export default function ConfirmarAgendamentoClienteForm({
         setSuccess(true)
         setMessage(result!.message)
 
-        router.push(`/agendador/${dadosAgendamento.slug}/meus-agendamentos`)
+        router.push(`/${dadosAgendamento.slug}/meus-agendamentos`)
       }
     })
   }

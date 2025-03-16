@@ -18,7 +18,7 @@ export async function ListaServicos() {
         servicos.map((servico) => (
           <Link
             key={servico.id}
-            href={`/agendador/${organizacaoAtual}/profissionais?servicoId=${servico.id}`}
+            href={`/${organizacaoAtual}/profissionais?servicoId=${servico.id}`}
           >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex flex-row items-center gap-2">

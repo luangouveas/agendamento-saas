@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const slug = await getSlugOrganizacaoAtual()
 
   const redirectUrl = request.nextUrl.clone()
-  redirectUrl.pathname = `/agendador/${slug}/sign-in`
+  redirectUrl.pathname = `/${slug}/sign-in`
 
   const ck = await cookies()
 

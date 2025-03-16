@@ -5,9 +5,7 @@ export function middleware(request: NextRequest) {
 
   const response = NextResponse.next()
 
-  if (pathname.startsWith('/agendador')) {
-    const [, , slug] = pathname.split('/')
-  }
+  const [, slug] = pathname.split('/')
 
   return response
 }

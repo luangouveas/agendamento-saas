@@ -18,7 +18,7 @@ export default async function AppLayout({
 }) {
   if (!(await usuarioEstaAutenticado())) {
     const { slug } = await params
-    return redirect(`/agendador/${slug}/sign-in`)
+    return redirect(`/${slug}/sign-in`)
   }
 
   const authSlug = await getSlugOrganizacaoAtual()

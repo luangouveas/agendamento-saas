@@ -55,7 +55,7 @@ export default async function FinalizarAgendamentoPage(props: {
     <div className="space-y-4 px-4">
       <div className="flex flex-row justify-between">
         <Link
-          href={`/agendador/${slug}/escolher-horario?servicoId=${servicoId}&profissionalId=${profissionalId}`}
+          href={`/${slug}/escolher-horario?servicoId=${servicoId}&profissionalId=${profissionalId}`}
         >
           <ChevronLeft size={24} className="text-muted-foreground" />
         </Link>

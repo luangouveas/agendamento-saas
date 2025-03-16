@@ -30,7 +30,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Link href={`/agendador/${props.slug}`}>
+              <Link href={`/${props.slug}`}>
                 <CalendarDays size={30} />
               </Link>
             </TooltipTrigger>
@@ -45,7 +45,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Link href={`/agendador/${props.slug}/meus-agendamentos`}>
+              <Link href={`/${props.slug}/meus-agendamentos`}>
                 <ListChecks size={30} />
               </Link>
             </TooltipTrigger>
@@ -78,7 +78,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
               <ul className="space-y-4">
                 <li>
                   <Link
-                    href={`/agendador/${props.slug}/meu-perfil`}
+                    href={`/${props.slug}/meu-perfil`}
                     className="flex items-center gap-2"
                     onClick={() => setIsSheetOpen(false)}
                   >
@@ -87,7 +87,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
                 </li>
                 <li>
                   <Link
-                    href={`/agendador/api/sign-out`}
+                    href={`/api/sign-out`}
                     className="flex items-center gap-2"
                   >
                     <LogOut className="mr-2 size-6" /> Sair

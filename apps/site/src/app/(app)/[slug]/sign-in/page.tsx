@@ -106,7 +106,7 @@ export default function SignInPage(props: { params: Params }) {
         setSuccess(false)
         setMessage(result!.message)
       } else {
-        router.push(`/agendador/${slug}`)
+        router.push(`/${slug}`)
       }
     })
   }
