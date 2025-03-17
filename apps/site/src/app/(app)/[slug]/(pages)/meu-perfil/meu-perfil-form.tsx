@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertTriangle, CheckCircle2 } from 'lucide-react'
+import { AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -32,11 +32,14 @@ const formPerfilUsuarioSchema = z.object({
   }),
 })
 
+export type FormPerfilUsuario = z.infer<typeof formPerfilUsuarioSchema>
+
 export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
   const [message, setMessage] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
-  const form = useForm<z.infer<typeof formPerfilUsuarioSchema>>({
+  const form = useForm<FormPerfilUsuario>({
     resolver: zodResolver(formPerfilUsuarioSchema),
     defaultValues: {
       numeroCelular: usuario.numeroCelular,
@@ -46,9 +49,14 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
     },
   })
 
-  function handleUpdatePerfil(
-    formData: z.infer<typeof formPerfilUsuarioSchema>,
-  ) {
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = form
+
+  function handleUpdatePerfil(formData: FormPerfilUsuario) {
+    setIsSubmitting(true)
     atualizarDadosDoPerfilDoUsuario(formData).then((result) => {
       if (!result?.success) {
         setMessage(result.message)
@@ -57,19 +65,17 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
         setMessage('Dados atualizados com sucesso!')
         setSuccess(true)
       }
+      setIsSubmitting(false)
     })
   }
 
   return (
     <div>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleUpdatePerfil)}
-          className="space-y-2"
-        >
+        <form onSubmit={handleSubmit(handleUpdatePerfil)} className="space-y-2">
           <div className="space-y-1">
             <FormField
-              control={form.control}
+              control={control}
               name="nome"
               render={({ field }) => (
                 <FormItem>
@@ -85,7 +91,7 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
 
           <div className="space-y-1">
             <FormField
-              control={form.control}
+              control={control}
               name="email"
               render={({ field }) => (
                 <FormItem>
@@ -101,7 +107,7 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
 
           <div className="space-y-1">
             <FormField
-              control={form.control}
+              control={control}
               name="numeroCelular"
               render={({ field }) => (
                 <FormItem>
@@ -117,7 +123,7 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
 
           <div className="space-y-1">
             <FormField
-              control={form.control}
+              control={control}
               name="avatarUrl"
               render={({ field }) => (
                 <FormItem>
@@ -132,8 +138,12 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
           </div>
 
           <div className="mt-4">
-            <Button type="submit" className="w-full">
-              Salvar dados
+            <Button type="submit" className="w-full" disabled={!isValid}>
+              {isSubmitting ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                'Salvar dados'
+              )}
             </Button>
           </div>
         </form>
