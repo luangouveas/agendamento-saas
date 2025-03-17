@@ -49,7 +49,7 @@ export default async function ComutadorEmpresa() {
         {organizacoes.map((org) => {
           return (
             <DropdownMenuItem key={org.id} asChild className="cursor-pointer">
-              <Link href={`/${org.slug}`}>
+              <Link href={`/${org.slug}/novo-agendamento`}>
                 <Avatar className="mr-2 size-5">
                   {org.avatarUrl && (
                     <AvatarImage src={org.avatarUrl} alt={org.nome} />

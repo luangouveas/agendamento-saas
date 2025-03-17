@@ -6,6 +6,11 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next()
 
   const [, slug] = pathname.split('/')
+  if (slug) {
+    response.cookies.set('agendador-organizacao', slug)
+  } else {
+    response.cookies.delete('agendador-organizacao')
+  }
 
   return response
 }
