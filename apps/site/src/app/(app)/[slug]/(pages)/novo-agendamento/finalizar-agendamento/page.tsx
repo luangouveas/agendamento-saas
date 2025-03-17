@@ -57,7 +57,10 @@ export default async function FinalizarAgendamentoPage(props: {
         <Link
           href={`/${slug}/novo-agendamento/escolher-horario?servicoId=${servicoId}&profissionalId=${profissionalId}`}
         >
-          <ChevronLeft size={24} className="text-muted-foreground" />
+          <ChevronLeft
+            size={24}
+            className="text-muted-foreground hover:text-foreground"
+          />
         </Link>
         <h2 className="text-center font-semibold">
           Confirme os dados do agendamento

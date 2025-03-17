@@ -26,6 +26,7 @@ export default async function ListaProfissionais(
           <Link
             key={profissional.id}
             href={`/${slug}/novo-agendamento/escolher-horario?servicoId=${props.servicoId}&profissionalId=${profissional.membroId}`}
+            className="hover:text-muted-foreground"
           >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex flex-row items-center gap-2">
@@ -38,9 +39,9 @@ export default async function ListaProfissionais(
                   )}
                   <AvatarFallback />
                 </Avatar>
-                <span className="text-foreground">{profissional.nome}</span>
+                <span>{profissional.nome}</span>
               </div>
-              <ChevronRight size={24} className="text-muted-foreground" />
+              <ChevronRight size={24} />
             </div>
           </Link>
         ))

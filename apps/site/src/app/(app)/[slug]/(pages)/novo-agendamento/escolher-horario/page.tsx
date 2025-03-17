@@ -27,7 +27,10 @@ export default async function EscolherHorarioPage({
         <Link
           href={`/${slug}/novo-agendamento/profissionais?servicoId=${servicoId}`}
         >
-          <ChevronLeft size={24} className="text-muted-foreground" />
+          <ChevronLeft
+            size={24}
+            className="text-muted-foreground hover:text-foreground"
+          />
         </Link>
         <h2 className="text-center font-semibold">
           Escolha o horário desejado

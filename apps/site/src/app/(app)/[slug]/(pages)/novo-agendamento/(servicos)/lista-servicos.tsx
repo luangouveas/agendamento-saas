@@ -19,6 +19,7 @@ export async function ListaServicos() {
           <Link
             key={servico.id}
             href={`/${organizacaoAtual}/novo-agendamento/profissionais?servicoId=${servico.id}`}
+            className="hover:text-muted-foreground"
           >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex flex-row items-center gap-2">
@@ -27,14 +28,14 @@ export async function ListaServicos() {
                   <AvatarFallback />
                 </Avatar>
                 <div className="flex flex-col">
-                  <span className="text-foreground">{servico.nome}</span>
-                  <span className="text-xs text-muted-foreground">
+                  <span>{servico.nome}</span>
+                  <span className="text-xs">
                     {servico.tempo} min - R$ {servico.valor}
                   </span>
                 </div>
               </div>
 
-              <ChevronRight size={24} className="text-muted-foreground" />
+              <ChevronRight size={24} />
             </div>
           </Link>
         ))
