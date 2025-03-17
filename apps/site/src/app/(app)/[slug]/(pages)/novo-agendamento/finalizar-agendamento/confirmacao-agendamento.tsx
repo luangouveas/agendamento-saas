@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertTriangle, CheckCircle2 } from 'lucide-react'
+import { AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -34,6 +34,7 @@ export default function ConfirmarAgendamentoClienteForm({
 
   const [message, setMessage] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   function handleCriarAgendamento() {
     const [dia, mes, ano] = dadosAgendamento.data.split('/').map(Number)
@@ -41,12 +42,15 @@ export default function ConfirmarAgendamentoClienteForm({
     const date = new Date(ano, mes - 1, dia, horas - 3, minutos)
     const dataHora = date.toISOString()
 
+    setIsSubmitting(true)
+
     finalizarAgendamento({
       servicoId: dadosAgendamento.servicoId!,
       profissionalId: dadosAgendamento.profissionalId!,
       dataHora,
       valor: dadosAgendamento.valor!,
     }).then((result) => {
+      setIsSubmitting(false)
       if (!result?.success) {
         setSuccess(false)
         setMessage(result!.message)
@@ -109,7 +113,11 @@ export default function ConfirmarAgendamentoClienteForm({
               onClick={handleCriarAgendamento}
               className="w-full"
             >
-              Confirmar agendamento !
+              {isSubmitting ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                'Confirmar agendamento !'
+              )}
             </Button>
           </div>
         </div>
