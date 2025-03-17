@@ -16,7 +16,7 @@ export default async function ProfissionaisPage({
   return (
     <div className="space-y-4 px-4">
       <div className="mb-10 flex flex-row justify-between">
-        <Link href={`/${slug}`}>
+        <Link href={`/${slug}/novo-agendamento`}>
           <ChevronLeft size={24} className="text-muted-foreground" />
         </Link>
         <h2 className="text-center font-semibold">

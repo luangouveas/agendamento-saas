@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
 
-import { buscarPerfilDoUsuarioLogado } from '../actions'
+import { buscarPerfilDoUsuarioLogado } from '../../actions'
 import { buscarDadosDoAgendamentoParaFinalizar } from './actions'
 import ConfirmarAgendamentoClienteForm from './confirmacao-agendamento'
 
@@ -55,7 +55,7 @@ export default async function FinalizarAgendamentoPage(props: {
     <div className="space-y-4 px-4">
       <div className="flex flex-row justify-between">
         <Link
-          href={`/${slug}/escolher-horario?servicoId=${servicoId}&profissionalId=${profissionalId}`}
+          href={`/${slug}/novo-agendamento/escolher-horario?servicoId=${servicoId}&profissionalId=${profissionalId}`}
         >
           <ChevronLeft size={24} className="text-muted-foreground" />
         </Link>

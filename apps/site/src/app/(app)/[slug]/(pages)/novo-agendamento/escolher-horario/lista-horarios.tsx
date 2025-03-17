@@ -34,7 +34,7 @@ export default async function ListaDeHorariosDisponiveis({
               {d.horarios.map((h) => (
                 <Link
                   key={d.data + h}
-                  href={`/${slug}/finalizar-agendamento?servicoId=${servicoId}&profissionalId=${profissionalId}&data=${d.data}&hora=${h}`}
+                  href={`/${slug}/novo-agendamento/finalizar-agendamento?servicoId=${servicoId}&profissionalId=${profissionalId}&data=${d.data}&hora=${h}`}
                   className="w-full hover:text-muted-foreground"
                 >
                   <span className="flex justify-center border-b p-2">{h}</span>

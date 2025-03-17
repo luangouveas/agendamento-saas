@@ -27,7 +27,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
           asChild
           className="flex h-full flex-col bg-transparent text-foreground hover:bg-transparent hover:text-muted-foreground data-[current=true]:text-muted-foreground"
         >
-          <NavLink href={`/${props.slug}`}>
+          <NavLink href={`/${props.slug}/novo-agendamento`}>
             <CalendarDays />
             <span className="text-[10px]">Novo agendamento</span>
           </NavLink>
@@ -66,6 +66,7 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
                     asChild
                     variant="ghost"
                     className="bg-transparent pl-0 text-foreground hover:bg-transparent hover:text-muted-foreground data-[current=true]:text-muted-foreground"
+                    onClick={() => setIsSheetOpen(false)}
                   >
                     <NavLink href={`/${props.slug}/meu-perfil`}>
                       <User className="mr-2 size-7" /> Meus dados

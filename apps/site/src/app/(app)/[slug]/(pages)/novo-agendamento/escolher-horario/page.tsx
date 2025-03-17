@@ -22,7 +22,9 @@ export default async function EscolherHorarioPage({
   return (
     <div className="space-y-4 px-4">
       <div className="flex flex-row justify-between">
-        <Link href={`/${slug}/profissionais?servicoId=${servicoId}`}>
+        <Link
+          href={`/${slug}/novo-agendamento/profissionais?servicoId=${servicoId}`}
+        >
           <ChevronLeft size={24} className="text-muted-foreground" />
         </Link>
         <h2 className="text-center font-semibold">

@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { DadosUsuario } from '@/http/buscar-perfil'
 
-import MeuPerfilForm from '../meu-perfil/meu-perfil-form'
+import MeuPerfilForm from '../../meu-perfil/meu-perfil-form'
 import { finalizarAgendamento } from './actions'
 
 interface ConfirmarAgendamentoClienteFormProps {

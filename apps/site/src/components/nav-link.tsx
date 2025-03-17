@@ -6,7 +6,8 @@ interface NavLinkProps extends ComponentProps<typeof Link> {}
 
 export function NavLink(props: NavLinkProps) {
   const pathname = usePathname()
-  const isCurrent = props.href.toString() === pathname
+  const isCurrent =
+    props.href.toString().split('/')[2] === pathname.split('/')[2]
 
   return <Link data-current={isCurrent} {...props} />
 }

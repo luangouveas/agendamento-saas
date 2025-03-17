@@ -1,39 +1,45 @@
 import { AlertTriangle, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import React from 'react'
 
 import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-import { consultarListaDeServicosDaOrganizacao } from './actions'
+import { consultarListaDeProfissionaisDaOrganizacao } from './actions'
 
-export async function ListaServicos() {
-  const organizacaoAtual = await getSlugOrganizacaoAtual()
-  const { data: servicos, message } =
-    await consultarListaDeServicosDaOrganizacao(organizacaoAtual!)
+interface ListaProfissionaisProps {
+  servicoId: string
+}
+
+export default async function ListaProfissionais(
+  props: ListaProfissionaisProps,
+) {
+  const slug = await getSlugOrganizacaoAtual()
+  const { data: profissionais, message } =
+    await consultarListaDeProfissionaisDaOrganizacao(slug!)
 
   return (
     <div className="flex flex-col gap-5">
-      {servicos ? (
-        servicos.map((servico) => (
+      {profissionais ? (
+        profissionais.map((profissional) => (
           <Link
-            key={servico.id}
-            href={`/${organizacaoAtual}/profissionais?servicoId=${servico.id}`}
+            key={profissional.id}
+            href={`/${slug}/novo-agendamento/escolher-horario?servicoId=${props.servicoId}&profissionalId=${profissional.membroId}`}
           >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex flex-row items-center gap-2">
                 <Avatar className="size-9">
-                  {servico.avatarUrl && <AvatarImage src={servico.avatarUrl} />}
+                  {profissional.avatarUrl && (
+                    <AvatarImage
+                      src={profissional.avatarUrl}
+                      alt={profissional.nome}
+                    />
+                  )}
                   <AvatarFallback />
                 </Avatar>
-                <div className="flex flex-col">
-                  <span className="text-foreground">{servico.nome}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {servico.tempo} min - R$ {servico.valor}
-                  </span>
-                </div>
+                <span className="text-foreground">{profissional.nome}</span>
               </div>
-
               <ChevronRight size={24} className="text-muted-foreground" />
             </div>
           </Link>
