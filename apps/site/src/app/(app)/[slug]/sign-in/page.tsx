@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { use, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -57,6 +57,8 @@ export default function SignInPage(props: { params: Params }) {
   const [message, setMessage] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean | null>(null)
 
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+
   const router = useRouter()
   const { slug } = use(props.params)
 
@@ -82,6 +84,8 @@ export default function SignInPage(props: { params: Params }) {
   ) {
     const telefone = `${values.ddi}${values.telefone}`
 
+    setIsSubmitting(true)
+
     solicitarEntrarComTelefone(telefone).then((result) => {
       if (!result?.success) {
         setSuccess(false)
@@ -91,12 +95,15 @@ export default function SignInPage(props: { params: Params }) {
         setStep(2)
         setResendTimer(30)
       }
+      setIsSubmitting(false)
     })
   }
 
   function handleSubmitVerificacao(
     values: z.infer<typeof formValidarCodigoSchema>,
   ) {
+    setIsSubmitting(true)
+
     entrarComTelefone(
       numeroEnviado,
       Number(values.codigoDeVerificacao),
@@ -108,6 +115,7 @@ export default function SignInPage(props: { params: Params }) {
       } else {
         router.push(`/${slug}/novo-agendamento`)
       }
+      setIsSubmitting(false)
     })
   }
 
@@ -196,7 +204,11 @@ export default function SignInPage(props: { params: Params }) {
             </div>
 
             <Button type="submit" className="w-full">
-              Enviar código
+              {isSubmitting ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                'Enviar código'
+              )}
             </Button>
           </form>
         </Form>
@@ -214,9 +226,9 @@ export default function SignInPage(props: { params: Params }) {
                   <FormItem className="flex flex-col items-center justify-center space-y-6">
                     <FormLabel>Código de verificação enviado!</FormLabel>
                     <FormControl>
-                      <InputOTP width={100} maxLength={6} {...field}>
+                      <InputOTP width={100} maxLength={6} {...field} autoFocus>
                         <InputOTPGroup>
-                          <InputOTPSlot index={0} autoFocus={true} />
+                          <InputOTPSlot index={0} />
                           <InputOTPSlot index={1} />
                           <InputOTPSlot index={2} />
                           <InputOTPSlot index={3} />
@@ -230,7 +242,11 @@ export default function SignInPage(props: { params: Params }) {
                 )}
               />
               <Button type="submit" className="w-full">
-                Confirmar código
+                {isSubmitting ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  'Confirmar código'
+                )}
               </Button>
             </form>
           </Form>
