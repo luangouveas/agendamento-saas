@@ -1,7 +1,9 @@
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
+import Loading from '@/components/loading'
 
 import ListaProfissionais from './lista-profissionais'
 
@@ -24,7 +26,11 @@ export default async function ProfissionaisPage({
         </h2>
         <div className="min-w-6" />
       </div>
-      {servicoId && <ListaProfissionais servicoId={servicoId} />}
+      {servicoId && (
+        <Suspense fallback={<Loading />}>
+          <ListaProfissionais servicoId={servicoId} />
+        </Suspense>
+      )}
     </div>
   )
 }

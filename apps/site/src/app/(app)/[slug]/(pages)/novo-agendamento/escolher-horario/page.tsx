@@ -1,7 +1,9 @@
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
+import Loading from '@/components/loading'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { buscarDadosDoServico } from '../(servicos)/actions'
@@ -47,11 +49,13 @@ export default async function EscolherHorarioPage({
               <span className="text-muted-foreground">{profissional.nome}</span>
             </div>
           </div>
-          <ListaDeHorariosDisponiveis
-            slug={slug!}
-            servicoId={servicoId}
-            profissionalId={profissionalId}
-          />
+          <Suspense fallback={<Loading />}>
+            <ListaDeHorariosDisponiveis
+              slug={slug!}
+              servicoId={servicoId}
+              profissionalId={profissionalId}
+            />
+          </Suspense>
         </div>
       )}
     </div>
