@@ -4,6 +4,8 @@ import { CalendarDays, Grip, ListChecks, LogOut, User } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { NavLink } from './nav-link'
+import { Button } from './ui/button'
 import {
   Sheet,
   SheetContent,
@@ -11,12 +13,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from './ui/sheet'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from './ui/tooltip'
 
 interface AgendadorFooterProps {
   slug: string
@@ -26,50 +22,39 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   return (
     <footer className="fixed bottom-0 flex h-16 w-full flex-row items-center justify-between border-t border-gray-700 bg-background p-4">
-      <div className="p-2">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Link href={`/${props.slug}`}>
-                <CalendarDays size={30} />
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Novo agendamento</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <div>
+        <Button
+          asChild
+          className="flex h-full flex-col bg-transparent text-foreground hover:bg-transparent hover:text-muted-foreground data-[current=true]:text-muted-foreground"
+        >
+          <NavLink href={`/${props.slug}`}>
+            <CalendarDays />
+            <span className="text-[10px]">Novo agendamento</span>
+          </NavLink>
+        </Button>
       </div>
 
-      <div className="p-2">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <Link href={`/${props.slug}/meus-agendamentos`}>
-                <ListChecks size={30} />
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Meus agendamentos</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <div>
+        <Button
+          asChild
+          className="flex h-full flex-col bg-transparent text-foreground hover:bg-transparent hover:text-muted-foreground data-[current=true]:text-muted-foreground"
+        >
+          <NavLink href={`/${props.slug}/meus-agendamentos`}>
+            <ListChecks />
+            <span className="text-[10px]">Meus agendamentos</span>
+          </NavLink>
+        </Button>
       </div>
 
-      <div className="p-2">
+      <div>
         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <SheetTrigger asChild>
-                  <Grip size={30} />
-                </SheetTrigger>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Outras opções</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <SheetTrigger asChild>
+            <Button className="flex h-full flex-col bg-transparent text-foreground hover:bg-transparent hover:text-muted-foreground">
+              <Grip />
+              <span className="text-[10px]">Outras opções</span>
+            </Button>
+          </SheetTrigger>
+
           <SheetContent side="right">
             <SheetHeader className="text-left">
               <SheetTitle>Menu</SheetTitle>
@@ -77,15 +62,17 @@ export function AgendadorFooter(props: AgendadorFooterProps) {
             <div className="p-4">
               <ul className="space-y-4">
                 <li>
-                  <Link
-                    href={`/${props.slug}/meu-perfil`}
-                    className="flex items-center gap-2"
-                    onClick={() => setIsSheetOpen(false)}
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="bg-transparent pl-0 text-foreground hover:bg-transparent hover:text-muted-foreground data-[current=true]:text-muted-foreground"
                   >
-                    <User className="mr-2 size-7" /> Meus dados
-                  </Link>
+                    <NavLink href={`/${props.slug}/meu-perfil`}>
+                      <User className="mr-2 size-7" /> Meus dados
+                    </NavLink>
+                  </Button>
                 </li>
-                <li>
+                <li className="text-foreground hover:text-muted-foreground">
                   <Link
                     href={`/api/sign-out`}
                     className="flex items-center gap-2"
