@@ -10,7 +10,13 @@ interface BuscarMeusAgendamentosAction {
   profissionalId?: string
   inicio?: string
   fim?: string
-  status?: 'AGENDADO' | 'CONFIRMADO' | 'CANCELADO' | 'CONCLUIDO'
+  status?:
+    | 'AGENDADO'
+    | 'CONFIRMADO'
+    | 'CANCELADO'
+    | 'CONCLUIDO'
+    | 'PENDENTE'
+    | 'NAO_PENDENTE'
 }
 
 function createQueryString(filtros: BuscarMeusAgendamentosAction): string {

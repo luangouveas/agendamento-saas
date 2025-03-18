@@ -10,7 +10,13 @@ interface BuscarAgendamentosResponse {
     nomeProfissional: string
     servicoId: string
     tempo: string
-    status: 'AGENDADO' | 'CONFIRMADO' | 'CANCELADO' | 'CONCLUIDO'
+    status:
+      | 'AGENDADO'
+      | 'CONFIRMADO'
+      | 'CANCELADO'
+      | 'CONCLUIDO'
+      | 'PENDENTE'
+      | 'NAO_PENDENTE'
     dataHora: string
     valor: number
   }[]

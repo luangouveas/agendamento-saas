@@ -1,4 +1,4 @@
-import { addMinutes, endOfDay, format } from 'date-fns'
+import { addMinutes, format } from 'date-fns'
 import { AlertTriangle } from 'lucide-react'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -7,10 +7,6 @@ import { buscarPerfil } from '@/http/buscar-perfil'
 import { buscarMeusAgendamentosAction } from './actions'
 export default async function ListaMeusAgendamentosPendentes() {
   const agora = addMinutes(new Date(), -180).toISOString()
-  const finalPendentes = addMinutes(
-    endOfDay(new Date()),
-    5 * 1260,
-  ).toISOString()
 
   const { usuario } = await buscarPerfil()
 
@@ -20,9 +16,8 @@ export default async function ListaMeusAgendamentosPendentes() {
     data: agendamentosPendentes,
   } = await buscarMeusAgendamentosAction({
     clienteId: usuario.id,
-    status: 'AGENDADO',
+    status: 'PENDENTE',
     inicio: agora,
-    fim: finalPendentes,
   })
 
   return (
@@ -62,7 +57,7 @@ export default async function ListaMeusAgendamentosPendentes() {
         <Alert variant="alert">
           <AlertTriangle className="size-4" />
           <AlertTitle>
-            <p>Não existem agendamentos pendentes nos próximos 5 dias</p>
+            <p>Não existem agendamentos pendentes.</p>
           </AlertTitle>
         </Alert>
       )}
