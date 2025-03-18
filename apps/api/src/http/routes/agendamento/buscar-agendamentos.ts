@@ -34,6 +34,8 @@ export function BuscarAgendamentos(app: FastifyInstance) {
                 z.literal('CONFIRMADO'),
                 z.literal('CANCELADO'),
                 z.literal('CONCLUIDO'),
+                z.literal('PENDENTE'),
+                z.literal('NAO_PENDENTE'),
               ])
               .optional(),
           }),
@@ -114,7 +116,15 @@ export function BuscarAgendamentos(app: FastifyInstance) {
           where: {
             clienteId: clienteId ?? undefined,
             profissionalId: profissionalId ?? undefined,
-            status: status ?? undefined,
+
+            status: status
+              ? status === 'PENDENTE'
+                ? { in: ['AGENDADO', 'CONFIRMADO'] }
+                : status === 'NAO_PENDENTE'
+                  ? { in: ['CANCELADO', 'CONCLUIDO'] }
+                  : status
+              : undefined,
+
             organizacaoId: organizacao.id,
             dataHora: {
               gte: inicio,
