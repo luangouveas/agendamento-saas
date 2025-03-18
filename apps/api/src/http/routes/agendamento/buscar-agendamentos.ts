@@ -6,6 +6,7 @@ import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 import { buscarPermissoesUsuario } from '@/utils/buscar-permissoes-usuario'
 
+import { BadRequestError } from '../_errors/bad-request-error'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export function BuscarAgendamentos(app: FastifyInstance) {
@@ -23,8 +24,8 @@ export function BuscarAgendamentos(app: FastifyInstance) {
             slug: z.string(),
           }),
           querystring: z.object({
-            inicio: z.date(),
-            fim: z.date(),
+            inicio: z.string().datetime({ precision: 3 }).optional(),
+            fim: z.string().datetime({ precision: 3 }).optional(),
             clienteId: z.string().uuid().optional(),
             profissionalId: z.string().uuid().optional(),
             status: z
@@ -40,6 +41,7 @@ export function BuscarAgendamentos(app: FastifyInstance) {
             200: z.object({
               agendamentos: z.array(
                 z.object({
+                  id: z.string().uuid(),
                   nomeServico: z.string(),
                   clienteId: z.string().uuid(),
                   nomeCliente: z.string(),
@@ -64,6 +66,12 @@ export function BuscarAgendamentos(app: FastifyInstance) {
       async (request) => {
         const { slug } = request.params
         const { inicio, fim, clienteId, profissionalId, status } = request.query
+
+        if ((!inicio && !fim) || (!clienteId && !profissionalId)) {
+          throw new BadRequestError(
+            'A consulta deve conter ao menos 1 filtro obrigatório.',
+          )
+        }
 
         const usuarioId = await request.getCurrentUserId()
         const { membership, organizacao } =
@@ -98,6 +106,7 @@ export function BuscarAgendamentos(app: FastifyInstance) {
                 tempo: true,
               },
             },
+            id: true,
             dataHora: true,
             status: true,
             valor: true,
