@@ -1,7 +1,8 @@
 import { addMinutes, format } from 'date-fns'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, CircleCheckBig, LucideCircleX } from 'lucide-react'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
 import { buscarPerfil } from '@/http/buscar-perfil'
 
 import { buscarMeusAgendamentosAction } from './actions'
@@ -48,8 +49,22 @@ export default async function ListaMeusAgendamentosPendentes() {
               </span>
             </div>
 
-            <div className="flex w-[20%] items-center justify-center p-2">
+            <div className="flex w-[20%] flex-col items-center justify-center p-2">
               <span>{agP.status}</span>
+              <div className="flex w-full flex-row justify-center space-x-4">
+                {agP.status === 'AGENDADO' && (
+                  <Button variant="ghost">
+                    <CircleCheckBig className="text-green-400" />
+                  </Button>
+                )}
+                {agP.status === 'AGENDADO' || agP.status === 'CONFIRMADO' ? (
+                  <Button variant="ghost">
+                    <LucideCircleX className="text-red-500" />
+                  </Button>
+                ) : (
+                  ''
+                )}
+              </div>
             </div>
           </div>
         ))
