@@ -17,6 +17,7 @@ import { BuscarAgendamento } from './routes/agendamento/buscar-agendamento'
 import { BuscarAgendamentos } from './routes/agendamento/buscar-agendamentos'
 import { CancelarAgendamento } from './routes/agendamento/cancelar-agendamento'
 import { ConcluirAgendamento } from './routes/agendamento/concluir-agendamento'
+import { ConfirmarAgendamento } from './routes/agendamento/confirmar-agendamento'
 import { CriarAgendamento } from './routes/agendamento/criar-agendamento'
 import { ReabrirAgendamento } from './routes/agendamento/reabrir-agendamento'
 import { TransferirAgendamento } from './routes/agendamento/transferir-agendamento'
@@ -121,6 +122,7 @@ app.register(CancelarAgendamento)
 app.register(TransferirAgendamento)
 app.register(ConcluirAgendamento)
 app.register(ReabrirAgendamento)
+app.register(ConfirmarAgendamento)
 
 app.register(CriarExpediente)
 app.register(AtualizarExpediente)

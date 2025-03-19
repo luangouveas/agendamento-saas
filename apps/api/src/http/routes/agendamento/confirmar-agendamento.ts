@@ -19,7 +19,7 @@ export function ConfirmarAgendamento(app: FastifyInstance) {
       {
         schema: {
           tags: ['Agendamento'],
-          summary: 'Reabre um agendamento',
+          summary: 'Confirma um agendamento',
           security: [{ bearerAuth: [] }],
           params: z.object({
             slug: z.string(),
@@ -51,9 +51,7 @@ export function ConfirmarAgendamento(app: FastifyInstance) {
         const { cannot } = buscarPermissoesUsuario(usuarioId, membership.role)
 
         if (agendamento.status === 'CONCLUIDO') {
-          throw new BadRequestError(
-            'Não é possível confirmar este agendamento.',
-          )
+          return reply.status(204).send()
         }
 
         if (cannot('confirmar_agendamento', authAgendamento)) {
