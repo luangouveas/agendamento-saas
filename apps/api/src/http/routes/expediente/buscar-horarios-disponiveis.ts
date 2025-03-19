@@ -115,6 +115,9 @@ export function BuscarHorariosDisponiveis(app: FastifyInstance) {
                 gte: parseISO(`${format(data, 'yyyy-MM-dd')}T00:00:00Z`),
                 lt: parseISO(`${format(data, 'yyyy-MM-dd')}T23:59:59Z`),
               },
+              status: {
+                notIn: ['CANCELADO'],
+              },
             },
             orderBy: { dataHora: 'asc' },
             include: { servico: true },
