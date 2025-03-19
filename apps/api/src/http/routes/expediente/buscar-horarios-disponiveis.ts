@@ -5,7 +5,6 @@ import {
   isBefore,
   isEqual,
   parseISO,
-  startOfDay,
 } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { FastifyInstance } from 'fastify'
@@ -91,7 +90,7 @@ export function BuscarHorariosDisponiveis(app: FastifyInstance) {
 
         // Gerar para os próximos 5 dias que possuírem expediente
         for (let i = 0; diasDisponiveis.length < 5; i++) {
-          const data = addMinutes(startOfDay(dataAtual), i * 1440)
+          const data = addMinutes(dataAtual, i * 1440)
           const diaSemana = data.getDay()
 
           const expedienteDia = diasExpediente.find(
@@ -174,18 +173,22 @@ export function BuscarHorariosDisponiveis(app: FastifyInstance) {
 
             if (conflict) continue
 
-            horariosDisponiveis.push(
-              format(addMinutes(candidate, 180), 'HH:mm'),
-            )
+            if (candidate > addMinutes(dataAtual, -180)) {
+              horariosDisponiveis.push(
+                format(addMinutes(candidate, 180), 'HH:mm'),
+              )
+            }
 
             candidate = addMinutes(candidate, intervaloAgenda)
           }
 
-          diasDisponiveis.push({
-            diaSemana: format(data, 'EEEE', { locale: ptBR }),
-            data: format(data, 'dd/MM/yyyy'),
-            horarios: horariosDisponiveis,
-          })
+          if (horariosDisponiveis.length > 0) {
+            diasDisponiveis.push({
+              diaSemana: format(data, 'EEEE', { locale: ptBR }),
+              data: format(data, 'dd/MM/yyyy'),
+              horarios: horariosDisponiveis,
+            })
+          }
         }
 
         return { diasDisponiveis }
