@@ -24,7 +24,7 @@ export default async function ComutadorEmpresa() {
       <DropdownMenuTrigger className="flex w-[320px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
         {organizacaoAtual ? (
           <>
-            <Avatar className="size-8">
+            <Avatar className="size-10">
               {organizacaoAtual.avatarUrl && (
                 <AvatarImage
                   src={organizacaoAtual.avatarUrl}
@@ -33,7 +33,7 @@ export default async function ComutadorEmpresa() {
               )}
               <AvatarFallback />
             </Avatar>
-            <span className="truncate text-left text-base font-normal">
+            <span className="truncate text-left text-lg font-normal">
               {organizacaoAtual.nome}
             </span>
           </>
@@ -47,16 +47,24 @@ export default async function ComutadorEmpresa() {
       <DropdownMenuContent className="w-[320px]">
         <DropdownMenuLabel>Estabelecimentos</DropdownMenuLabel>
         {organizacoes.map((org) => {
+          const isCurrent = org.slug === organizacaoAtual!.slug
           return (
-            <DropdownMenuItem key={org.id} asChild className="cursor-pointer">
-              <Link href={`/${org.slug}/novo-agendamento`}>
-                <Avatar className="mr-2 size-5">
+            <DropdownMenuItem
+              key={org.id}
+              asChild
+              className="cursor-pointer hover:text-muted-foreground data-[current=true]:font-semibold"
+            >
+              <Link
+                data-current={isCurrent}
+                href={`/${org.slug}/novo-agendamento`}
+              >
+                <Avatar className="mr-2 size-7">
                   {org.avatarUrl && (
                     <AvatarImage src={org.avatarUrl} alt={org.nome} />
                   )}
                   <AvatarFallback />
                 </Avatar>
-                <span className="line-clamp-1">{org.nome}</span>
+                <span className="line-clamp-1 text-base">{org.nome}</span>
               </Link>
             </DropdownMenuItem>
           )

@@ -37,24 +37,22 @@ export default async function ListaDeHorariosDisponiveis({
 
       {diasDisponiveis ? (
         diasDisponiveis.map(
-          (d) =>
-            d.horarios.length > 0 && (
-              <div
-                key={d.data}
-                className="g-2 flex flex-col rounded-tl-lg rounded-tr-lg border-2"
-              >
-                <span className="rounded-tl-lg rounded-tr-lg bg-slate-200 p-2 pl-6 font-medium dark:bg-muted">
-                  {d.data} - {d.diaSemana}
+          (dia) =>
+            dia.horarios.length > 0 && (
+              <div key={dia.data} className="g-2 flex flex-col">
+                <span className="p-2 font-medium capitalize">
+                  {dia.data} ({dia.diaSemana})
                 </span>
-                <div className="mt-2 grid grid-cols-3 items-center justify-center gap-3 p-4">
-                  {d.horarios.map((h) => (
+                <hr />
+                <div className="mt-4 grid grid-cols-3 gap-y-3">
+                  {dia.horarios.map((hora) => (
                     <Link
-                      key={d.data + h}
-                      href={`/${slug}/novo-agendamento/finalizar-agendamento?servicoId=${servicoId}&profissionalId=${profissionalId}&data=${d.data}&hora=${h}`}
-                      className="w-full hover:text-muted-foreground"
+                      key={dia.data + hora}
+                      href={`/${slug}/novo-agendamento/finalizar-agendamento?servicoId=${servicoId}&profissionalId=${profissionalId}&data=${dia.data}&hora=${hora}`}
+                      className="flex w-full items-center justify-center"
                     >
-                      <span className="flex justify-center border-b p-2">
-                        {h}
+                      <span className="rounded-lg bg-zinc-100 p-2 hover:text-muted-foreground dark:bg-zinc-800">
+                        {hora}
                       </span>
                     </Link>
                   ))}

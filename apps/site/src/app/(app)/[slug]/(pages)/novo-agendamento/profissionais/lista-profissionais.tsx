@@ -30,7 +30,7 @@ export default async function ListaProfissionais(
           >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex flex-row items-center gap-2">
-                <Avatar className="size-9">
+                <Avatar className="size-12">
                   {profissional.avatarUrl && (
                     <AvatarImage
                       src={profissional.avatarUrl}

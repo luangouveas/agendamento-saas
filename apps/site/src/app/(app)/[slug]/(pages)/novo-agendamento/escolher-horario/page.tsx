@@ -40,7 +40,7 @@ export default async function EscolherHorarioPage({
       {servicoId && (
         <div>
           <div className="mt-10 flex flex-row items-center gap-2">
-            <Avatar className="size-10">
+            <Avatar className="size-16">
               {profissional.avatarUrl && (
                 <AvatarImage src={profissional.avatarUrl} />
               )}
@@ -48,7 +48,7 @@ export default async function EscolherHorarioPage({
             </Avatar>
 
             <div className="flex flex-col">
-              <span className="text-base font-medium">{servico.nome}</span>
+              <span className="text-lg font-medium">{servico.nome}</span>
               <span className="text-muted-foreground">{profissional.nome}</span>
             </div>
           </div>
