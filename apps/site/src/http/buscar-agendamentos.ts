@@ -24,7 +24,11 @@ interface BuscarAgendamentosResponse {
 
 export async function BuscarAgendamentos(slug: string, parms: string) {
   const result = await api
-    .get(`organizacao/${slug}/agendamentos?${parms}`)
+    .get(`organizacao/${slug}/agendamentos?${parms}`, {
+      next: {
+        tags: ['agendamentos-pendentes'],
+      },
+    })
     .json<BuscarAgendamentosResponse>()
 
   return result

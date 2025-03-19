@@ -1,11 +1,12 @@
 import { addMinutes, format } from 'date-fns'
-import { AlertTriangle, CircleCheckBig, LucideCircleX } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
 import { buscarPerfil } from '@/http/buscar-perfil'
 
 import { buscarMeusAgendamentosAction } from './actions'
+import FormCancelarAgendamento from './form-cancelar-agendamento'
+import FormConfirmarAgendamento from './form-confirmar-agendamento'
 export default async function ListaMeusAgendamentosPendentes() {
   const agora = addMinutes(new Date(), -180).toISOString()
 
@@ -49,18 +50,14 @@ export default async function ListaMeusAgendamentosPendentes() {
               </span>
             </div>
 
-            <div className="flex w-[20%] flex-col items-center justify-center p-2">
+            <div className="flex w-[20%] flex-col items-center justify-center">
               <span>{agP.status}</span>
-              <div className="flex w-full flex-row justify-center space-x-4">
+              <div className="flex w-full flex-row justify-center space-x-4 p-2">
                 {agP.status === 'AGENDADO' && (
-                  <Button variant="ghost">
-                    <CircleCheckBig className="text-green-400" />
-                  </Button>
+                  <FormConfirmarAgendamento id={agP.id} />
                 )}
                 {agP.status === 'AGENDADO' || agP.status === 'CONFIRMADO' ? (
-                  <Button variant="ghost">
-                    <LucideCircleX className="text-red-500" />
-                  </Button>
+                  <FormCancelarAgendamento id={agP.id} />
                 ) : (
                   ''
                 )}

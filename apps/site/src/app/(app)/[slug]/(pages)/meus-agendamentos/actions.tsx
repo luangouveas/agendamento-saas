@@ -4,6 +4,8 @@ import { HTTPError } from 'ky'
 
 import { getSlugOrganizacaoAtual } from '@/app/auth/auth'
 import { BuscarAgendamentos } from '@/http/buscar-agendamentos'
+import { CancelarAgendamento } from '@/http/cancelar-agendamento'
+import { ConfirmarAgendamento } from '@/http/confirmar-agendamento'
 
 interface BuscarMeusAgendamentosAction {
   clienteId: string
@@ -58,6 +60,56 @@ export async function buscarMeusAgendamentosAction(
     return {
       success: false,
       message: 'Erro inesperado! Tente novamente em alguns instantes.',
+      data: null,
+    }
+  }
+}
+
+export async function confirmarAgendamentoAction(id: string) {
+  try {
+    const slug = await getSlugOrganizacaoAtual()
+
+    await ConfirmarAgendamento({ id, slug: slug! })
+
+    return {
+      success: true,
+      message: null,
+      data: null,
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+      return { success: false, message, data: null }
+    }
+
+    return {
+      success: true,
+      message: null,
+      data: null,
+    }
+  }
+}
+
+export async function cancelarAgendamentoAction(id: string) {
+  try {
+    const slug = await getSlugOrganizacaoAtual()
+
+    await CancelarAgendamento({ id, slug: slug! })
+
+    return {
+      success: true,
+      message: null,
+      data: null,
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+      return { success: false, message, data: null }
+    }
+
+    return {
+      success: true,
+      message: null,
       data: null,
     }
   }
