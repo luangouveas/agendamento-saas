@@ -10,11 +10,15 @@ export const env = createEnv({
   client: {},
   shared: {
     NEXT_PUBLIC_API_URL: z.string().url(),
+    SUPABASE_URL: z.string().url(),
+    SUPABASE_SECRET_KEY: z.string(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     JWT_SECRET: process.env.JWT_SECRET,
     SERVER_PORT: process.env.SERVER_PORT,
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   emptyStringAsUndefined: true,
