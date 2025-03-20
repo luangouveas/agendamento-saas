@@ -18,10 +18,7 @@ export default async function MeuPerfilPage() {
           </AlertTitle>
         </Alert>
       ) : (
-        <div className="">
-          <h2 className="text-center font-semibold">Meus dados</h2>
-          <MeuPerfilForm usuario={usuario!} />
-        </div>
+        <MeuPerfilForm usuario={usuario!} />
       )}
     </div>
   )
