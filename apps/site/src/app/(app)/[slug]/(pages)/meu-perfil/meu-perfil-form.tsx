@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { DadosUsuario } from '@/http/buscar-perfil'
 
-import { atualizarDadosDoPerfilDoUsuario } from './actions'
+import { atualizarDadosDoPerfilDoUsuario, uploadAvatarAction } from './actions'
 
 const formPerfilUsuarioSchema = z.object({
   nome: z.string().min(3, {
@@ -67,6 +67,16 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
       }
       setIsSubmitting(false)
     })
+  }
+
+  function uploadAvatar(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.files) {
+      const avatarFile = event.target.files[0]
+      console.log(avatarFile)
+      uploadAvatarAction('teste', avatarFile).then((result) => {
+        console.log(result)
+      })
+    }
   }
 
   return (
@@ -127,9 +137,9 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
               name="avatarUrl"
               render={({ field }) => (
                 <FormItem>
-                  <Label htmlFor="avatarUrl">URL Avatar</Label>
-                  <FormControl>
-                    <Input type="url" {...field} />
+                  <Label htmlFor="avatarUrl">Foto</Label>
+                  <FormControl onChange={uploadAvatar}>
+                    <Input type="file" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
