@@ -21,7 +21,7 @@ export default async function ComutadorEmpresa() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex w-[320px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
+      <DropdownMenuTrigger className="flex w-[320px] items-center gap-2 rounded-lg p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
         {organizacaoAtual ? (
           <>
             <Avatar className="size-10">
@@ -42,7 +42,7 @@ export default async function ComutadorEmpresa() {
             Selecione o estabelecimento
           </span>
         )}
-        <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
+        <ChevronsUpDown className="ml-auto size-5 text-muted-foreground" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[320px]">
         <DropdownMenuLabel>Estabelecimentos</DropdownMenuLabel>
