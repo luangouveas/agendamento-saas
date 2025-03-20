@@ -7,7 +7,6 @@ import {
   AtualizarDadosPerfil,
   AtualizarPerfilRequest,
 } from '@/http/atualizar-perfil'
-import { supabase } from '@/lib/supabase'
 
 export async function atualizarDadosDoPerfilDoUsuario(
   dadosPerfilForm: Omit<AtualizarPerfilRequest, 'slug'>,
@@ -37,15 +36,4 @@ export async function atualizarDadosDoPerfilDoUsuario(
       message: 'Unexpected error, try again in a few minutes.',
     }
   }
-}
-
-export async function uploadAvatarAction(idClinte: string, avatarFile: File) {
-  const { data, error } = await supabase.storage
-    .from('avatars')
-    .upload(`usuarios/${idClinte}.png`, avatarFile, {
-      cacheControl: '3600',
-      upsert: false,
-    })
-
-  return { data, error }
 }
