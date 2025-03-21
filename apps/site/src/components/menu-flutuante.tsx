@@ -48,29 +48,29 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="flex h-full flex-col bg-transparent text-foreground hover:bg-transparent hover:text-muted-foreground">
+              <div className="flex h-full w-full flex-col items-center gap-1 bg-transparent p-4 text-foreground hover:cursor-pointer hover:bg-transparent hover:text-muted-foreground">
                 <Grip />
                 <span className="text-[10px]">Outras opções</span>
-              </Button>
+              </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40">
-              <DropdownMenuItem asChild className="hover:cursor-pointer">
-                <NavLink
-                  href={`/${props.slug}/meu-perfil`}
-                  className="flex items-center gap-2"
-                >
-                  <User className="mr-2 size-7" /> Meus dados
-                </NavLink>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem
+                asChild
+                className="text-lg hover:cursor-pointer"
+              >
+                <a href={`/${props.slug}/meu-perfil`}>
+                  <User className="mr-2 size-6" /> Meus dados
+                </a>
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild className="hover:cursor-pointer">
-                <Link
-                  href={`/api/sign-out`}
-                  className="flex items-center gap-2"
-                >
+              <DropdownMenuItem
+                asChild
+                className="text-lg hover:cursor-pointer"
+              >
+                <a href={`/api/sign-out`}>
                   <LogOut className="mr-2 size-6" /> Sair
-                </Link>
+                </a>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

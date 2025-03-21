@@ -79,7 +79,6 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
     } else {
       setAvatarUrl(null)
       setIsUploading(true)
-      console.log(isUploading)
 
       const formData = new FormData()
       formData.set('file', avatarFile)
