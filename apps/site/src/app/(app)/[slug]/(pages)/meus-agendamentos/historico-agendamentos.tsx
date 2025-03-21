@@ -2,7 +2,15 @@ import { addMinutes, format, startOfDay } from 'date-fns'
 import { AlertTriangle } from 'lucide-react'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { buscarPerfil } from '@/http/buscar-perfil'
+import { cn } from '@/lib/utils'
 
 import { buscarMeusAgendamentosAction } from './actions'
 export default async function ListaHistoricoMeusAgendamentos() {
@@ -33,27 +41,46 @@ export default async function ListaHistoricoMeusAgendamentos() {
         </Alert>
       ) : todosAgendamentosAteAgora!.length > 0 ? (
         todosAgendamentosAteAgora!.map((agH) => (
-          <div
+          <Card
             key={agH.id}
-            className="flex w-full flex-row gap-2 rounded-md border-2 p-4 shadow-md dark:border-0 dark:bg-zinc-900 dark:text-white"
+            className="border-zinc-300 shadow-lg shadow-zinc-400 dark:border-zinc-800 dark:shadow-sm dark:shadow-slate-200"
           >
-            <div className="flex w-[20%] flex-col items-center justify-center border-r-2 border-slate-300 p-2 dark:border-muted-foreground">
-              <span>{format(new Date(agH.dataHora), 'dd/MM/yyyy')}</span>
-              <span>{format(addMinutes(agH.dataHora, 180), 'HH:mm')}</span>
-            </div>
-
-            <div className="flex w-[60%] flex-col border-r-2 border-slate-300 p-2 dark:border-muted-foreground">
-              <span className="font-medium">{agH.nomeServico}</span>
-              <span className="text-sm">R$ {agH.valor}</span>
-              <span className="text-sm text-muted-foreground">
-                Profissional: {agH.nomeProfissional}
-              </span>
-            </div>
-
-            <div className="flex w-[20%] items-center justify-center p-2">
-              <span>{agH.status}</span>
-            </div>
-          </div>
+            <CardHeader className="px-6 pb-1 pt-3">
+              <div className="flex flex-row justify-between border-b-2 pb-2">
+                <div>
+                  <CardTitle className="text-md">
+                    {format(new Date(agH.dataHora), 'dd/MM/yyyy')}
+                  </CardTitle>
+                  <CardDescription>
+                    {format(addMinutes(agH.dataHora, 180), 'HH:mm')}
+                  </CardDescription>
+                </div>
+                <div className="flex flex-row items-start justify-start gap-1">
+                  <span
+                    className={cn(
+                      'text-sm font-medium',
+                      agH.status === 'CONCLUIDO'
+                        ? 'text-green-600'
+                        : 'text-red-700',
+                    )}
+                  >
+                    {agH.status}
+                  </span>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="pb-3">
+              <div className="flex w-full flex-col gap-3">
+                <div className="grid w-full">
+                  <span className="text-md font-medium">{agH.nomeServico}</span>
+                  <span className="text-sm">R$ {agH.valor}</span>
+                  <span className="text-sm text-muted-foreground">
+                    Profissional: {agH.nomeProfissional}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         ))
       ) : (
         <Alert variant="alert">

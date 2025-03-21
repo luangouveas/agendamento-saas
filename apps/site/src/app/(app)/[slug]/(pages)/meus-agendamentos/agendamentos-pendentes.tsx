@@ -2,11 +2,17 @@ import { addMinutes, format } from 'date-fns'
 import { AlertTriangle } from 'lucide-react'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { buscarPerfil } from '@/http/buscar-perfil'
 
+import AcaoAgendamentoForm from './acao-agendamento-form'
 import { buscarMeusAgendamentosAction } from './actions'
-import FormCancelarAgendamento from './form-cancelar-agendamento'
-import FormConfirmarAgendamento from './form-confirmar-agendamento'
 export default async function ListaMeusAgendamentosPendentes() {
   const agora = addMinutes(new Date(), -180).toISOString()
 
@@ -33,37 +39,38 @@ export default async function ListaMeusAgendamentosPendentes() {
         </Alert>
       ) : agendamentosPendentes!.length > 0 ? (
         agendamentosPendentes!.map((agP) => (
-          <div
+          <Card
             key={agP.id}
-            className="flex w-full flex-row gap-2 rounded-md border-2 p-4 shadow-md dark:border-0 dark:bg-zinc-900 dark:text-white"
+            className="border-zinc-300 shadow-lg shadow-zinc-400 dark:border-zinc-800 dark:shadow-sm dark:shadow-slate-200"
           >
-            <div className="flex w-[20%] flex-col items-center justify-center border-r-2 border-slate-300 p-2 dark:border-muted-foreground">
-              <span>{format(new Date(agP.dataHora), 'dd/MM/yyyy')}</span>
-              <span>{format(addMinutes(agP.dataHora, 180), 'HH:mm')}</span>
-            </div>
-
-            <div className="flex w-[60%] flex-col border-r-2 border-slate-300 p-2 dark:border-muted-foreground">
-              <span className="font-medium">{agP.nomeServico}</span>
-              <span className="text-sm">R$ {agP.valor}</span>
-              <span className="text-sm text-muted-foreground">
-                Profissional: {agP.nomeProfissional}
-              </span>
-            </div>
-
-            <div className="flex w-[20%] flex-col items-center justify-center">
-              <span>{agP.status}</span>
-              <div className="flex w-full flex-row justify-center space-x-4 p-2">
-                {agP.status === 'AGENDADO' && (
-                  <FormConfirmarAgendamento id={agP.id} />
-                )}
-                {agP.status === 'AGENDADO' || agP.status === 'CONFIRMADO' ? (
-                  <FormCancelarAgendamento id={agP.id} />
-                ) : (
-                  ''
-                )}
+            <CardHeader className="px-6 pb-3 pt-4">
+              <div className="flex flex-row justify-between border-b-2 pb-3">
+                <div>
+                  <CardTitle className="text-xl">
+                    {format(new Date(agP.dataHora), 'dd/MM/yyyy')}
+                  </CardTitle>
+                  <CardDescription>
+                    {format(addMinutes(agP.dataHora, 180), 'HH:mm')}
+                  </CardDescription>
+                </div>
+                <div className="flex flex-row items-start justify-start gap-1">
+                  <AcaoAgendamentoForm id={agP.id} acao="confirmar" />
+                  <AcaoAgendamentoForm id={agP.id} acao="cancelar" />
+                </div>
               </div>
-            </div>
-          </div>
+            </CardHeader>
+            <CardContent className="pb-4">
+              <div className="flex w-full flex-col gap-3">
+                <div className="grid w-full">
+                  <span className="text-lg font-medium">{agP.nomeServico}</span>
+                  <span className="text-sm">R$ {agP.valor}</span>
+                  <span className="text-sm text-muted-foreground">
+                    Profissional: {agP.nomeProfissional}
+                  </span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         ))
       ) : (
         <Alert variant="alert">
