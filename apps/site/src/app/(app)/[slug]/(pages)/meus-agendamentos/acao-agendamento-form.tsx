@@ -110,12 +110,8 @@ export default function AcaoAgendamentoForm({
           <Button
             type="button"
             onClick={confirmarAcap}
-            className={cn(
-              'flex gap-2',
-              acao === 'confirmar'
-                ? 'bg-green-600 text-white'
-                : 'bg-destructive text-destructive-foreground',
-            )}
+            variant={acao === 'confirmar' ? 'success' : 'destructive'}
+            className="flex gap-2"
           >
             {isSubmitting ? (
               <Loader2 className="size-4 animate-spin" />
