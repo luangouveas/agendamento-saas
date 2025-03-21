@@ -39,6 +39,7 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
   const [success, setSuccess] = useState<boolean | null>(null)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [isUploading, setIsUploading] = useState<boolean>(false)
+  const [isHovered, setIsHovered] = useState(false)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
 
   const fileInputRef = useRef<HTMLInputElement | null>(null)
@@ -73,27 +74,33 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
   }
 
   async function uploadAvatar(avatarFile: File) {
-    setAvatarUrl(null)
-    setIsUploading(true)
+    if (avatarFile.type.lastIndexOf('image/') < 0) {
+      setMessage('Este arquivo não é válido. Tente escolher uma imagem.')
+    } else {
+      setAvatarUrl(null)
+      setIsUploading(true)
+      console.log(isUploading)
 
-    const formData = new FormData()
-    formData.set('file', avatarFile)
-    formData.set('idClinte', usuario.id)
+      const formData = new FormData()
+      formData.set('file', avatarFile)
+      formData.set('idClinte', usuario.id)
 
-    const response = await fetch('/api/usuario-avatar', {
-      method: 'POST',
-      body: formData,
-    })
+      const response = await fetch('/api/usuario-avatar', {
+        method: 'POST',
+        body: formData,
+      })
 
-    const signedUrl = await response.json()
+      const signedUrl = await response.json()
 
-    setAvatarUrl(signedUrl)
-
-    setIsUploading(false)
+      setIsHovered(false)
+      setAvatarUrl(signedUrl)
+      setIsUploading(false)
+    }
   }
 
   async function getAvatar() {
     setIsUploading(true)
+
     const response = await fetch(`/api/usuario-avatar?idClinte=${usuario.id}`, {
       method: 'get',
     })
@@ -105,6 +112,7 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
     } else {
       setMessage(ret.error)
     }
+
     setIsUploading(false)
   }
 
@@ -115,23 +123,32 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
   return (
     <div>
       <div className="flex w-full justify-center py-3">
-        <Avatar
-          className="border-secondary-foreground-foreground size-32 border-4 hover:cursor-pointer"
+        <div
+          className="relative"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           aria-disabled={isUploading}
+          role="button"
           onClick={() => {
             fileInputRef.current?.click()
           }}
         >
-          {isUploading ? (
-            <AvatarFallback>
-              <Loader2 className="size-8 animate-spin" />
-            </AvatarFallback>
-          ) : avatarUrl ? (
-            <AvatarImage src={avatarUrl} />
-          ) : (
-            <AvatarFallback />
+          <Avatar className="border-secondary-foreground-foreground size-32 border-4 hover:cursor-pointer">
+            {isUploading ? (
+              <AvatarFallback>
+                <Loader2 className="size-8 animate-spin text-slate-300" />
+              </AvatarFallback>
+            ) : avatarUrl ? (
+              <AvatarImage src={avatarUrl} />
+            ) : (
+              <AvatarFallback />
+            )}
+          </Avatar>
+
+          {isHovered && !isUploading && (
+            <div className="absolute inset-0 rounded-full bg-slate-200 bg-opacity-50"></div>
           )}
-        </Avatar>
+        </div>
       </div>
       {message && (
         <div className="my-2 text-center">
@@ -150,6 +167,7 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
       <Input
         ref={fileInputRef}
         type="file"
+        accept="image/png, image/gif image/jpeg"
         className="absolute right-[9999px]"
         disabled={isUploading}
         onChange={async (e) => {
