@@ -74,7 +74,7 @@ export function CriarAgendamento(app: FastifyInstance) {
           !membroProfissional.expedientes
         ) {
           throw new BadRequestError(
-            'Desculpe, houve algum problema ao confirmar os dados.',
+            'Desculpe, houve algum problema para confirmar a disponibilidade do profissional.',
           )
         }
 
@@ -96,9 +96,14 @@ export function CriarAgendamento(app: FastifyInstance) {
           )
         }
 
-        const data = addMinutes(new Date(dataHora), -180)
+        const data = new Date(dataHora)
 
         const expediente = membroProfissional.expedientes[0]
+
+        if (!expediente) {
+          throw new BadRequestError('Profissional sem expediente neste dia.')
+        }
+
         const expedienteDia = expediente.diasExpediente.find(
           (x) => x.diaSemana === data.getDay(),
         )
@@ -151,7 +156,7 @@ export function CriarAgendamento(app: FastifyInstance) {
           if (
             (isBefore(inicioDoAgendamentoCandidato, intervaloInicio) ||
               isEqual(inicioDoAgendamentoCandidato, intervaloInicio)) &&
-            isAfter(intervaloFim, intervaloInicio)
+            isAfter(terminoDoAgendamentoCandidato, intervaloInicio)
           ) {
             throw new BadRequestError(
               'O horario escolhido conflita com o intervalo do profissional',
