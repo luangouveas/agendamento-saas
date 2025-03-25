@@ -20,7 +20,7 @@ export async function criarAgendamento(
     .post(`organizacao/${dadosAgendamento.slug}/agendamento`, {
       json: {
         clienteId: dadosAgendamento.clienteId,
-        profissionalId: dadosAgendamento.profissionalId,
+        membroId: dadosAgendamento.profissionalId,
         servicoId: dadosAgendamento.servicoId,
         dataHora: dadosAgendamento.dataHora,
         valor: dadosAgendamento.valor,
