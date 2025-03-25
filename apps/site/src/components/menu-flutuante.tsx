@@ -19,16 +19,18 @@ interface MenuFlutuanteProps {
 
 export function MenuFlutuante(props: MenuFlutuanteProps) {
   return (
-    <div className="fixed bottom-0 flex h-24 w-full flex-row items-start justify-center p-2">
-      <div className="flex h-16 flex-row items-center justify-between rounded-full border-4 bg-background">
+    <div className="fixed bottom-0 flex h-24 w-full flex-row justify-center p-2">
+      <div className="flex h-16 w-full max-w-4xl flex-row items-center justify-between rounded-full border-[3px] bg-background px-3 dark:border-2">
         <div>
           <Button
             asChild
             className="flex h-full flex-col bg-transparent text-foreground hover:bg-transparent hover:text-muted-foreground data-[current=true]:text-muted-foreground"
           >
             <NavLink href={`/${props.slug}/novo-agendamento`}>
-              <CalendarDays />
-              <span className="text-[10px]">Novo agendamento</span>
+              <CalendarDays className="size-6 sm:size-7" />
+              <span className="xs:block hidden text-[10px] sm:text-xs">
+                Novo agendamento
+              </span>
             </NavLink>
           </Button>
         </div>
@@ -39,8 +41,10 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
             className="flex h-full flex-col bg-transparent text-foreground hover:bg-transparent hover:text-muted-foreground data-[current=true]:text-muted-foreground"
           >
             <NavLink href={`/${props.slug}/meus-agendamentos`}>
-              <ListChecks />
-              <span className="text-[10px]">Meus agendamentos</span>
+              <ListChecks className="size-6 sm:size-7" />
+              <span className="xs:block hidden text-[10px] sm:text-xs">
+                Meus agendamentos
+              </span>
             </NavLink>
           </Button>
         </div>
@@ -48,9 +52,11 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex h-full w-full flex-col items-center gap-1 bg-transparent p-4 text-foreground hover:cursor-pointer hover:bg-transparent hover:text-muted-foreground">
-                <Grip />
-                <span className="text-[10px]">Outras opções</span>
+              <div className="flex h-full w-full flex-col items-center bg-transparent p-4 text-foreground hover:cursor-pointer hover:bg-transparent hover:text-muted-foreground">
+                <Grip className="size-6 sm:size-7" />
+                <span className="xs:block hidden text-center text-[10px] font-medium sm:text-xs">
+                  Outras opções
+                </span>
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
