@@ -18,9 +18,9 @@ export default async function AppLayout({
   }
 
   return (
-    <div className="space-y-14">
+    <div className="flex justify-center space-y-14">
       <Header />
-      <main className="w-full pb-28 pt-6">{children}</main>
+      <main className="w-full max-w-4xl pb-28 pt-6">{children}</main>
       <MenuFlutuante slug={slug!} />
     </div>
   )
