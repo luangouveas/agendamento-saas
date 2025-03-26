@@ -1,6 +1,7 @@
 import {
   addMinutes,
   format,
+  getTime,
   isAfter,
   isBefore,
   isEqual,
@@ -35,6 +36,9 @@ export function BuscarHorariosDisponiveis(app: FastifyInstance) {
             membroId: z.string().uuid(),
             servicoId: z.string().uuid(),
           }),
+          querystring: z.object({
+            diaSugerido: z.string().date().optional(),
+          }),
           response: {
             200: z.object({
               diasDisponiveis: z.array(
@@ -50,6 +54,7 @@ export function BuscarHorariosDisponiveis(app: FastifyInstance) {
       },
       async (request) => {
         const { slug, membroId, servicoId } = request.params
+        const { diaSugerido } = request.query
 
         const usuarioId = await request.getCurrentUserId()
         const { membership, organizacao } =
@@ -87,10 +92,15 @@ export function BuscarHorariosDisponiveis(app: FastifyInstance) {
 
         const diasDisponiveis = []
         const dataAtual = new Date()
+        const dataInicial = diaSugerido
+          ? new Date(diaSugerido + 'T23:59:59.000Z')
+          : dataAtual
+
+        const quantidadeDeDiasEsperado = diaSugerido ? 1 : 5
 
         // Gerar para os próximos 5 dias que possuírem expediente
-        for (let i = 0; diasDisponiveis.length < 5; i++) {
-          const data = addMinutes(dataAtual, i * 1440)
+        for (let i = 0; i < quantidadeDeDiasEsperado; i++) {
+          const data = addMinutes(dataInicial, i * 1440)
           const diaSemana = data.getDay()
 
           const expedienteDia = diasExpediente.find(
@@ -102,6 +112,7 @@ export function BuscarHorariosDisponiveis(app: FastifyInstance) {
           let candidate = parseISO(
             `${format(data, 'yyyy-MM-dd')}T${expedienteDia.inicio}:00Z`,
           )
+
           const workingEnd = parseISO(
             `${format(data, 'yyyy-MM-dd')}T${expedienteDia.fim}:00Z`,
           )
