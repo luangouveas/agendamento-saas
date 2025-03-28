@@ -8,11 +8,9 @@ import { requisitarCodigoVerificacao } from '@/http/requisitar-codigo-verificaca
 
 export async function solicitarEntrarComTelefone(telefone: string) {
   try {
-    const result = await requisitarCodigoVerificacao({
+    await requisitarCodigoVerificacao({
       telefone,
     })
-
-    console.log(result)
 
     return { success: true, message: null }
   } catch (err) {
@@ -20,8 +18,6 @@ export async function solicitarEntrarComTelefone(telefone: string) {
       const { message } = await err.response.json()
       return { success: false, message }
     }
-
-    console.error(err)
 
     return {
       success: false,

@@ -1,54 +1,58 @@
 'use client'
 
 import { AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { redirect } from 'next/navigation'
+import { useContext, useState } from 'react'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { DadosUsuario } from '@/http/buscar-perfil'
+import { AgendamentoContext } from '@/context/agendamento-context'
+import { IUsuario } from '@/interfaces/usuario'
 
 import MeuPerfilForm from '../../meu-perfil/meu-perfil-form'
 import { finalizarAgendamento } from './actions'
 
 interface ConfirmarAgendamentoClienteFormProps {
-  dadosAgendamento: {
-    slug: string
-    servicoId?: string
-    nomeServico?: string
-    profissionalId?: string
-    nomeProfissional?: string
-    avatarProfissionalUrl?: string | null
-    data: string
-    hora: string
-    usuario?: DadosUsuario | null
-    valor?: number
-  }
+  slug: string
+  dadosUsuario: IUsuario
 }
 
 export default function ConfirmarAgendamentoClienteForm({
-  dadosAgendamento,
+  slug,
+  dadosUsuario,
 }: ConfirmarAgendamentoClienteFormProps) {
-  const router = useRouter()
-
   const [message, setMessage] = useState<string | null>(null)
   const [success, setSuccess] = useState<boolean | null>(null)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
+  const {
+    servico,
+    profissional,
+    dataHora: diaHorarioEscolhido,
+    zerarContextoDeAgendamento,
+  } = useContext(AgendamentoContext)
+
+  if (!servico || !profissional || !diaHorarioEscolhido) {
+    redirect(`/${slug}/novo-agendamento`)
+  }
+
+  const dataEscolhida = diaHorarioEscolhido!.split('-')[0]
+  const horaEscolhida = diaHorarioEscolhido!.split('-')[1]
+
   function handleCriarAgendamento() {
-    const [dia, mes, ano] = dadosAgendamento.data.split('/').map(Number)
-    const [horas, minutos] = dadosAgendamento.hora.split(':').map(Number)
+    const [dia, mes, ano] = dataEscolhida.split('/').map(Number)
+    const [horas, minutos] = horaEscolhida.split(':').map(Number)
     const date = new Date(ano, mes - 1, dia, horas - 3, minutos)
     const dataHora = date.toISOString()
 
     setIsSubmitting(true)
 
     finalizarAgendamento({
-      servicoId: dadosAgendamento.servicoId!,
-      profissionalId: dadosAgendamento.profissionalId!,
+      servicoId: servico!.id!,
+      profissionalId: profissional!.membroId,
       dataHora,
-      valor: dadosAgendamento.valor!,
+      valor: servico!.valor,
     }).then((result) => {
       setIsSubmitting(false)
       if (!result?.success) {
@@ -57,32 +61,33 @@ export default function ConfirmarAgendamentoClienteForm({
       } else {
         setSuccess(true)
         setMessage(result!.message)
+        // zerarContextoDeAgendamento()
 
-        router.push(`/${dadosAgendamento.slug}/meus-agendamentos`)
+        redirect(`/${slug}/meus-agendamentos`)
       }
     })
   }
 
   return (
     <>
-      {dadosAgendamento.usuario?.nome !== '' ? (
+      {dadosUsuario.nome !== '' ? (
         <div className="flex h-[530px] flex-col justify-between">
           <div>
             <div className="mt-8 flex flex-col">
               <div className="flex flex-row items-center gap-2">
                 <Avatar className="size-16">
-                  {dadosAgendamento.avatarProfissionalUrl && (
-                    <AvatarImage src={dadosAgendamento.avatarProfissionalUrl} />
+                  {profissional?.avatarUrl && (
+                    <AvatarImage src={profissional.avatarUrl} />
                   )}
                   <AvatarFallback />
                 </Avatar>
                 <div className="flex flex-col">
                   <span className="text-xl font-medium">
-                    {dadosAgendamento.nomeServico}
+                    {servico!.nome} - R$ {servico!.valor}
                   </span>
-                  <span>{dadosAgendamento.nomeProfissional}</span>
+                  <span>{profissional!.nome}</span>
                   <span className="text-sm text-muted-foreground">
-                    {dadosAgendamento.data} - {dadosAgendamento.hora}
+                    {dataEscolhida} - {horaEscolhida}
                   </span>
                 </div>
               </div>
@@ -133,7 +138,7 @@ export default function ConfirmarAgendamentoClienteForm({
             </AlertTitle>
           </Alert>
 
-          <MeuPerfilForm usuario={dadosAgendamento.usuario!} />
+          <MeuPerfilForm usuario={dadosUsuario} />
         </>
       )}
     </>

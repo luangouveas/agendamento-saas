@@ -6,6 +6,7 @@ import {
 } from '@/app/auth/auth'
 import { Header } from '@/components/header'
 import { MenuFlutuante } from '@/components/menu-flutuante'
+import { AgendamentoProvider } from '@/context/agendamento-context'
 
 export default async function AppLayout({
   children,
@@ -20,7 +21,9 @@ export default async function AppLayout({
   return (
     <div className="flex justify-center space-y-14">
       <Header />
-      <main className="w-full max-w-4xl pb-28 pt-6">{children}</main>
+      <AgendamentoProvider>
+        <main className="w-full max-w-4xl pb-28 pt-6">{children}</main>
+      </AgendamentoProvider>
       <MenuFlutuante slug={slug!} />
     </div>
   )

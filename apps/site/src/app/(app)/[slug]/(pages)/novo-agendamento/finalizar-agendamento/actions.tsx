@@ -65,8 +65,8 @@ export async function finalizarAgendamento(
     return { success: true, message: 'Agendamento realizado com sucesso!' }
   } catch (err) {
     if (err instanceof HTTPError) {
-      const { message, errors } = await err.response.json()
-      console.log('errors', errors)
+      const { message } = await err.response.json()
+
       return { success: false, message }
     }
   }

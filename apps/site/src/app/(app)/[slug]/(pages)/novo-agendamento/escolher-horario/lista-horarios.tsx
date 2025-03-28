@@ -1,25 +1,23 @@
 'use client'
 
 import { AlertTriangle } from 'lucide-react'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { redirect, useRouter } from 'next/navigation'
+import { useContext, useEffect, useState } from 'react'
 
 import Loading from '@/components/loading'
 import { Alert, AlertTitle } from '@/components/ui/alert'
+import { AgendamentoContext } from '@/context/agendamento-context'
 import { DiasDisponiveisProfissional } from '@/http/buscar-horarios-disponiveis'
 
 import { buscarListaDeHorariosDisponiveis } from './actions'
+import DadosServico from './dados-servico'
 import DateSelectCalendar from './date-select-calendar'
 
 interface ListaDeHorariosDisponiveisProps {
-  servicoId: string
-  profissionalId: string
   slug: string
 }
 
 export default function ListaDeHorariosDisponiveis({
-  servicoId,
-  profissionalId,
   slug,
 }: ListaDeHorariosDisponiveisProps) {
   const [diasDisponiveis, setDiasDisponiveis] = useState<
@@ -28,6 +26,20 @@ export default function ListaDeHorariosDisponiveis({
   const [success, setSuccess] = useState(true)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
+
+  const router = useRouter()
+
+  const { servico, profissional, escolherHorario } =
+    useContext(AgendamentoContext)
+
+  if (!servico || !profissional) {
+    redirect(`/${slug}/novo-agendamento`)
+  }
+
+  const onClickHorario = (data: string, hora: string) => {
+    escolherHorario(`${data}-${hora}`)
+    router.push(`/${slug}/novo-agendamento/finalizar-agendamento`)
+  }
 
   const onFilter = (data?: Date) => {
     fetchData(data?.toISOString())
@@ -41,14 +53,13 @@ export default function ListaDeHorariosDisponiveis({
       data: diasDisponiveis,
       message,
     } = await buscarListaDeHorariosDisponiveis(
-      slug!,
-      servicoId,
-      profissionalId,
+      slug,
+      servico!.id,
+      profissional!.membroId,
       diaSugerido,
     )
 
     if (success) {
-      console.log(diasDisponiveis)
       setSuccess(true)
       setMessage(null)
       setDiasDisponiveis(diasDisponiveis ?? [])
@@ -63,10 +74,16 @@ export default function ListaDeHorariosDisponiveis({
 
   useEffect(() => {
     fetchData()
-  }, [servicoId, profissionalId])
+  }, [servico!.id, profissional!.id])
 
   return (
     <div className="mt-6 flex flex-col gap-5">
+      <DadosServico
+        servicoNome={servico!.nome}
+        profissionalAvatar={profissional!.avatarUrl}
+        profissionalNome={profissional!.nome}
+      />
+
       <div className="flex w-full justify-center">
         <DateSelectCalendar onFilter={onFilter} />
       </div>
@@ -94,15 +111,15 @@ export default function ListaDeHorariosDisponiveis({
                   <hr />
                   <div className="mt-4 grid grid-cols-3 gap-y-3">
                     {dia.horarios.map((hora) => (
-                      <Link
+                      <div
                         key={dia.data + hora}
-                        href={`/${slug}/novo-agendamento/finalizar-agendamento?servicoId=${servicoId}&profissionalId=${profissionalId}&data=${dia.data}&hora=${hora}`}
                         className="flex w-full items-center justify-center"
+                        onClick={() => onClickHorario(dia.data, hora)}
                       >
-                        <span className="rounded-lg bg-zinc-100 p-2 hover:text-muted-foreground dark:bg-zinc-800">
+                        <span className="rounded-lg bg-zinc-100 p-2 hover:cursor-pointer hover:text-muted-foreground dark:bg-zinc-800">
                           {hora}
                         </span>
-                      </Link>
+                      </div>
                     ))}
                   </div>
                 </div>

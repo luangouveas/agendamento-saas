@@ -2,7 +2,7 @@ import { api } from './api-client'
 
 interface BuscarServicosResponse {
   servicos: {
-    id: number
+    id: string
     nome: string
     organizacaoId: string
     descricao: string

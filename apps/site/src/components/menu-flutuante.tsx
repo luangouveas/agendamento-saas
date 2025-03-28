@@ -1,7 +1,6 @@
 'use client'
 
 import { CalendarDays, Grip, ListChecks, LogOut, User } from 'lucide-react'
-import Link from 'next/link'
 
 import { NavLink } from './nav-link'
 import { Button } from './ui/button'
@@ -28,7 +27,7 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
           >
             <NavLink href={`/${props.slug}/novo-agendamento`}>
               <CalendarDays className="size-6 sm:size-7" />
-              <span className="xs:block hidden text-[10px] sm:text-xs">
+              <span className="hidden text-[10px] sm:text-xs xs:block">
                 Novo agendamento
               </span>
             </NavLink>
@@ -42,7 +41,7 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
           >
             <NavLink href={`/${props.slug}/meus-agendamentos`}>
               <ListChecks className="size-6 sm:size-7" />
-              <span className="xs:block hidden text-[10px] sm:text-xs">
+              <span className="hidden text-[10px] sm:text-xs xs:block">
                 Meus agendamentos
               </span>
             </NavLink>
@@ -54,7 +53,7 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
             <DropdownMenuTrigger asChild>
               <div className="flex h-full w-full flex-col items-center bg-transparent p-4 text-foreground hover:cursor-pointer hover:bg-transparent hover:text-muted-foreground">
                 <Grip className="size-6 sm:size-7" />
-                <span className="xs:block hidden text-center text-[10px] font-medium sm:text-xs">
+                <span className="hidden text-center text-[10px] font-medium sm:text-xs xs:block">
                   Outras opções
                 </span>
               </div>

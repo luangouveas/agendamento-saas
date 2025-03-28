@@ -7,12 +7,7 @@ import Loading from '@/components/loading'
 
 import ListaProfissionais from './lista-profissionais'
 
-export default async function ProfissionaisPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>
-}) {
-  const { servicoId = '' } = await searchParams
+export default async function EscolherProfissionalPage() {
   const slug = await getSlugOrganizacaoAtual()
 
   return (
@@ -29,11 +24,10 @@ export default async function ProfissionaisPage({
         </h2>
         <div className="min-w-6" />
       </div>
-      {servicoId && (
-        <Suspense fallback={<Loading />}>
-          <ListaProfissionais servicoId={servicoId} />
-        </Suspense>
-      )}
+
+      <Suspense fallback={<Loading />}>
+        <ListaProfissionais />
+      </Suspense>
     </div>
   )
 }
