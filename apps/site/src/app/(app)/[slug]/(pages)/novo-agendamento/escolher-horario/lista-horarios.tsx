@@ -4,6 +4,7 @@ import { AlertTriangle } from 'lucide-react'
 import { redirect, useRouter } from 'next/navigation'
 import { useContext, useEffect, useState } from 'react'
 
+import DateSelectCalendar from '@/components/date-select-calendar'
 import Loading from '@/components/loading'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { AgendamentoContext } from '@/context/agendamento-context'
@@ -11,7 +12,6 @@ import { DiasDisponiveisProfissional } from '@/http/buscar-horarios-disponiveis'
 
 import { buscarListaDeHorariosDisponiveis } from './actions'
 import DadosServico from './dados-servico'
-import DateSelectCalendar from './date-select-calendar'
 
 interface ListaDeHorariosDisponiveisProps {
   slug: string
@@ -85,7 +85,7 @@ export default function ListaDeHorariosDisponiveis({
       />
 
       <div className="flex w-full justify-center">
-        <DateSelectCalendar onFilter={onFilter} />
+        <DateSelectCalendar onFilter={onFilter} className="w-[240px] sm:w-80" />
       </div>
 
       {!success && message ? (
