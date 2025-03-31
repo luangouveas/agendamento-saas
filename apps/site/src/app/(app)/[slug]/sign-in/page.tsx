@@ -5,6 +5,8 @@ import { AlertTriangle, Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { use, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import Flag from 'react-world-flags'
+import { mask, unMask } from 'remask'
 import { z } from 'zod'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -31,6 +33,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { paises } from '@/lib/paises'
+import { mascarasTelefone } from '@/lib/utils'
 
 import { entrarComTelefone, solicitarEntrarComTelefone } from './actions'
 
@@ -67,7 +71,7 @@ export default function SignInPage(props: { params: Params }) {
   >({
     resolver: zodResolver(formLoginComCelularSchema),
     defaultValues: {
-      ddi: '+55',
+      ddi: 'BR +55',
       telefone: '',
     },
   })
@@ -82,10 +86,12 @@ export default function SignInPage(props: { params: Params }) {
   function handleSubmitLoginComCelular(
     values: z.infer<typeof formLoginComCelularSchema>,
   ) {
-    const telefone = `${values.ddi}${values.telefone}`
+    const ddi = values.ddi.split(' ')[1]
+    const numero = values.telefone.replace(/[ ()-]/g, '')
+
+    const telefone = `${ddi} ${numero}`
 
     setIsSubmitting(true)
-
     solicitarEntrarComTelefone(telefone).then((result) => {
       if (!result?.success) {
         setSuccess(false)
@@ -168,17 +174,31 @@ export default function SignInPage(props: { params: Params }) {
                     <FormLabel>DDI</FormLabel>
                     <FormControl>
                       <Select
-                        defaultValue="+55"
                         onValueChange={(val: string) => field.onChange(val)}
+                        {...field}
                       >
-                        <SelectTrigger className="w-20">
+                        <SelectTrigger className="w-32">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="w-full">
                           <SelectGroup>
-                            <SelectItem value="+27">+27</SelectItem>
-                            <SelectItem value="+55">+55</SelectItem>
-                            <SelectItem value="+93">+93</SelectItem>
+                            {paises.map((pais) => (
+                              <SelectItem
+                                key={`${pais.code} ${pais.dial_code}`}
+                                value={`${pais.code} ${pais.dial_code}`}
+                                className="items-left"
+                              >
+                                <div className="flex w-full flex-row justify-around gap-4">
+                                  <Flag
+                                    className="w-5 rounded-full"
+                                    code={pais.code}
+                                  />
+                                  <span className="line-clamp-1 text-base">
+                                    {pais.dial_code}
+                                  </span>
+                                </div>
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -195,7 +215,15 @@ export default function SignInPage(props: { params: Params }) {
                   <FormItem className="w-full space-y-2">
                     <FormLabel>Seu celular</FormLabel>
                     <FormControl>
-                      <Input autoFocus {...field} />
+                      <Input
+                        {...field}
+                        autoFocus
+                        onChange={(e) => {
+                          const original = unMask(e.target.value)
+                          const mascarado = mask(original, mascarasTelefone)
+                          formLoginComCelular.setValue('telefone', mascarado)
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -224,7 +252,12 @@ export default function SignInPage(props: { params: Params }) {
                 name="codigoDeVerificacao"
                 render={({ field }) => (
                   <FormItem className="flex flex-col items-center justify-center space-y-6">
-                    <FormLabel>Código de verificação enviado!</FormLabel>
+                    <FormLabel className="flex w-full flex-col items-center justify-center">
+                      <p>Código de verificação enviado!</p>
+                      <p>
+                        {`Verifique o telefone ${formLoginComCelular.getValues('ddi').split(' ')[1]} ${formLoginComCelular.getValues('telefone')}`}
+                      </p>
+                    </FormLabel>
                     <FormControl>
                       <InputOTP width={100} maxLength={6} {...field} autoFocus>
                         <InputOTPGroup>
