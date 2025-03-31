@@ -61,6 +61,9 @@ export function AtualizarPerfil(app: FastifyInstance) {
         const usuarioComMesmoTelefone = await prisma.usuario.findFirst({
           where: {
             numeroCelular,
+            NOT: {
+              id: usuarioLogadoId,
+            },
           },
         })
 
