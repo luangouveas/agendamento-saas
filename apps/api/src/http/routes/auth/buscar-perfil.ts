@@ -23,15 +23,16 @@ export function BuscarPerfil(app: FastifyInstance) {
               usuario: z.object({
                 id: z.string().uuid(),
                 nome: z.string(),
-                dataNascimento: z.date().nullable(),
-                email: z.string().email().nullable(),
-                numeroCelular: z.string(),
-                avatarUrl: z.string().url().nullable(),
-                cep: z.string().nullable(),
                 rua: z.string().nullable(),
                 bairro: z.string().nullable(),
                 cidade: z.string().nullable(),
                 estado: z.string().nullable(),
+                cep: z.string().nullable(),
+                avatarUrl: z.string().url().nullable(),
+                dataNascimento: z.date().nullable(),
+                email: z.string().email().nullable(),
+                ddi: z.string(),
+                numeroCelular: z.string(),
               }),
             }),
           },
@@ -40,7 +41,7 @@ export function BuscarPerfil(app: FastifyInstance) {
       async (request) => {
         const usuarioId = await request.getCurrentUserId()
 
-        const usuario = await prisma.usuario.findUnique({
+        const usuarioBanco = await prisma.usuario.findUnique({
           select: {
             id: true,
             nome: true,
@@ -59,8 +60,25 @@ export function BuscarPerfil(app: FastifyInstance) {
           },
         })
 
-        if (!usuario) {
+        if (!usuarioBanco) {
           throw new BadRequestError('Usuário não encontrado.')
+        }
+
+        const [ddi, numeroSemDDI] = usuarioBanco.numeroCelular.split(' ')
+
+        const usuario = {
+          ddi,
+          numeroCelular: numeroSemDDI,
+          id: usuarioBanco.id,
+          nome: usuarioBanco.nome,
+          dataNascimento: usuarioBanco.dataNascimento,
+          email: usuarioBanco.email,
+          avatarUrl: usuarioBanco.avatarUrl,
+          cep: usuarioBanco.cep,
+          rua: usuarioBanco.rua,
+          bairro: usuarioBanco.bairro,
+          cidade: usuarioBanco.cidade,
+          estado: usuarioBanco.estado,
         }
 
         return { usuario }
