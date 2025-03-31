@@ -7,6 +7,7 @@ import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 import { buscarPermissoesUsuario } from '@/utils/buscar-permissoes-usuario'
 
+import { BadRequestError } from '../_errors/bad-request-error'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export function AtualizarPerfil(app: FastifyInstance) {
@@ -55,6 +56,16 @@ export function AtualizarPerfil(app: FastifyInstance) {
           throw new UnauthorizedError(
             'Você não possui permissões para atualizar este perfil.',
           )
+        }
+
+        const usuarioComMesmoTelefone = await prisma.usuario.findFirst({
+          where: {
+            numeroCelular,
+          },
+        })
+
+        if (usuarioComMesmoTelefone) {
+          throw new BadRequestError('Este número de telefone já está em uso.')
         }
 
         await prisma.usuario.update({
