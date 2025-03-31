@@ -5,6 +5,7 @@ export interface DadosUsuario {
   nome: string | null
   dataNascimento: string | null
   email: string | null
+  ddi: string
   numeroCelular: string
   avatarUrl: string | null
   cep: string | null

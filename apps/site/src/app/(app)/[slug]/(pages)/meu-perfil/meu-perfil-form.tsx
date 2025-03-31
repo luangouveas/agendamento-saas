@@ -4,8 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import Flag from 'react-world-flags'
+import { mask, unMask } from 'remask'
 import { z } from 'zod'
 
+import Loading from '@/components/loading'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -18,7 +21,17 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { DadosUsuario } from '@/http/buscar-perfil'
+import { paises } from '@/lib/paises'
+import { mascarasTelefone } from '@/lib/utils'
 
 import { atualizarDadosDoPerfilDoUsuario } from './actions'
 
@@ -26,11 +39,17 @@ const formPerfilUsuarioSchema = z.object({
   nome: z.string().min(3, {
     message: 'O nome é obrigatório.',
   }),
+  ddi: z.string(),
   email: z.string().optional(),
   numeroCelular: z.string().min(5, {
     message: 'O número do celular é obrigatório.',
   }),
 })
+
+const buscarDDIPaisUsuario = (ddi: string) => {
+  const pais = paises.find((p) => p.dial_code === ddi)!
+  return `${pais.code} ${pais.dial_code}`
+}
 
 export type FormPerfilUsuario = z.infer<typeof formPerfilUsuarioSchema>
 
@@ -47,7 +66,8 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
   const form = useForm<FormPerfilUsuario>({
     resolver: zodResolver(formPerfilUsuarioSchema),
     defaultValues: {
-      numeroCelular: usuario.numeroCelular,
+      ddi: buscarDDIPaisUsuario(usuario.ddi),
+      numeroCelular: mask(usuario.numeroCelular, mascarasTelefone),
       nome: usuario.nome || '',
       email: usuario.email || undefined,
     },
@@ -56,12 +76,23 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
   const {
     control,
     handleSubmit,
-    formState: { isValid },
+    setValue,
+    formState: { isValid, isLoading },
   } = form
 
   function handleUpdatePerfil(formData: FormPerfilUsuario) {
+    const celular = formData.numeroCelular.replace(/[ ()-]/g, '')
+    const ddi = formData.ddi.split(' ')[1]
+    const numeroCelular = ddi + ' ' + celular
+
+    const dadosUsuario = {
+      nome: formData.nome,
+      email: formData.email,
+      numeroCelular,
+    }
+
     setIsSubmitting(true)
-    atualizarDadosDoPerfilDoUsuario(formData).then((result) => {
+    atualizarDadosDoPerfilDoUsuario(dadosUsuario).then((result) => {
       if (!result?.success) {
         setMessage(result.message)
         setSuccess(false)
@@ -120,123 +151,187 @@ export default function MeuPerfilForm({ usuario }: { usuario: DadosUsuario }) {
   }, [])
 
   return (
-    <div>
-      <div className="flex w-full justify-center py-3">
-        <div
-          className="relative"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          aria-disabled={isUploading}
-          role="button"
-          onClick={() => {
-            fileInputRef.current?.click()
-          }}
-        >
-          <Avatar className="border-secondary-foreground-foreground size-32 border-4 hover:cursor-pointer">
-            {isUploading ? (
-              <AvatarFallback>
-                <Loader2 className="size-8 animate-spin text-slate-300" />
-              </AvatarFallback>
-            ) : avatarUrl ? (
-              <AvatarImage src={avatarUrl} />
-            ) : (
-              <AvatarFallback />
-            )}
-          </Avatar>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div>
+          <div className="flex w-full justify-center py-3">
+            <div
+              className="relative"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              aria-disabled={isUploading}
+              role="button"
+              onClick={() => {
+                fileInputRef.current?.click()
+              }}
+            >
+              <Avatar className="border-secondary-foreground-foreground size-32 border-4 hover:cursor-pointer">
+                {isUploading ? (
+                  <AvatarFallback>
+                    <Loader2 className="size-8 animate-spin text-slate-300" />
+                  </AvatarFallback>
+                ) : avatarUrl ? (
+                  <AvatarImage src={avatarUrl} />
+                ) : (
+                  <AvatarFallback />
+                )}
+              </Avatar>
 
-          {isHovered && !isUploading && (
-            <div className="absolute inset-0 rounded-full bg-slate-200 bg-opacity-50"></div>
+              {isHovered && !isUploading && (
+                <div className="absolute inset-0 rounded-full bg-slate-200 bg-opacity-50"></div>
+              )}
+            </div>
+          </div>
+          {message && (
+            <div className="my-2 text-center">
+              <Alert variant={success ? 'success' : 'destructive'}>
+                {success ? (
+                  <CheckCircle2 className="size-4" />
+                ) : (
+                  <AlertTriangle className="size-4" />
+                )}
+                <AlertTitle className="">
+                  <p>{message}</p>
+                </AlertTitle>
+              </Alert>
+            </div>
           )}
-        </div>
-      </div>
-      {message && (
-        <div className="my-2 text-center">
-          <Alert variant={success ? 'success' : 'destructive'}>
-            {success ? (
-              <CheckCircle2 className="size-4" />
-            ) : (
-              <AlertTriangle className="size-4" />
-            )}
-            <AlertTitle className="">
-              <p>{message}</p>
-            </AlertTitle>
-          </Alert>
+          <Input
+            ref={fileInputRef}
+            type="file"
+            accept="image/png, image/gif image/jpeg"
+            className="absolute right-[9999px]"
+            disabled={isUploading}
+            onChange={async (e) => {
+              const file = e.target.files?.[0]
+              if (file) {
+                await uploadAvatar(file)
+              }
+            }}
+          />
+          <Form {...form}>
+            <form
+              onSubmit={handleSubmit(handleUpdatePerfil)}
+              className="flex flex-col gap-8"
+            >
+              <div className="space-y-2">
+                <div className="space-y-1">
+                  <FormField
+                    control={control}
+                    name="nome"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Label htmlFor="nome">Nome</Label>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <FormField
+                    control={control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Label htmlFor="email">E-mail</Label>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="nome@email.com"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="flex flex-row gap-2">
+                  <FormField
+                    control={control}
+                    name="ddi"
+                    render={({ field }) => (
+                      <FormItem className="space-y-2">
+                        <Label>DDI</Label>
+                        <FormControl>
+                          <Select
+                            onValueChange={(val: string) => field.onChange(val)}
+                            {...field}
+                          >
+                            <SelectTrigger className="w-32">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent className="w-full">
+                              <SelectGroup>
+                                {paises.map((pais) => (
+                                  <SelectItem
+                                    key={`${pais.code} ${pais.dial_code}`}
+                                    value={`${pais.code} ${pais.dial_code}`}
+                                    className="items-left"
+                                  >
+                                    <div className="flex w-full flex-row justify-around gap-4">
+                                      <Flag
+                                        className="w-5 rounded-full"
+                                        code={pais.code}
+                                      />
+                                      <span className="line-clamp-1 text-base">
+                                        {pais.dial_code}
+                                      </span>
+                                    </div>
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={control}
+                    name="numeroCelular"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Label htmlFor="numeroCelular">Telefone</Label>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            onChange={(e) => {
+                              const original = unMask(e.target.value)
+                              const mascarado = mask(original, mascarasTelefone)
+                              setValue('numeroCelular', mascarado)
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-center">
+                <Button type="submit" className="w-[50%]" disabled={!isValid}>
+                  {isSubmitting ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    'Salvar dados'
+                  )}
+                </Button>
+              </div>
+            </form>
+          </Form>
         </div>
       )}
-      <Input
-        ref={fileInputRef}
-        type="file"
-        accept="image/png, image/gif image/jpeg"
-        className="absolute right-[9999px]"
-        disabled={isUploading}
-        onChange={async (e) => {
-          const file = e.target.files?.[0]
-          if (file) {
-            await uploadAvatar(file)
-          }
-        }}
-      />
-      <Form {...form}>
-        <form onSubmit={handleSubmit(handleUpdatePerfil)} className="space-y-2">
-          <div className="space-y-1">
-            <FormField
-              control={control}
-              name="nome"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="nome">Nome</Label>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="space-y-1">
-            <FormField
-              control={control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="email">E-mail</Label>
-                  <FormControl>
-                    <Input type="email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="space-y-1">
-            <FormField
-              control={control}
-              name="numeroCelular"
-              render={({ field }) => (
-                <FormItem>
-                  <Label htmlFor="numeroCelular">Telefone</Label>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="mt-4">
-            <Button type="submit" className="w-full" disabled={!isValid}>
-              {isSubmitting ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                'Salvar dados'
-              )}
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+    </>
   )
 }
