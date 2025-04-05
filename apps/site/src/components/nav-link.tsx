@@ -9,7 +9,7 @@ export function NavLink(props: NavLinkProps) {
   const href = props.href.toString().split('/')
   const path = pathname.split('/')
 
-  const isCurrent = href[2] === path[2]
+  const isCurrent = href[3] === path[3]
 
   return <Link data-current={isCurrent} {...props} />
 }

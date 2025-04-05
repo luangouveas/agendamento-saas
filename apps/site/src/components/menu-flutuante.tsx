@@ -25,7 +25,7 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
             asChild
             className="flex h-full flex-col bg-transparent text-foreground hover:bg-transparent hover:text-muted-foreground data-[current=true]:text-muted-foreground"
           >
-            <NavLink href={`/${props.slug}/novo-agendamento`}>
+            <NavLink href={`/app/${props.slug}/novo-agendamento`}>
               <CalendarDays className="size-6 sm:size-7" />
               <span className="hidden text-[10px] sm:text-xs xs:block">
                 Novo agendamento
@@ -39,7 +39,7 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
             asChild
             className="flex h-full flex-col bg-transparent text-foreground hover:bg-transparent hover:text-muted-foreground data-[current=true]:text-muted-foreground"
           >
-            <NavLink href={`/${props.slug}/meus-agendamentos`}>
+            <NavLink href={`/app/${props.slug}/meus-agendamentos`}>
               <ListChecks className="size-6 sm:size-7" />
               <span className="hidden text-[10px] sm:text-xs xs:block">
                 Meus agendamentos
@@ -63,7 +63,7 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
                 asChild
                 className="text-lg hover:cursor-pointer"
               >
-                <a href={`/${props.slug}/meu-perfil`}>
+                <a href={`/app/${props.slug}/meu-perfil`}>
                   <User className="mr-2 size-6" /> Meus dados
                 </a>
               </DropdownMenuItem>
@@ -73,7 +73,7 @@ export function MenuFlutuante(props: MenuFlutuanteProps) {
                 asChild
                 className="text-lg hover:cursor-pointer"
               >
-                <a href={`/api/sign-out`}>
+                <a href={`/app/api/sign-out`}>
                   <LogOut className="mr-2 size-6" /> Sair
                 </a>
               </DropdownMenuItem>
