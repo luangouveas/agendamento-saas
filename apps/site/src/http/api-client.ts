@@ -15,12 +15,19 @@ export const api = ky.create({
           cookiesStore = serverCookies
         }
 
-        const token = await getCookie('agendador-token', {
+        const clientToken = await getCookie('agendador-token', {
           cookies: cookiesStore,
         })
 
-        if (token) {
-          request.headers.set('Authorization', `Bearer ${token}`)
+        const adminToken = await getCookie('ag-tk-admin', {
+          cookies: cookiesStore,
+        })
+
+        if (adminToken || clientToken) {
+          request.headers.set(
+            'Authorization',
+            `Bearer ${adminToken || clientToken}`,
+          )
         }
       },
     ],

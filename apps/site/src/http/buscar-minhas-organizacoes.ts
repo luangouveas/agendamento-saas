@@ -6,9 +6,9 @@ interface BuscarOrganizacoesResponse {
   organizacoes: Organizacao[]
 }
 
-export async function buscarOrganizacoes() {
+export async function buscarMinhasOrganizacoes() {
   const result = await api
-    .get('organizacoes')
+    .get('minhas-organizacoes')
     .json<BuscarOrganizacoesResponse>()
 
   return result
