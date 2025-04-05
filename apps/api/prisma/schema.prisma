@@ -31,6 +31,11 @@ model Usuario {
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
 
+  stripeCustomerId         String?
+  stripeSubscriptionId     String?
+  stripeSubscriptionStatus String?
+  stripePriceId            String?
+
   tokens            Token[]
   owns_organizacoes Organizacao[]
   membros           Membro[]
