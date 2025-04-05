@@ -21,6 +21,9 @@ import { ConfirmarAgendamento } from './routes/agendamento/confirmar-agendamento
 import { CriarAgendamento } from './routes/agendamento/criar-agendamento'
 import { ReabrirAgendamento } from './routes/agendamento/reabrir-agendamento'
 import { TransferirAgendamento } from './routes/agendamento/transferir-agendamento'
+import { AtualizarAssinatura } from './routes/assinatura/atualiza-assinatura'
+import { BuscarAssinante } from './routes/assinatura/buscar-assinante'
+import { BuscarAssinaturaUsuarioPorIdUsuario } from './routes/assinatura/buscar-assinatura-por-id-usuario'
 import { autenticarComEmailSenha } from './routes/auth/autenticar-com-email-senha'
 import { AutenticarComOtp } from './routes/auth/autenticar-com-otp'
 import { BuscarPerfil } from './routes/auth/buscar-perfil'
@@ -41,6 +44,7 @@ import { BuscarAfiliacao } from './routes/membro/buscar-afiliacao'
 import { CriarAfiliacao } from './routes/membro/criar-afiliacao'
 import { AtualizarOrganizacao } from './routes/orgs/atualizar-organizacao'
 import { BuscarMembros } from './routes/orgs/buscar-membros'
+import { BuscarMinhasOrganizacoes } from './routes/orgs/buscar-minhas-organizacoes'
 import { BuscarOrganizacao } from './routes/orgs/buscar-organizacao'
 import { BuscarOrganizacoes } from './routes/orgs/buscar-organizacoes'
 import { CriarOrganizacao } from './routes/orgs/criar-organizacao'
@@ -103,6 +107,7 @@ app.register(CriarOrganizacao)
 app.register(AtualizarOrganizacao)
 app.register(BuscarOrganizacao)
 app.register(BuscarOrganizacoes)
+app.register(BuscarMinhasOrganizacoes)
 app.register(BuscarMembros)
 
 app.register(CriarServico)
@@ -134,6 +139,10 @@ app.register(BuscarExpedientes)
 app.register(BuscarProfissionais)
 app.register(BuscarProfissional)
 app.register(BuscarHorariosDisponiveis)
+
+app.register(BuscarAssinaturaUsuarioPorIdUsuario)
+app.register(BuscarAssinante)
+app.register(AtualizarAssinatura)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
