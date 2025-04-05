@@ -10,16 +10,28 @@ export const env = createEnv({
   client: {},
   shared: {
     NEXT_PUBLIC_API_URL: z.string().url(),
-    SUPABASE_URL: z.string().url(),
-    SUPABASE_SECRET_KEY: z.string(),
+    NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
+    NEXT_PUBLIC_SUPABASE_SECRET_KEY: z.string(),
+    NEXT_PUBLIC_STRIPE_PUBLISHABE_KEY: z.string(),
+    NEXT_PUBLIC_STRIPE_SECRET_KEY: z.string(),
+    NEXT_PUBLIC_STRIPE_PLAN_PRICE_FREE_ID: z.string(),
+    NEXT_PUBLIC_STRIPE_PLAN_PRICE_PRO_ID: z.string(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     JWT_SECRET: process.env.JWT_SECRET,
     SERVER_PORT: process.env.SERVER_PORT,
-    SUPABASE_URL: process.env.SUPABASE_URL,
-    SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY,
+    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_SECRET_KEY:
+      process.env.NEXT_PUBLIC_SUPABASE_SECRET_KEY,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STRIPE_PUBLISHABE_KEY:
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABE_KEY,
+    NEXT_PUBLIC_STRIPE_SECRET_KEY: process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY,
+    NEXT_PUBLIC_STRIPE_PLAN_PRICE_FREE_ID:
+      process.env.NEXT_PUBLIC_STRIPE_PLAN_PRICE_FREE_ID,
+    NEXT_PUBLIC_STRIPE_PLAN_PRICE_PRO_ID:
+      process.env.NEXT_PUBLIC_STRIPE_PLAN_PRICE_PRO_ID,
   },
   emptyStringAsUndefined: true,
 })
