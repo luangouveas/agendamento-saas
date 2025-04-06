@@ -1,17 +1,26 @@
+import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const response = NextResponse.next()
 
-  const [, slug] = pathname.split('/')
-  if (slug) {
+  const [, , slug] = pathname.split('/')
+
+  const cookieStore = await cookies()
+  const tokenadmin = cookieStore.get('ag-tk-admin')
+  if (tokenadmin?.value) {
+    response.cookies.set('agendador-token', tokenadmin.value)
+  }
+
+  const temSlug =
+    !pathname.startsWith('/painel/minha-conta') &&
+    !pathname.startsWith('/painel/auth') &&
+    slug
+
+  if (temSlug) {
     response.cookies.set('agendador-organizacao', slug)
-    response.cookies.set(
-      'agendador-token',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3M2Q4NjkxMC03NGE2LTQyNDktOWM2MS02ZGVlNGEyYzJjZTAiLCJpYXQiOjE3NDIxNzU5MDcsImV4cCI6MTc0Mjc4MDcwN30.xVOPDrQzWrms1QVIJyGqxwGHkJ7mfnGEV0FjvWKoqYA',
-    )
   } else {
     response.cookies.delete('agendador-organizacao')
   }
