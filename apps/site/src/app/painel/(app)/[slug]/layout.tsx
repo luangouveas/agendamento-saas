@@ -1,0 +1,19 @@
+import Header from '@/app/painel/_components/header'
+import { Tabs } from '@/app/painel/_components/tabs'
+
+export default function OrgLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <div>
+      <div className="pt-4">
+        <Header />
+        <Tabs />
+      </div>
+
+      <main className="mx-auto w-full max-w-[1200px] py-4">{children}</main>
+    </div>
+  )
+}
