@@ -120,6 +120,7 @@ type Plan = {
   quota: {
     estabelecimentos: number
     servicos: number
+    profissionais: number
   }
 }
 
@@ -146,6 +147,20 @@ export const getPlanByPrice = (priceId: string) => {
   }
 }
 
+export const getPrice = async (priceId: string) => {
+  const prices = await stripe.prices.list()
+  const price = prices.data.find((p) => p.id === priceId)
+
+  if (!price) {
+    throw new Error('Não foi possivel localizar o preço da assinatura')
+  }
+
+  return {
+    valor: price.unit_amount_decimal,
+    ativo: price.active,
+  }
+}
+
 export const getUserCurrentPlan = async () => {
   const { assinatura } = await BuscarAssinaturaUsuarioPorIdUsuario()
 
@@ -164,6 +179,11 @@ export const getUserCurrentPlan = async () => {
   const currentServicos = assinatura.totalServicos
   const usageServicos = (currentServicos / availableServicos) * 100
 
+  const availableProfissionais = plan.quota.profissionais
+  const currentProfissionais = assinatura.totalProfissionais
+  const usageProfissionais =
+    (currentProfissionais / availableProfissionais) * 100
+
   return {
     name: plan.name,
     quota: {
@@ -176,6 +196,11 @@ export const getUserCurrentPlan = async () => {
         available: availableServicos,
         current: currentServicos,
         usageServicos,
+      },
+      profissionais: {
+        available: availableProfissionais,
+        current: currentProfissionais,
+        usageProfissionais,
       },
     },
   }
