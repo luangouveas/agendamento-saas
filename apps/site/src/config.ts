@@ -7,11 +7,11 @@ export const config = {
     plans: {
       free: {
         priceId: env.NEXT_PUBLIC_STRIPE_PLAN_PRICE_FREE_ID,
-        quota: { estabelecimentos: 1, servicos: 3 },
+        quota: { estabelecimentos: 1, servicos: 3, profissionais: 2 },
       },
       pro: {
         priceId: env.NEXT_PUBLIC_STRIPE_PLAN_PRICE_PRO_ID,
-        quota: { estabelecimentos: 5, servicos: 150 },
+        quota: { estabelecimentos: 5, servicos: 50, profissionais: 10 },
       },
     },
   },
