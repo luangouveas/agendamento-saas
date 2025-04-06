@@ -23,7 +23,7 @@ type HeaderProps = {
 
 export function Header({ organizacoes, organizacaoAtual }: HeaderProps) {
   return (
-    <MainHeader>
+    <MainHeader className="border-b border-border pb-3">
       <HeaderContent>
         <HeaderContentLeft>
           <Image

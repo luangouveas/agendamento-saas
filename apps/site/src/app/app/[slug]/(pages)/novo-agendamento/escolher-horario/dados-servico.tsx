@@ -10,7 +10,7 @@ export default function DadosServico(props: DadosServicoProps) {
   const { profissionalAvatar, profissionalNome, servicoNome } = props
 
   return (
-    <div className="mt-10 flex flex-row items-center gap-2">
+    <div className="flex flex-row items-center gap-2">
       <Avatar className="size-16">
         {profissionalAvatar && <AvatarImage src={profissionalAvatar} />}
         <AvatarFallback />

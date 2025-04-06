@@ -20,10 +20,12 @@ export default async function AppLayout({
   const organizacaoAtual = organizacoes.find((org) => org.slug === slug)
 
   return (
-    <div className="flex justify-center space-y-14">
+    <div className="space-y-4 py-4">
       <Header organizacaoAtual={organizacaoAtual} organizacoes={organizacoes} />
       <AgendamentoProvider>
-        <main className="w-full max-w-4xl pb-28 pt-6">{children}</main>
+        <main className="flex justify-center pb-28 pt-6">
+          <div className="w-full max-w-4xl">{children}</div>
+        </main>
       </AgendamentoProvider>
       <MenuFlutuante slug={slug!} />
     </div>

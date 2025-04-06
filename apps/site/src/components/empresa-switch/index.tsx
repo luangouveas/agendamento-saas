@@ -31,7 +31,7 @@ export function EmpresaSwitcher({
       <DropdownMenuTrigger className="flex w-[320px] items-center gap-2 rounded-lg p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
         {organizacaoAtual ? (
           <>
-            <Avatar className="size-10">
+            <Avatar className="size-8 rounded-lg">
               {organizacaoAtual.avatarUrl && (
                 <AvatarImage
                   src={organizacaoAtual.avatarUrl}
@@ -40,9 +40,7 @@ export function EmpresaSwitcher({
               )}
               <AvatarFallback />
             </Avatar>
-            <span className="truncate text-left text-lg font-normal">
-              {organizacaoAtual.nome}
-            </span>
+            <span className="truncate text-left">{organizacaoAtual.nome}</span>
           </>
         ) : (
           <span className="text-muted-foreground">
@@ -89,7 +87,7 @@ export function EmpresaSwitcherItem({
       className="cursor-pointer hover:text-muted-foreground data-[current=true]:font-semibold"
     >
       <Link data-current={isCurrent} href={url}>
-        <Avatar className="mr-2 size-7">
+        <Avatar className="mr-2 size-6 rounded-lg">
           {organizacao.avatarUrl && (
             <AvatarImage src={organizacao.avatarUrl} alt={organizacao.nome} />
           )}

@@ -71,7 +71,7 @@ export default function ConfirmarAgendamentoClienteForm({
   return (
     <>
       {dadosUsuario.nome !== '' ? (
-        <div className="flex h-[530px] flex-col justify-between">
+        <div className="flex flex-col justify-between space-y-20">
           <div>
             <div className="mt-8 flex flex-col">
               <div className="flex flex-row items-center gap-2">
@@ -112,11 +112,11 @@ export default function ConfirmarAgendamentoClienteForm({
             )}
           </div>
 
-          <div className="bottom-0 mt-4 w-full pb-4">
+          <div className="flex w-full items-center justify-center">
             <Button
               type="submit"
               onClick={handleCriarAgendamento}
-              className="w-full"
+              className="w-full sm:w-3/4 md:w-2/5"
             >
               {isSubmitting ? (
                 <Loader2 className="size-4 animate-spin" />

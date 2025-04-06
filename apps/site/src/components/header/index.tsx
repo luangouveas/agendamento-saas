@@ -1,14 +1,19 @@
+import { cn } from '@/lib/utils'
+
 type HeaderGenericProps<T = unknown> = {
   children: React.ReactNode
   className?: string
 } & T
 
-export function MainHeader({ children }: HeaderGenericProps) {
+export function MainHeader({ className, children }: HeaderGenericProps) {
   return (
-    <header className="fixed top-0 z-50 flex w-full flex-col gap-2 rounded-md border-b-2 bg-background">
-      <div className="flex h-16 items-center justify-between rounded-xl bg-background p-6">
-        {children}
-      </div>
+    <header
+      className={cn(
+        `"mx-auto xl:px-0" flex items-center justify-between px-2`,
+        className,
+      )}
+    >
+      {children}
     </header>
   )
 }

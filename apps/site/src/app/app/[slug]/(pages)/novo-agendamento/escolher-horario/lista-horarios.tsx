@@ -77,7 +77,7 @@ export default function ListaDeHorariosDisponiveis({
   }, [servico!.id, profissional!.id])
 
   return (
-    <div className="mt-6 flex flex-col gap-5">
+    <div className="flex flex-col gap-5">
       <DadosServico
         servicoNome={servico!.nome}
         profissionalAvatar={profissional!.avatarUrl}
