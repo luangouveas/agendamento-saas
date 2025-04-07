@@ -1,5 +1,4 @@
-import { Crown, LucideTrash2, PenSquare } from 'lucide-react'
-import Image from 'next/image'
+import { LucideTrash2, PenSquare } from 'lucide-react'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
