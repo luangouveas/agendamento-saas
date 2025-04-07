@@ -1,4 +1,4 @@
-import { Crown, LucideTrash2, PenSquare } from 'lucide-react'
+import { Crown, XOctagonIcon } from 'lucide-react'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -19,7 +19,9 @@ export default async function ListaProfissionais() {
 
   return (
     <div className="space-y-2">
-      <h2 className="text-lg font-semibold">Profissionais</h2>
+      <h2 className="text-lg font-semibold">
+        Lista de profissionais associados
+      </h2>
       <div className="rounded border">
         <Table>
           <TableBody>
@@ -63,13 +65,9 @@ export default async function ListaProfissionais() {
                         value={membro.role}
                         disabled={membro.usuarioId === organizacao.ownerId}
                       />
-                      <Button size="sm" variant="ghost">
-                        <PenSquare className="mr-2 size-4" />
-                        Alterar
-                      </Button>
                       <Button size="sm" variant="destructive">
-                        <LucideTrash2 className="mr-2 size-4" />
-                        Excluir
+                        <XOctagonIcon className="mr-2 size-4" />
+                        Remover associação
                       </Button>
                     </div>
                   </TableCell>
