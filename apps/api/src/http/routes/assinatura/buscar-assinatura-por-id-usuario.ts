@@ -22,6 +22,7 @@ export function BuscarAssinaturaUsuarioPorIdUsuario(app: FastifyInstance) {
             200: z.object({
               assinatura: z.object({
                 id: z.string().uuid(),
+                email: z.string().nullable(),
                 stripeCustomerId: z.string().nullable(),
                 stripeSubscriptionId: z.string().nullable(),
                 stripeSubscriptionStatus: z.string().nullable(),
@@ -43,6 +44,7 @@ export function BuscarAssinaturaUsuarioPorIdUsuario(app: FastifyInstance) {
           },
           select: {
             id: true,
+            email: true,
             stripePriceId: true,
             stripeCustomerId: true,
             stripeSubscriptionId: true,

@@ -30,7 +30,6 @@ export function AtualizarAssinatura(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        const usuarioId = await request.getCurrentUserId()
         const {
           stripeCustomerId,
           stripePriceId,
@@ -38,9 +37,9 @@ export function AtualizarAssinatura(app: FastifyInstance) {
           stripeSubscriptionStatus,
         } = request.body
 
-        const usuario = await prisma.usuario.findUnique({
+        const usuario = await prisma.usuario.findFirst({
           where: {
-            id: usuarioId,
+            stripeCustomerId,
           },
         })
 
@@ -50,7 +49,7 @@ export function AtualizarAssinatura(app: FastifyInstance) {
 
         await prisma.usuario.update({
           where: {
-            id: usuarioId,
+            id: usuario.id,
           },
           data: {
             stripeCustomerId,
