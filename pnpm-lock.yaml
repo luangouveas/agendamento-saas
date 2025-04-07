@@ -84,6 +84,9 @@ importers:
 
   apps/site:
     dependencies:
+      '@agendamento-saas/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@agendamento-saas/env':
         specifier: workspace:*
         version: link:../../packages/env

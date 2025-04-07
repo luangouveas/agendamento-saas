@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@agendamento-saas/env": "workspace:*",
+    "@agendamento-saas/auth": "workspace:*",
     "@hookform/resolvers": "^4.1.3",
     "@radix-ui/react-avatar": "^1.1.3",
     "@radix-ui/react-dialog": "^1.1.6",
