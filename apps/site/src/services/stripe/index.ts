@@ -60,14 +60,13 @@ export const createCheckoutSession = async (
 
     const session = await stripe.billingPortal.sessions.create({
       customer: customer.id,
-      return_url: 'http://localhost:3000/painel/configuracoes/assinaturas',
+      return_url: 'http://localhost:3000/painel/minha-conta/assinatura',
       flow_data: {
         type: 'subscription_update_confirm',
         after_completion: {
           type: 'redirect',
           redirect: {
-            return_url:
-              'http://localhost:3000/painel/configuracoes/assinaturas?success=true',
+            return_url: 'http://localhost:3000/painel',
           },
         },
         subscription_update_confirm: {
@@ -90,6 +89,25 @@ export const createCheckoutSession = async (
     console.error(error)
     throw new Error('Error to create checkout session')
   }
+}
+
+export const downgradePlanToFree = async (userStripeSubscriptionId: string) => {
+  const subscription = await stripe.subscriptionItems.list({
+    subscription: userStripeSubscriptionId,
+    limit: 1,
+  })
+
+  const result = await stripe.subscriptions.update(userStripeSubscriptionId, {
+    items: [
+      {
+        id: subscription.data[0].id,
+        price: config.stripe.plans.free.priceId,
+        quantity: 1,
+      },
+    ],
+  })
+
+  return result.status
 }
 
 export const handleProcessWebhookUpdatedSubscription = async (event: {

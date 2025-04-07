@@ -42,6 +42,7 @@ export async function BuscarAssinante({
 interface BuscarAssinaturaUsuarioPorIdUsuarioResponse {
   assinatura: {
     id: string
+    email: string
     stripePriceId: string
     stripeCustomerId: string
     stripeSubscriptionId: string
@@ -53,6 +54,10 @@ interface BuscarAssinaturaUsuarioPorIdUsuarioResponse {
 }
 
 export async function BuscarAssinaturaUsuarioPorIdUsuario() {
-  const response = await api.get(`assinatura`)
+  const response = await api.get(`assinatura`, {
+    next: {
+      tags: ['assinatura-usuario'],
+    },
+  })
   return response.json<BuscarAssinaturaUsuarioPorIdUsuarioResponse>()
 }

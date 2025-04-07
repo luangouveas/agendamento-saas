@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { config } from '@/config'
 import { getPrice } from '@/services/stripe'
 
-import { criarSessaoDeAssinatura } from './actions'
+import { atualizarAssinaturaPROAction } from './actions'
 
 export async function AssinarPro() {
   const planPro = config.stripe.plans.pro
@@ -20,7 +20,7 @@ export async function AssinarPro() {
           {`Ative a assinatura PRO por R$ ${proPrice.valor || 'Preço'} /mês`}
         </p>
 
-        <form action={criarSessaoDeAssinatura}>
+        <form action={atualizarAssinaturaPROAction}>
           <Button type="submit" disabled={!proPrice?.ativo} variant="default">
             {proPrice?.ativo ? 'Assinar PRO' : 'Assinatura desabilitada'}
           </Button>

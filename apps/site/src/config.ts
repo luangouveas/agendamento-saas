@@ -4,6 +4,7 @@ export const config = {
   stripe: {
     publishableKey: env.NEXT_PUBLIC_STRIPE_PUBLISHABE_KEY,
     secretKey: env.NEXT_PUBLIC_STRIPE_SECRET_KEY,
+    webhookkey: env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET,
     plans: {
       free: {
         priceId: env.NEXT_PUBLIC_STRIPE_PLAN_PRICE_FREE_ID,
