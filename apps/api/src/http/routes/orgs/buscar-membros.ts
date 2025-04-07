@@ -23,6 +23,11 @@ export function BuscarMembros(app: FastifyInstance) {
           params: z.object({
             slug: z.string(),
           }),
+          querystring: z.object({
+            tipo: z
+              .union([z.literal('CLIENTE'), z.literal('FUNCIONARIO')])
+              .optional(),
+          }),
           response: {
             200: z.object({
               membros: z.array(
@@ -36,7 +41,7 @@ export function BuscarMembros(app: FastifyInstance) {
                   ]),
                   nome: z.string(),
                   avatarUrl: z.string().url().nullable(),
-                  numeroCelular: z.bigint(),
+                  numeroCelular: z.string(),
                   email: z.string().email().nullable(),
                 }),
               ),
@@ -46,6 +51,7 @@ export function BuscarMembros(app: FastifyInstance) {
       },
       async (request) => {
         const { slug } = request.params
+        const { tipo } = request.query
 
         const usuarioId = await request.getCurrentUserId()
         const { organizacao, membership } =
@@ -76,6 +82,7 @@ export function BuscarMembros(app: FastifyInstance) {
           },
           where: {
             organizacaoId: organizacao.id,
+            tipo: tipo ?? undefined,
           },
           orderBy: {
             role: 'asc',
