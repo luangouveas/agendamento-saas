@@ -13,8 +13,7 @@ export default async function ListaServicos() {
 
   return (
     <div className="space-y-2">
-      <h2 className="text-lg font-semibold">Serviços</h2>
-      <div className="rouded border">
+      <div className="rounded border">
         <Table>
           <TableBody>
             {servicos.map((servico) => {
