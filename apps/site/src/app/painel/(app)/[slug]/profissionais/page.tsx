@@ -1,6 +1,5 @@
-import { getSlugOrganizacaoAtual } from '@/auth/auth'
+import ListaProfissionais from './lista-profissionais'
 
-export default async function ProfissionaisOrganizacao() {
-  const slug = await getSlugOrganizacaoAtual()
-  return <h1>Profissionais da organização {slug}</h1>
+export default function ProfissionaisOrganizacao() {
+  return <ListaProfissionais />
 }
