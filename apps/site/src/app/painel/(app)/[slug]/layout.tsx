@@ -8,7 +8,7 @@ export default function OrgLayout({
 }>) {
   return (
     <div>
-      <div className="pt-4">
+      <div className="pt-6">
         <Header />
         <Tabs />
       </div>

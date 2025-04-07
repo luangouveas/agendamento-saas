@@ -20,11 +20,14 @@ import { ProfileButton } from '@/components/profile-button'
 import { ComutadorTema } from '@/components/theme/comutador-tema'
 import { Separator } from '@/components/ui/separator'
 import { buscarMinhasOrganizacoes } from '@/http/buscar-minhas-organizacoes'
+import { getUserCurrentPlan } from '@/services/stripe'
 
 export default async function Header() {
   const slug = await getSlugOrganizacaoAtual()
   const { organizacoes } = await buscarMinhasOrganizacoes()
   const organizacaoAtual = organizacoes.find((org) => org.slug === slug)
+
+  const { name } = await getUserCurrentPlan()
 
   return (
     <MainHeader>
@@ -60,6 +63,12 @@ export default async function Header() {
         </HeaderContentLeft>
         <HeaderContentRight>
           <ComutadorTema />
+          <Separator orientation="vertical" className="h-5" />
+          <div className="rounded-xl border-2 border-border px-2 py-1 shadow dark:shadow-sm dark:shadow-white">
+            <span className="uppercase" title="Sua assinatura atual">
+              {name}
+            </span>
+          </div>
           <Separator orientation="vertical" className="h-5" />
           <ProfileButton />
         </HeaderContentRight>

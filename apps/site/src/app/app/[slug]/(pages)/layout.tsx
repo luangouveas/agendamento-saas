@@ -20,7 +20,7 @@ export default async function AppLayout({
   const organizacaoAtual = organizacoes.find((org) => org.slug === slug)
 
   return (
-    <div className="space-y-4 py-4">
+    <div className="space-y-4 py-4 pt-6">
       <Header organizacaoAtual={organizacaoAtual} organizacoes={organizacoes} />
       <AgendamentoProvider>
         <main className="flex justify-center pb-28 pt-6">

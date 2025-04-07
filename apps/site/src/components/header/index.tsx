@@ -7,14 +7,14 @@ type HeaderGenericProps<T = unknown> = {
 
 export function MainHeader({ className, children }: HeaderGenericProps) {
   return (
-    <header
+    <div
       className={cn(
-        `"mx-auto xl:px-0" flex items-center justify-between px-2`,
+        `mx-auto flex max-w-[1200px] items-center justify-between px-2 xl:px-0`,
         className,
       )}
     >
       {children}
-    </header>
+    </div>
   )
 }
 
