@@ -14,7 +14,7 @@ export async function Tabs() {
           size="sm"
           className="border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
         >
-          <NavLink href={`/org/${slug}`}>Serviços</NavLink>
+          <NavLink href={`/painel/${slug}`}>Serviços</NavLink>
         </Button>
 
         <Button
@@ -23,7 +23,9 @@ export async function Tabs() {
           size="sm"
           className="border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
         >
-          <NavLink href={`/org/${slug}/members`}>Profissionais</NavLink>
+          <NavLink href={`/painel/${slug}/profissionais`}>
+            Profissionais
+          </NavLink>
         </Button>
 
         <Button
@@ -32,7 +34,9 @@ export async function Tabs() {
           size="sm"
           className="border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
         >
-          <NavLink href={`/org/${slug}/settings`}>Configuracoes</NavLink>
+          <NavLink href={`/painel/${slug}/configuracoes`}>
+            Configuracoes
+          </NavLink>
         </Button>
       </nav>
     </div>
