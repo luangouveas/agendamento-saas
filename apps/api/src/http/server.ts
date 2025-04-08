@@ -48,6 +48,7 @@ import { BuscarMinhasOrganizacoes } from './routes/orgs/buscar-minhas-organizaco
 import { BuscarOrganizacao } from './routes/orgs/buscar-organizacao'
 import { BuscarOrganizacoes } from './routes/orgs/buscar-organizacoes'
 import { CriarOrganizacao } from './routes/orgs/criar-organizacao'
+import { ExcluirOrganizacao } from './routes/orgs/excluir-organizacao'
 import { BuscarProfissionais } from './routes/profissional/buscar-profissionais'
 import { BuscarProfissional } from './routes/profissional/buscar-profissional'
 import { AtualizarServico } from './routes/servico/atualizar-servico'
@@ -105,6 +106,7 @@ app.register(AtualizarPerfil)
 
 app.register(CriarOrganizacao)
 app.register(AtualizarOrganizacao)
+app.register(ExcluirOrganizacao)
 app.register(BuscarOrganizacao)
 app.register(BuscarOrganizacoes)
 app.register(BuscarMinhasOrganizacoes)
