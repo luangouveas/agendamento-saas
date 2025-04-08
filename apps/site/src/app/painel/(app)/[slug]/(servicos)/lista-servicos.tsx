@@ -1,4 +1,5 @@
 import { LucideTrash2, PenSquare } from 'lucide-react'
+import Link from 'next/link'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
@@ -48,9 +49,13 @@ export default async function ListaServicos() {
                   </TableCell>
                   <TableCell className="py-2.5">
                     <div className="flex items-center justify-end gap-2">
-                      <Button size="sm" variant="ghost">
-                        <PenSquare className="mr-2 size-4" />
-                        Alterar
+                      <Button size="sm" variant="outline" asChild>
+                        <Link
+                          href={`/painel/${slug}/servico/editar/${servico.id}`}
+                        >
+                          <PenSquare className="mr-2 size-4" />
+                          Editar
+                        </Link>
                       </Button>
                       <Button size="sm" variant="destructive">
                         <LucideTrash2 className="mr-2 size-4" />
