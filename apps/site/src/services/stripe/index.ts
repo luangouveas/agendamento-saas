@@ -66,7 +66,8 @@ export const createCheckoutSession = async (
         after_completion: {
           type: 'redirect',
           redirect: {
-            return_url: 'http://localhost:3000/painel',
+            return_url:
+              'http://localhost:3000/painel/minha-conta/assinatura?ok=true',
           },
         },
         subscription_update_confirm: {

@@ -20,6 +20,7 @@ import { ProfileButton } from '@/components/profile-button'
 import { ComutadorTema } from '@/components/theme/comutador-tema'
 import { Separator } from '@/components/ui/separator'
 import { buscarMinhasOrganizacoes } from '@/http/buscar-minhas-organizacoes'
+import { cn } from '@/lib/utils'
 import { getUserCurrentPlan } from '@/services/stripe'
 
 export default async function Header() {
@@ -64,8 +65,15 @@ export default async function Header() {
         <HeaderContentRight>
           <ComutadorTema />
           <Separator orientation="vertical" className="h-5" />
-          <div className="rounded-xl border-2 border-border px-2 py-1 shadow dark:shadow-sm dark:shadow-white">
-            <span className="uppercase" title="Sua assinatura atual">
+          <div
+            className={cn(
+              'rounded-xl border-2 border-border px-2 py-1 shadow dark:shadow-sm',
+              name?.toString().toUpperCase() === 'PRO'
+                ? 'text-yellow-500 shadow-yellow-400 dark:shadow-yellow-400'
+                : 'dark:shadow-white',
+            )}
+          >
+            <span className="font-bold uppercase" title="Sua assinatura atual">
               {name}
             </span>
           </div>

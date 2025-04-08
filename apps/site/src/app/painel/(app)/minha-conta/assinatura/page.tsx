@@ -1,106 +1,137 @@
+import { AlertTriangle } from 'lucide-react'
+
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import * as stripeService from '@/services/stripe'
 
 import { AssinarFree } from './assinar-free'
 import { AssinarPro } from './assinar-pro'
-import HeaderAssinaturaPage from './header-assinatura'
 
 export default async function AssinaturasPage({
   searchParams,
 }: {
-  searchParams: Promise<{ updatePlanSuccess: boolean }>
+  searchParams: Promise<{ ok: string }>
 }) {
-  const updatePlanSuccess = (await searchParams).updatePlanSuccess
   const { name, quota } = await stripeService.getUserCurrentPlan()
-
+  const planoAtualizado = (await searchParams)?.ok
+  console.log(planoAtualizado)
   return (
-    <div className="flex flex-col space-y-2 p-4">
-      <HeaderAssinaturaPage updatePlanSuccess={updatePlanSuccess} />
-      <Card>
-        <CardHeader className="border-b border-border">
-          <CardTitle className="text-lg">Minha Assinatura</CardTitle>
-          <CardDescription>
-            Analise aqui o estado da sua assinatura{' '}
-            <span className="font-bold uppercase">{name}</span>
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6">
-          <div className="space-y-2">
-            {/* ESTABELECIMENTOS */}
-            <Card>
-              <CardContent>
-                <CardHeader className="p-1 font-medium">
-                  Estabelecimentos
-                </CardHeader>
-                <header className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    {quota.estabelecimentos.current}/
-                    {quota.estabelecimentos.available}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {quota.estabelecimentos.usageEstabelecimentos}%
-                  </span>
-                </header>
-                <main>
-                  <Progress
-                    value={quota.estabelecimentos.usageEstabelecimentos}
-                  />
-                </main>
-              </CardContent>
-            </Card>
+    <div className="space-y-4">
+      <h2 className="text-2xl font-semibold">Minha assinatura</h2>
 
-            {/* PROFISSIONAIS */}
-            <Card>
-              <CardContent>
-                <CardHeader className="p-1 font-medium">
-                  Profissionais
-                </CardHeader>
-                <header className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    {quota.profissionais.current}/
-                    {quota.profissionais.available}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {quota.profissionais.usageProfissionais}%
-                  </span>
-                </header>
-                <main>
-                  <Progress value={quota.profissionais.usageProfissionais} />
-                </main>
-              </CardContent>
-            </Card>
+      <div className="space-y-4">
+        <Card>
+          <CardHeader className="border-b border-border">
+            <CardDescription className="flex items-center justify-between">
+              <div>
+                Analise aqui o estado da sua assinatura{' '}
+                <span className="font-bold uppercase">{name}</span>
+              </div>
 
-            {/* SERVIÇOS */}
-            <Card>
-              <CardContent>
-                <CardHeader className="p-1 font-medium">Serviços</CardHeader>
-                <header className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">
-                    {quota.servicos.current}/{quota.servicos.available}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {quota.servicos.usageServicos}%
-                  </span>
-                </header>
-                <main>
-                  <Progress value={quota.servicos.usageServicos} />
-                </main>
-              </CardContent>
-            </Card>
-          </div>
-        </CardContent>
-        <CardFooter className="border-t border-border pt-2">
-          {name === 'free' ? <AssinarPro /> : <AssinarFree />}
-        </CardFooter>
-      </Card>
+              {planoAtualizado === 'true' && (
+                <div className="w-[600px]">
+                  <Alert variant="success">
+                    <AlertTriangle className="size-4" />
+                    <AlertTitle>Sucesso!</AlertTitle>
+                    <AlertDescription>
+                      <p>Sua assinatura foi atualizada com sucesso!</p>
+                    </AlertDescription>
+                  </Alert>
+                </div>
+              )}
+
+              {planoAtualizado === 'false' && (
+                <div className="w-[600px]">
+                  <Alert variant="destructive">
+                    <AlertTriangle className="size-4" />
+                    <AlertTitle>Erro!</AlertTitle>
+                    <AlertDescription>
+                      <p>
+                        Ocorreu um erro durante a atualização da sua assinatura
+                      </p>
+                    </AlertDescription>
+                  </Alert>
+                </div>
+              )}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="space-y-2">
+              {/* ESTABELECIMENTOS */}
+              <Card>
+                <CardContent>
+                  <CardHeader className="p-1 font-medium">
+                    Estabelecimentos
+                  </CardHeader>
+                  <header className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      {quota.estabelecimentos.current}/
+                      {quota.estabelecimentos.available}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {quota.estabelecimentos.usageEstabelecimentos}%
+                    </span>
+                  </header>
+                  <main>
+                    <Progress
+                      value={quota.estabelecimentos.usageEstabelecimentos}
+                    />
+                  </main>
+                </CardContent>
+              </Card>
+
+              {/* PROFISSIONAIS */}
+              <Card>
+                <CardContent>
+                  <CardHeader className="p-1 font-medium">
+                    Profissionais
+                  </CardHeader>
+                  <header className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      {quota.profissionais.current}/
+                      {quota.profissionais.available}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {quota.profissionais.usageProfissionais}%
+                    </span>
+                  </header>
+                  <main>
+                    <Progress value={quota.profissionais.usageProfissionais} />
+                  </main>
+                </CardContent>
+              </Card>
+
+              {/* SERVIÇOS */}
+              <Card>
+                <CardContent>
+                  <CardHeader className="p-1 font-medium">Serviços</CardHeader>
+                  <header className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      {quota.servicos.current}/{quota.servicos.available}
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {quota.servicos.usageServicos}%
+                    </span>
+                  </header>
+                  <main>
+                    <Progress value={quota.servicos.usageServicos} />
+                  </main>
+                </CardContent>
+              </Card>
+            </div>
+          </CardContent>
+          <CardFooter className="border-t border-border pt-2">
+            {name === 'free' ? <AssinarPro /> : <AssinarFree />}
+          </CardFooter>
+        </Card>
+      </div>
     </div>
   )
 }
