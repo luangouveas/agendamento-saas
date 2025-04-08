@@ -14,7 +14,11 @@ interface BuscarServicosResponse {
 
 export async function buscarServicos(slug: string) {
   const result = await api
-    .get(`organizacao/${slug}/servicos`)
+    .get(`organizacao/${slug}/servicos`, {
+      next: {
+        tags: [`${slug}/servicos`],
+      },
+    })
     .json<BuscarServicosResponse>()
 
   return result
