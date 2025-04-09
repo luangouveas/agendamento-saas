@@ -39,6 +39,7 @@ model Usuario {
   tokens            Token[]
   owns_organizacoes Organizacao[]
   membros           Membro[]
+  convites          Convite[]
 
   agendamentos_cliente      Agendamento[] @relation("ClienteAgendamentos")
   agendamentos_profissional Agendamento[] @relation("ProfissionalAgendamentos")
@@ -67,6 +68,7 @@ model Organizacao {
   membros      Membro[]
   servicos     Servico[]
   agendamentos Agendamento[]
+  convites     Convite[]
 
   @@map("organizacoes")
 }
@@ -186,4 +188,21 @@ model DiasExpediente {
 
   @@unique([expedienteId, diaSemana])
   @@map("diasExpediente")
+}
+
+model Convite {
+  id        String   @id @default(uuid())
+  email     String
+  role      Role
+  createdAt DateTime @default(now()) @map("created_at")
+
+  autor   Usuario? @relation(fields: [autorId], references: [id], onDelete: SetNull)
+  autorId String?  @map("autor_id")
+
+  organizacao   Organizacao @relation(fields: [organizacaoId], references: [id], onDelete: Cascade)
+  organizacaoId String      @map("organizacao_id")
+
+  @@unique([email, organizacaoId])
+  @@index([email])
+  @@map("convites")
 }
