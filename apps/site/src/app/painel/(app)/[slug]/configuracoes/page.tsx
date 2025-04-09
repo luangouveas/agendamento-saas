@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { BuscarOrganizacao } from '@/http/buscar-organizacao'
 
 import { EstabelecimentoForm } from '../../estabelecimento-form'
@@ -28,21 +27,19 @@ export default async function DadosOrganizacao() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[300px] w-full">
-              <EstabelecimentoForm
-                isUpdating
-                initialData={{
-                  bairro: organizacao.bairro,
-                  cep: organizacao.cep,
-                  cidade: organizacao.cidade,
-                  cnpj: organizacao.cnpj,
-                  estado: organizacao.estado,
-                  nome: organizacao.nome,
-                  razaoSocial: organizacao.razaoSocial,
-                  rua: organizacao.rua,
-                }}
-              />
-            </ScrollArea>
+            <EstabelecimentoForm
+              isUpdating
+              initialData={{
+                bairro: organizacao.bairro,
+                cep: organizacao.cep,
+                cidade: organizacao.cidade,
+                cnpj: organizacao.cnpj,
+                estado: organizacao.estado,
+                nome: organizacao.nome,
+                razaoSocial: organizacao.razaoSocial,
+                rua: organizacao.rua,
+              }}
+            />
           </CardContent>
         </Card>
 
