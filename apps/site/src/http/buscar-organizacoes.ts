@@ -8,7 +8,11 @@ interface BuscarOrganizacoesResponse {
 
 export async function buscarOrganizacoes() {
   const result = await api
-    .get('organizacoes')
+    .get('organizacoes', {
+      next: {
+        tags: ['organizacoes'],
+      },
+    })
     .json<BuscarOrganizacoesResponse>()
 
   return result
