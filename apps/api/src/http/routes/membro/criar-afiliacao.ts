@@ -20,6 +20,7 @@ export function CriarAfiliacao(app: FastifyInstance) {
         schema: {
           tags: ['Membros'],
           summary: 'Cria afiliação de um usuário em uma organização',
+          security: [{ bearerAuth: [] }],
           params: z.object({
             slug: z.string(),
           }),
@@ -48,7 +49,8 @@ export function CriarAfiliacao(app: FastifyInstance) {
           membership.role,
         )
 
-        if (cannot('create', 'Membro')) {
+        if (cannot('create', 'Membro') && cannot('create', 'Convite')) {
+          // Permite criar associação caso tenha permissão de envio de convite
           throw new UnauthorizedError(
             'Você não possui permissões para adicionar membros nesta organização.',
           )

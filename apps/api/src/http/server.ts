@@ -32,6 +32,12 @@ import { CriarContaUsuarioCliente } from './routes/auth/criar-conta-cliente'
 import { requisitaAutenticacaoComOTP } from './routes/auth/requisita-autenticacao-otp'
 import { RequisitarRecuperacaoSenha } from './routes/auth/requisitar-recuperacao-senha'
 import { ResetarSenha } from './routes/auth/resetar-senha'
+import { AceitarConvite } from './routes/convite/aceitar-convite'
+import { BuscarConvite } from './routes/convite/buscar-convite'
+import { BuscarConvitesPendentes } from './routes/convite/buscar-convites-pendentes'
+import { BuscarUsuarioPorEmail } from './routes/convite/buscar-usuario-por-email'
+import { CancelarConvite } from './routes/convite/cancelar-convite'
+import { CriarConvite } from './routes/convite/criar-convite'
 import { AtualizarExpediente } from './routes/expediente/atualizar-expediente'
 import { BuscarExpediente } from './routes/expediente/buscar-expediente'
 import { BuscarExpedientes } from './routes/expediente/buscar-expedientes'
@@ -145,6 +151,13 @@ app.register(BuscarHorariosDisponiveis)
 app.register(BuscarAssinaturaUsuarioPorIdUsuario)
 app.register(BuscarAssinante)
 app.register(AtualizarAssinatura)
+
+app.register(CriarConvite)
+app.register(CancelarConvite)
+app.register(BuscarConvite)
+app.register(BuscarUsuarioPorEmail)
+app.register(BuscarConvitesPendentes)
+app.register(AceitarConvite)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
