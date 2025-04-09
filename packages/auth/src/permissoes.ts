@@ -13,8 +13,8 @@ export const permissoes: Record<Role, PermissionsByRole> = {
   ADMIN(usuario, { can, cannot }) {
     can('manage', 'all')
 
-    cannot(['update', 'delete'], 'Organizacao')
-    can(['update', 'delete'], 'Organizacao', { ownerId: { $eq: usuario.id } })
+    cannot('update', 'Organizacao')
+    can('update', 'Organizacao', { ownerId: { $eq: usuario.id } })
   },
   ATENDENTE(usuario, { can, cannot }) {
     can('get', 'Usuario')
