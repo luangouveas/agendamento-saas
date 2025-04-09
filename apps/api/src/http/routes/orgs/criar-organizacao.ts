@@ -18,7 +18,7 @@ export function CriarOrganizacao(app: FastifyInstance) {
           summary: 'Cria uma organização',
           security: [{ bearerAuth: [] }],
           body: z.object({
-            cnpj: z.string().min(14).max(14),
+            cnpj: z.string().min(18).max(18),
             razaoSocial: z.string(),
             nome: z.string(),
             cep: z.string(),

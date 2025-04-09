@@ -21,7 +21,7 @@ export function AtualizarOrganizacao(app: FastifyInstance) {
           summary: 'Atualiza os dados de uma organização',
           security: [{ bearerAuth: [] }],
           body: z.object({
-            cnpj: z.string().min(14).max(14),
+            cnpj: z.string().min(18).max(18),
             razaoSocial: z.string(),
             nome: z.string(),
             cep: z.string(),
