@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useFormState } from '@/hooks/use-form-state'
+import { toast } from '@/hooks/use-toast'
+import { ConsultarCEP } from '@/services/brasil-api/consultar-cep'
 
 import {
   atualizarOrganizacao,
@@ -39,9 +41,48 @@ export function EstabelecimentoForm({
   const formAction = isUpdating ? atualizarOrganizacao : criarOrganizacao
   const [cnpj, setCnpj] = useState(mascararCnpj(initialData?.cnpj ?? ''))
   const [cep, setCep] = useState(mascararCep(initialData?.cep ?? ''))
+  const [consultandoCep, setConsultandoCep] = useState(false)
+
+  const [rua, setRua] = useState<string | undefined>(
+    initialData?.rua ?? undefined,
+  )
+  const [bairro, setBairro] = useState<string | undefined>(
+    initialData?.bairro ?? undefined,
+  )
+  const [cidade, setCidade] = useState<string | undefined>(
+    initialData?.cidade ?? undefined,
+  )
+  const [uf, setUf] = useState<string | undefined>(
+    initialData?.estado ?? undefined,
+  )
 
   const [{ errors, message, success }, handleSubmit, isPending] =
     useFormState(formAction)
+
+  function consultarDadosEndereco(cep: string) {
+    const cepOriginal = Number(unmask(cep))
+    setConsultandoCep(true)
+
+    ConsultarCEP({ cep: cepOriginal })
+      .then((ret) => {
+        setRua(ret.street)
+        setBairro(ret.neighborhood)
+        setCidade(ret.city)
+        setUf(ret.state)
+      })
+      .catch(() => {
+        setRua('')
+        setBairro('')
+        setCidade('')
+        setUf('')
+
+        toast({
+          variant: 'destructive',
+          description: 'Não conseguiu localizar o CEP informado.',
+        })
+      })
+      .finally(() => setConsultandoCep(false))
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 px-2">
@@ -118,6 +159,7 @@ export function EstabelecimentoForm({
             type="text"
             value={cep}
             onChange={(e) => setCep(mascararCep(e.target.value))}
+            onBlur={(e) => consultarDadosEndereco(e.target.value)}
           />
           {errors?.cep && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -129,11 +171,16 @@ export function EstabelecimentoForm({
 
       <div className="flex items-center justify-between gap-2">
         <div className="w-full space-y-1">
-          <Label>Rua</Label>
+          <Label className="flex flex-row items-center">
+            Rua
+            {consultandoCep && <Loader2 className="ml-2 size-3 animate-spin" />}
+          </Label>
           <Input
             name="rua"
             type="text"
-            defaultValue={initialData?.rua ?? undefined}
+            disabled={consultandoCep}
+            value={rua}
+            onChange={(e) => setRua(e.target.value)}
           />
           {errors?.rua && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -143,11 +190,16 @@ export function EstabelecimentoForm({
         </div>
 
         <div className="w-full space-y-1">
-          <Label>Bairro</Label>
+          <Label className="flex flex-row items-center">
+            Bairro
+            {consultandoCep && <Loader2 className="ml-2 size-3 animate-spin" />}
+          </Label>
           <Input
             name="bairro"
             type="text"
-            defaultValue={initialData?.bairro ?? undefined}
+            disabled={consultandoCep}
+            onChange={(e) => setBairro(e.target.value)}
+            value={bairro}
           />
           {errors?.bairro && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -159,11 +211,17 @@ export function EstabelecimentoForm({
 
       <div className="flex items-center justify-between gap-2">
         <div className="w-full space-y-1">
-          <Label>Cidade</Label>
+          <Label className="flex flex-row items-center">
+            Cidade
+            {consultandoCep && <Loader2 className="ml-2 size-3 animate-spin" />}
+          </Label>
+
           <Input
             name="cidade"
             type="text"
-            defaultValue={initialData?.cidade ?? undefined}
+            disabled={consultandoCep}
+            onChange={(e) => setCidade(e.target.value)}
+            value={cidade}
           />
           {errors?.cidade && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -173,12 +231,17 @@ export function EstabelecimentoForm({
         </div>
 
         <div className="w-full space-y-1">
-          <Label>UF</Label>
+          <Label className="flex flex-row items-center">
+            UF
+            {consultandoCep && <Loader2 className="ml-2 size-3 animate-spin" />}
+          </Label>
           <Input
             name="estado"
             type="text"
             maxLength={2}
-            defaultValue={initialData?.estado ?? undefined}
+            disabled={consultandoCep}
+            onChange={(e) => setUf(e.target.value)}
+            value={uf}
           />
           {errors?.estado && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -188,7 +251,11 @@ export function EstabelecimentoForm({
         </div>
       </div>
 
-      <Button className="mt-4" type="submit" disabled={isPending}>
+      <Button
+        className="mt-4"
+        type="submit"
+        disabled={isPending || consultandoCep}
+      >
         {isPending ? (
           <>
             <Loader2 className="mr-2 size-4 animate-spin" /> Salvando...
