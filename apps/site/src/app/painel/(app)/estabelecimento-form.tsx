@@ -43,18 +43,10 @@ export function EstabelecimentoForm({
   const [cep, setCep] = useState(mascararCep(initialData?.cep ?? ''))
   const [consultandoCep, setConsultandoCep] = useState(false)
 
-  const [rua, setRua] = useState<string | undefined>(
-    initialData?.rua ?? undefined,
-  )
-  const [bairro, setBairro] = useState<string | undefined>(
-    initialData?.bairro ?? undefined,
-  )
-  const [cidade, setCidade] = useState<string | undefined>(
-    initialData?.cidade ?? undefined,
-  )
-  const [uf, setUf] = useState<string | undefined>(
-    initialData?.estado ?? undefined,
-  )
+  const [rua, setRua] = useState<string>(initialData?.rua ?? '')
+  const [bairro, setBairro] = useState<string>(initialData?.bairro ?? '')
+  const [cidade, setCidade] = useState<string>(initialData?.cidade ?? '')
+  const [uf, setUf] = useState<string>(initialData?.estado ?? '')
 
   const [{ errors, message, success }, handleSubmit, isPending] =
     useFormState(formAction)

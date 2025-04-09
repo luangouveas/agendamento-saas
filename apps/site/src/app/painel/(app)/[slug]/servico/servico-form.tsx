@@ -77,7 +77,7 @@ export default function ServicoForm({
 
       <Input
         name="id"
-        type="text"
+        type="hidden"
         defaultValue={initialData?.id ?? undefined}
       />
       {errors?.id && (
