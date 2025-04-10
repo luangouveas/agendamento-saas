@@ -1,27 +1,61 @@
-import { XCircle } from 'lucide-react'
+'use client'
+
+import { Loader2, XCircle } from 'lucide-react'
 import { redirect } from 'next/navigation'
+import { useState } from 'react'
 
-import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { Button } from '@/components/ui/button'
-import { desativarOrganizacao } from '@/http/desativar-organizacao'
+import { toast } from '@/hooks/use-toast'
 
-export function DesativarOrganizacaoBotao() {
-  async function desativarOrganizacaoAction() {
-    'use server'
+import { DesativarOrganizacaoAction } from './actions'
 
-    const slug = await getSlugOrganizacaoAtual()
+interface DesativarOrganizacaoBotaoProps {
+  slug: string
+}
 
-    await desativarOrganizacao(slug!)
+export function DesativarOrganizacaoBotao({
+  slug,
+}: DesativarOrganizacaoBotaoProps) {
+  async function desativarOrganizacao() {
+    setIsPending(true)
 
-    redirect('/painel')
+    DesativarOrganizacaoAction(slug!)
+      .then((ret) => {
+        if (!ret.success) {
+          toast({
+            variant: 'destructive',
+            description: ret.message,
+          })
+        } else {
+          toast({
+            variant: 'success',
+            description: ret.message,
+          })
+          redirect('/painel')
+        }
+      })
+      .finally(() => setIsPending(false))
   }
 
+  const [isPending, setIsPending] = useState(false)
+
   return (
-    <form action={desativarOrganizacaoAction}>
-      <Button type="submit" variant="destructive" className="w-56">
-        <XCircle className="mr-2 size-4" />
-        Excluir estabelecimento
-      </Button>
-    </form>
+    <Button
+      onClick={desativarOrganizacao}
+      variant="destructive"
+      className="w-56"
+    >
+      {isPending ? (
+        <>
+          <Loader2 className="mr-2 size-4 animate-spin" />
+          Excluindo...
+        </>
+      ) : (
+        <>
+          <XCircle className="mr-2 size-4" />
+          Excluir estabelecimento
+        </>
+      )}
+    </Button>
   )
 }

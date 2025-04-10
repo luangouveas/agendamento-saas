@@ -53,7 +53,7 @@ export default async function DadosOrganizacao() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <DesativarOrganizacaoBotao />
+            <DesativarOrganizacaoBotao slug={slug!} />
           </CardContent>
         </Card>
       </div>
