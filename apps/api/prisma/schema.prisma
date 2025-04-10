@@ -119,6 +119,7 @@ model Servico {
   tempo     Int
   valor     Float
   avatarUrl String? @map("avatar_url")
+  ativo     Boolean @default(true)
 
   organizacao   Organizacao @relation(fields: [organizacaoId], references: [id], onDelete: Cascade)
   organizacaoId String      @map("organizacao_id")
