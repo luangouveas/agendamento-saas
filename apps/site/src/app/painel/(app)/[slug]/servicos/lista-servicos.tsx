@@ -45,7 +45,8 @@ export default async function ListaServicos() {
                             locale: 'Pt-BR',
                             value: servico.valor,
                             currency: 'BRL',
-                          })}
+                          })}{' '}
+                          ({servico.tempo} minutos)
                         </span>
                       </span>
                     </div>
