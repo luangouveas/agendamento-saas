@@ -85,7 +85,7 @@ export async function atualizarServicoAction(data: FormData) {
   if (!resultParse.success) {
     return {
       success: false,
-      message: null,
+      message: 'Verifique os campos do formulário',
       errors: resultParse.error.flatten().fieldErrors,
     }
   }

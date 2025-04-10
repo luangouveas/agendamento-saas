@@ -1,10 +1,10 @@
 'use client'
 
-import { AlertTriangle, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { mask, unmask } from 'remask'
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -48,8 +48,27 @@ export function EstabelecimentoForm({
   const [cidade, setCidade] = useState<string>(initialData?.cidade ?? '')
   const [uf, setUf] = useState<string>(initialData?.estado ?? '')
 
-  const [{ errors, message, success }, handleSubmit, isPending] =
-    useFormState(formAction)
+  const path = usePathname()
+  const router = useRouter()
+
+  const [{ errors }, handleSubmit, isPending] = useFormState(
+    formAction,
+    (message) => {
+      toast({
+        variant: 'success',
+        description: message,
+      })
+      if (path.split('/')[2] === 'criar-estabelecimento') {
+        router.back()
+      }
+    },
+    (message) => {
+      toast({
+        variant: 'destructive',
+        description: message,
+      })
+    },
+  )
 
   function consultarDadosEndereco(cep: string) {
     const cepOriginal = Number(unmask(cep))
@@ -78,26 +97,6 @@ export function EstabelecimentoForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 px-2">
-      {success === false && message && (
-        <Alert variant="destructive">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>Falha ao salvar o estabelecimento!</AlertTitle>
-          <AlertDescription>
-            <p>{message}</p>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {success === true && message && (
-        <Alert variant="success">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>Sucesso!</AlertTitle>
-          <AlertDescription>
-            <p>{message}</p>
-          </AlertDescription>
-        </Alert>
-      )}
-
       <div className="flex items-center justify-between gap-2">
         <div className="w-full space-y-1">
           <Label>Nome</Label>

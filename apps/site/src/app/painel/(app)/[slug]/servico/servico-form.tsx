@@ -1,14 +1,15 @@
 'use client'
 
-import { AlertTriangle, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { ChangeEvent, useState } from 'react'
 import { currency } from 'remask'
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useFormState } from '@/hooks/use-form-state'
+import { toast } from '@/hooks/use-toast'
 
 import {
   atualizarServicoAction,
@@ -25,12 +26,30 @@ export default function ServicoForm({
   initialData,
   isUpdating,
 }: ServicoFormProps) {
+  const router = useRouter()
+
   const handleSubmitAction = isUpdating
     ? atualizarServicoAction
     : criarServicoAction
 
-  const [{ success, message, errors }, handleSubmit, isPending] =
-    useFormState(handleSubmitAction)
+  const [{ errors }, handleSubmit, isPending] = useFormState(
+    handleSubmitAction,
+    (message) => {
+      toast({
+        title: 'Sucesso!',
+        variant: 'success',
+        description: message,
+      })
+      router.back()
+    },
+    (message) => {
+      toast({
+        title: 'Erro!',
+        variant: 'destructive',
+        description: message,
+      })
+    },
+  )
 
   const mascarar = (valor: number) => {
     return currency.mask({
@@ -55,26 +74,6 @@ export default function ServicoForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {success === true && message && (
-        <Alert variant="success">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>Sucesso!</AlertTitle>
-          <AlertDescription>
-            <p>{message}</p>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {success === false && message && (
-        <Alert variant="destructive">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>Erro!</AlertTitle>
-          <AlertDescription>
-            <p>{message}</p>
-          </AlertDescription>
-        </Alert>
-      )}
-
       <Input
         name="id"
         type="hidden"
