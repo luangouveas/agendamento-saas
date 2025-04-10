@@ -1,7 +1,9 @@
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
+import { SkeletonTable } from '@/components/skeleton/skeleton-table'
 import { Button } from '@/components/ui/button'
 
 import ListaServicos from './lista-servicos'
@@ -21,7 +23,9 @@ export default async function ServicosOrganizacao() {
         </Button>
       </div>
       <div className="space-y-4">
-        <ListaServicos />
+        <Suspense fallback={<SkeletonTable />}>
+          <ListaServicos />
+        </Suspense>
       </div>
     </div>
   )
