@@ -36,6 +36,18 @@ export function SignInForm() {
           </Alert>
         )}
 
+        {success === true && (
+          <Alert variant="success">
+            <AlertTriangle className="size-4" />
+            <AlertDescription>
+              <p className="flex items-center">
+                Realizando login
+                <Loader2 className="ml-2 mr-2 size-4 animate-spin" />
+              </p>
+            </AlertDescription>
+          </Alert>
+        )}
+
         <div className="space-y-1">
           <Label htmlFor="email">E-mail</Label>
           <Input
@@ -53,7 +65,7 @@ export function SignInForm() {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Senha</Label>
           <Input name="password" type="password" id="password" />
 
           {errors?.password && (
@@ -66,20 +78,23 @@ export function SignInForm() {
             href="/painel/auth/forgot-password"
             className="text-xs font-medium text-foreground hover:underline"
           >
-            Forgot your password?
+            Esqueceu sua senha?
           </Link>
         </div>
 
         <Button className="w-full" type="submit" disabled={isPending}>
           {isPending ? (
-            <Loader2 className="size-4 animate-spin" />
+            <>
+              <Loader2 className="mr-2 size-4 animate-spin" />
+              Entrando...
+            </>
           ) : (
-            'Sign in with e-mail'
+            'Entrar'
           )}
         </Button>
 
         <Button className="w-full" variant="link" size="sm" asChild>
-          <Link href="/painel/auth/sign-up">Create new account</Link>
+          <Link href="/painel/auth/sign-up">Criar conta</Link>
         </Button>
       </form>
     </div>

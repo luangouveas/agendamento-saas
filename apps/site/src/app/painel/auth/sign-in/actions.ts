@@ -10,8 +10,9 @@ import * as stripeService from '@/services/stripe'
 const signInSchema = z.object({
   email: z
     .string()
-    .email({ message: 'Please, provide a valid e-mail address.' }),
-  password: z.string().min(3, { message: 'Please, provide your password.' }),
+    .min(1, 'O e-mail deve ser informado.')
+    .email({ message: 'Forneça um e-mail válido.' }),
+  password: z.string().min(3, { message: 'A senha deve ser informada.' }),
 })
 
 export async function signInWithEmailAndPassword(data: FormData) {
@@ -52,7 +53,7 @@ export async function signInWithEmailAndPassword(data: FormData) {
 
     return {
       success: false,
-      message: 'Unexpected error, try again in a few minutes.',
+      message: 'Erro inesperado! Tente novamente em instantes.',
       errors: null,
     }
   }
