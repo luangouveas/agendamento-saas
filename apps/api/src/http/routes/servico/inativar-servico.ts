@@ -6,41 +6,31 @@ import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 import { buscarPermissoesUsuario } from '@/utils/buscar-permissoes-usuario'
 
+import { BadRequestError } from '../_errors/bad-request-error'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
-export function BuscarServicos(app: FastifyInstance) {
+export function InativarServico(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
-    .get(
-      '/organizacao/:slug/servicos',
+    .patch(
+      '/organizacao/:slug/servico/:servicoId/inativar',
       {
         schema: {
           tags: ['Serviço'],
-          summary: 'Busca a lista de serviços de uma organização',
+          summary: 'Inativa um serviço',
           security: [{ bearerAuth: [] }],
           params: z.object({
+            servicoId: z.string().uuid(),
             slug: z.string(),
           }),
           response: {
-            200: z.object({
-              servicos: z.array(
-                z.object({
-                  id: z.string().uuid(),
-                  nome: z.string(),
-                  organizacaoId: z.string(),
-                  descricao: z.string(),
-                  tempo: z.number(),
-                  valor: z.number(),
-                  avatarUrl: z.string().url().nullable(),
-                }),
-              ),
-            }),
+            204: z.null(),
           },
         },
       },
-      async (request) => {
-        const { slug } = request.params
+      async (request, reply) => {
+        const { slug, servicoId } = request.params
 
         const usuarioId = await request.getCurrentUserId()
         const { membership, organizacao } =
@@ -48,23 +38,34 @@ export function BuscarServicos(app: FastifyInstance) {
 
         const { cannot } = buscarPermissoesUsuario(usuarioId, membership.role)
 
-        if (cannot('get', 'Servico')) {
+        if (cannot('update', 'Servico')) {
           throw new UnauthorizedError(
-            'Você não possui permissões para buscar serviços nesta organização.',
+            'Você não possui permissões para atualizar serviços nesta organização.',
           )
         }
 
-        const servicos = await prisma.servico.findMany({
+        const servicoById = await prisma.servico.findUnique({
           where: {
+            id: servicoId,
             organizacaoId: organizacao.id,
-            ativo: true,
-          },
-          orderBy: {
-            nome: 'asc',
           },
         })
 
-        return { servicos }
+        if (!servicoById) {
+          throw new BadRequestError('Esse serviço não existe.')
+        }
+
+        await prisma.servico.update({
+          where: {
+            id: servicoId,
+            organizacaoId: organizacao.id,
+          },
+          data: {
+            ativo: false,
+          },
+        })
+
+        return reply.status(204).send()
       },
     )
 }

@@ -61,6 +61,7 @@ import { AtualizarServico } from './routes/servico/atualizar-servico'
 import { BuscarServico } from './routes/servico/buscar-servico'
 import { BuscarServicos } from './routes/servico/buscar-servicos'
 import { CriarServico } from './routes/servico/criar-servico'
+import { InativarServico } from './routes/servico/inativar-servico'
 import { AtualizarPerfil } from './routes/usuario/atualizar-perfil'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -120,6 +121,7 @@ app.register(BuscarMembros)
 
 app.register(CriarServico)
 app.register(AtualizarServico)
+app.register(InativarServico)
 app.register(BuscarServico)
 app.register(BuscarServicos)
 
