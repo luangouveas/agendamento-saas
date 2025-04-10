@@ -1,4 +1,4 @@
-import { LucideTrash2, PenSquare } from 'lucide-react'
+import { PenSquare } from 'lucide-react'
 import Link from 'next/link'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
@@ -6,6 +6,8 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { buscarServicos } from '@/http/buscar-servicos'
+
+import { ConfirmaExclusaoServico } from './confirma-exclusao-servico'
 
 export default async function ListaServicos() {
   const slug = await getSlugOrganizacaoAtual()
@@ -57,10 +59,7 @@ export default async function ListaServicos() {
                           Editar
                         </Link>
                       </Button>
-                      <Button size="sm" variant="destructive">
-                        <LucideTrash2 className="mr-2 size-4" />
-                        Excluir
-                      </Button>
+                      <ConfirmaExclusaoServico id={servico.id} />
                     </div>
                   </TableCell>
                 </TableRow>
