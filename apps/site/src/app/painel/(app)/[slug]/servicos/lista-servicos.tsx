@@ -1,5 +1,6 @@
 import { PenSquare } from 'lucide-react'
 import Link from 'next/link'
+import { currency } from 'remask'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
@@ -40,7 +41,11 @@ export default async function ListaServicos() {
                       <span className="inline-flex items-center gap-2 font-medium">
                         {servico.nome}{' '}
                         <span className="text-xs text-muted-foreground">
-                          R$ {servico.valor}
+                          {currency.mask({
+                            locale: 'Pt-BR',
+                            value: servico.valor,
+                            currency: 'BRL',
+                          })}
                         </span>
                       </span>
                     </div>
