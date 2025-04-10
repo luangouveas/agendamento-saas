@@ -14,7 +14,7 @@ export async function Tabs() {
           size="sm"
           className="border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
         >
-          <NavLink href={`/painel/${slug}`}>Serviços</NavLink>
+          <NavLink href={`/painel/${slug}/servicos`}>Serviços</NavLink>
         </Button>
 
         <Button
