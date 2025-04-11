@@ -1,13 +1,16 @@
 import { XOctagonIcon } from 'lucide-react'
 
+import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
+import { BuscarConvitesPendentes } from '@/http/buscar-convites-pendentes'
 
 import { CriarConviteForm } from './criar-convite-form'
 
 export async function Convites() {
-  const convites = []
+  const slug = await getSlugOrganizacaoAtual()
+  const { convites } = await BuscarConvitesPendentes({ slug: slug! })
 
   return (
     <div className="space-y-4">
