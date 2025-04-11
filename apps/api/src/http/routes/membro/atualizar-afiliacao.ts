@@ -7,7 +7,6 @@ import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 import { buscarPermissoesUsuario } from '@/utils/buscar-permissoes-usuario'
 
-import { BadRequestError } from '../_errors/bad-request-error'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export function AtualizarAfiliacao(app: FastifyInstance) {
@@ -15,16 +14,17 @@ export function AtualizarAfiliacao(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .put(
-      '/organizacao/:slug/membro',
+      '/organizacao/:slug/membro/:membroId',
       {
         schema: {
           tags: ['Membros'],
           summary: 'Atualiza a afiliação de um usuário em uma organização',
+          security: [{ bearerAuth: [] }],
           params: z.object({
             slug: z.string(),
+            membroId: z.string().uuid(),
           }),
           body: z.object({
-            usuarioId: z.string().uuid(),
             tipo: z.union([z.literal('CLIENTE'), z.literal('FUNCIONARIO')]),
             role: roleSchema,
           }),
@@ -34,8 +34,8 @@ export function AtualizarAfiliacao(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        const { slug } = request.params
-        const { role, tipo, usuarioId } = request.body
+        const { slug, membroId } = request.params
+        const { role, tipo } = request.body
 
         const usuarioLogadoId = await request.getCurrentUserId()
         const { membership, organizacao } =
@@ -48,20 +48,7 @@ export function AtualizarAfiliacao(app: FastifyInstance) {
 
         if (cannot('update', 'Membro')) {
           throw new UnauthorizedError(
-            'Você não possui permissões para adicionar membros nesta organização.',
-          )
-        }
-
-        const membroOrganizacaoByUsuarioId = await prisma.membro.findFirst({
-          where: {
-            usuarioId,
-            organizacaoId: organizacao.id,
-          },
-        })
-
-        if (!membroOrganizacaoByUsuarioId) {
-          throw new BadRequestError(
-            'Este usuário não está afiliação nesta organização.',
+            'Você não possui permissão para atualizar membros deste estabelecimento.',
           )
         }
 
@@ -71,7 +58,8 @@ export function AtualizarAfiliacao(app: FastifyInstance) {
             tipo,
           },
           where: {
-            id: membroOrganizacaoByUsuarioId.id,
+            id: membroId,
+            organizacaoId: organizacao.id,
           },
         })
 
