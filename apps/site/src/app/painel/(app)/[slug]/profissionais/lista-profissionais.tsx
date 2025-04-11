@@ -1,8 +1,7 @@
-import { Crown, XOctagonIcon } from 'lucide-react'
+import { Crown } from 'lucide-react'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { buscarMembros } from '@/http/buscar-membros'
 import { BuscarOrganizacao } from '@/http/buscar-organizacao'

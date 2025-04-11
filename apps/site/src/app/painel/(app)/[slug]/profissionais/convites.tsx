@@ -1,11 +1,9 @@
-import { XOctagonIcon } from 'lucide-react'
-
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { BuscarConvitesPendentes } from '@/http/buscar-convites-pendentes'
 
+import { BotaoCancelaConvite } from './botao-cancela-convite'
 import { CriarConviteForm } from './criar-convite-form'
 
 export async function Convites() {
@@ -32,21 +30,22 @@ export async function Convites() {
                 return (
                   <TableRow key={convite.id}>
                     <TableCell className="py-2.5">
-                      <span className="text-muted-foreground">
-                        {convite.email}
-                      </span>
-                    </TableCell>
-                    <TableCell className="py-2.5 font-medium">
-                      {convite.role}
+                      <div className="flex flex-col">
+                        <span className="font-medium text-muted-foreground">
+                          {convite.email}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {convite.role}
+                        </span>
+                      </div>
                     </TableCell>
                     <TableCell className="py-2.5 font-medium">
                       <div className="flex justify-end">
-                        <form>
-                          <Button size="sm" variant="destructive">
-                            <XOctagonIcon className="mr-2 size-4" />
-                            Cancelar convite
-                          </Button>
-                        </form>
+                        <BotaoCancelaConvite
+                          conviteId={convite.id}
+                          size="sm"
+                          variant="destructive"
+                        />
                       </div>
                     </TableCell>
                   </TableRow>

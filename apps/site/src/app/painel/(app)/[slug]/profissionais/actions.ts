@@ -6,7 +6,9 @@ import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
+import { AtualizarAfiliacao } from '@/http/atualiza-afiliacao'
 import { BuscarUsuarioPorEmail } from '@/http/buscar-usuario-por-email'
+import { CancelarConvite } from '@/http/cancelar-convite'
 import { CriarAfiliacaoUsuarioEmpresa } from '@/http/criar-afiliacao'
 import { CriarConvite } from '@/http/criar-convite'
 import { RemoverAfiliacao } from '@/http/remover-afiliacao'
@@ -75,7 +77,36 @@ export async function removerMembroAction(membroId: string) {
   }
 }
 
-export async function cancelarConviteAction(conviteId: string) {}
+export async function cancelarConviteAction(conviteId: string) {
+  const slug = await getSlugOrganizacaoAtual()
+
+  try {
+    await CancelarConvite({
+      slug: slug!,
+      conviteId,
+    })
+
+    revalidateTag(`${slug}/convites-pendentes`)
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+      return {
+        success: false,
+        message,
+      }
+    }
+
+    return {
+      success: false,
+      message: 'Erro inesperado! Tente novamente em instantes.',
+    }
+  }
+
+  return {
+    success: true,
+    message: 'Convite cancelado com sucesso.',
+  }
+}
 
 export async function BuscarUsuarioPorEmailAction(email: string) {
   const slug = await getSlugOrganizacaoAtual()
