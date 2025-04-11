@@ -6,11 +6,46 @@ import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
+import { AtualizarAfiliacao } from '@/http/atualiza-afiliacao'
 import { BuscarUsuarioPorEmail } from '@/http/buscar-usuario-por-email'
 import { CriarAfiliacaoUsuarioEmpresa } from '@/http/criar-afiliacao'
 import { CriarConvite } from '@/http/criar-convite'
 
-export async function atualizarRoleMembroAction(membroId: string, role: Role) {}
+export async function atualizarRoleMembroAction(membroId: string, role: Role) {
+  const slug = await getSlugOrganizacaoAtual()
+
+  try {
+    await AtualizarAfiliacao({
+      slug: slug!,
+      membroId,
+      role,
+      tipo: 'FUNCIONARIO',
+    })
+
+    revalidateTag(`${slug}/membros`)
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+      return {
+        success: false,
+        message,
+      }
+    }
+
+    return {
+      success: false,
+      message: 'Erro inesperado! Tente novamente em instantes.',
+    }
+  }
+
+  return {
+    success: true,
+    message: 'Credencial do profissional atualizado com sucesso.',
+  }
+}
+
+export async function removerMembroAction(membroId: string) {}
+export async function cancelarConviteAction(conviteId: string) {}
 
 export async function BuscarUsuarioPorEmailAction(email: string) {
   const slug = await getSlugOrganizacaoAtual()
