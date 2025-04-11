@@ -23,7 +23,13 @@ export async function buscarMembros({ slug, tipo }: BuscarMembrosRequest) {
   const query = tipo ? `?tipo=${tipo}` : ''
   const url = base + query
 
-  const result = await api.get(url).json<BuscarMembrosResponse>()
+  const result = await api
+    .get(url, {
+      next: {
+        tags: [`${slug}/membros`],
+      },
+    })
+    .json<BuscarMembrosResponse>()
 
   return result
 }

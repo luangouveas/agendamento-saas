@@ -65,7 +65,11 @@ export default async function ListaProfissionais() {
                         value={membro.role}
                         disabled={membro.usuarioId === organizacao.ownerId}
                       />
-                      <Button size="sm" variant="destructive">
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        disabled={membro.usuarioId === organizacao.ownerId}
+                      >
                         <XOctagonIcon className="mr-2 size-4" />
                         Remover associação
                       </Button>
