@@ -48,6 +48,7 @@ import { MarcarExpedientePrincipal } from './routes/expediente/marcar-expediente
 import { AtualizarAfiliacao } from './routes/membro/atualizar-afiliacao'
 import { BuscarAfiliacao } from './routes/membro/buscar-afiliacao'
 import { CriarAfiliacao } from './routes/membro/criar-afiliacao'
+import { RemoverAfiliacao } from './routes/membro/remover-afiliacao'
 import { AtualizarOrganizacao } from './routes/orgs/atualizar-organizacao'
 import { BuscarMembros } from './routes/orgs/buscar-membros'
 import { BuscarMinhasOrganizacoes } from './routes/orgs/buscar-minhas-organizacoes'
@@ -128,6 +129,7 @@ app.register(BuscarServicos)
 app.register(CriarAfiliacao)
 app.register(AtualizarAfiliacao)
 app.register(BuscarAfiliacao)
+app.register(RemoverAfiliacao)
 
 app.register(CriarAgendamento)
 app.register(BuscarAgendamento)
