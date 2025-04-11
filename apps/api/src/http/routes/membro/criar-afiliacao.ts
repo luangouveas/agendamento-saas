@@ -56,6 +56,16 @@ export function CriarAfiliacao(app: FastifyInstance) {
           )
         }
 
+        const usuarioPorId = await prisma.usuario.findUnique({
+          where: {
+            id: usuarioId,
+          },
+        })
+
+        if (!usuarioPorId) {
+          throw new BadRequestError('Usuário não encontrado.')
+        }
+
         const membroOrganizacaoByUsuarioId = await prisma.membro.findFirst({
           where: {
             usuarioId,
@@ -67,6 +77,15 @@ export function CriarAfiliacao(app: FastifyInstance) {
           throw new BadRequestError(
             'Este usuário já faz parte deste estabelecimento.',
           )
+        }
+
+        if (usuarioPorId.email) {
+          await prisma.convite.deleteMany({
+            where: {
+              email: usuarioPorId.email,
+              organizacaoId: organizacao.id,
+            },
+          })
         }
 
         const membro = await prisma.membro.create({
