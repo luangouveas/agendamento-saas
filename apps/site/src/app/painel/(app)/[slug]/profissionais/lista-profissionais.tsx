@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { buscarMembros } from '@/http/buscar-membros'
 import { BuscarOrganizacao } from '@/http/buscar-organizacao'
 
+import { BotaoRemoveMembroProfissional } from './botao-remove-profissional'
 import { SelectAtualizaRoleMembro } from './select-atualiza-role-membro'
 
 export default async function ListaProfissionais() {
@@ -65,14 +66,13 @@ export default async function ListaProfissionais() {
                         value={membro.role}
                         disabled={membro.usuarioId === organizacao.ownerId}
                       />
-                      <Button
+
+                      <BotaoRemoveMembroProfissional
+                        membroId={membro.id}
                         size="sm"
                         variant="destructive"
                         disabled={membro.usuarioId === organizacao.ownerId}
-                      >
-                        <XOctagonIcon className="mr-2 size-4" />
-                        Remover associação
-                      </Button>
+                      />
                     </div>
                   </TableCell>
                 </TableRow>

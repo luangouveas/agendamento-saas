@@ -4,7 +4,6 @@ import { Role } from '@agendamento-saas/auth'
 import { Loader2 } from 'lucide-react'
 import { ComponentProps, useState } from 'react'
 
-import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,

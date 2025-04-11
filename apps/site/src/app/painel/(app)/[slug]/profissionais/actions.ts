@@ -6,10 +6,10 @@ import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
-import { AtualizarAfiliacao } from '@/http/atualiza-afiliacao'
 import { BuscarUsuarioPorEmail } from '@/http/buscar-usuario-por-email'
 import { CriarAfiliacaoUsuarioEmpresa } from '@/http/criar-afiliacao'
 import { CriarConvite } from '@/http/criar-convite'
+import { RemoverAfiliacao } from '@/http/remover-afiliacao'
 
 export async function atualizarRoleMembroAction(membroId: string, role: Role) {
   const slug = await getSlugOrganizacaoAtual()
@@ -44,7 +44,37 @@ export async function atualizarRoleMembroAction(membroId: string, role: Role) {
   }
 }
 
-export async function removerMembroAction(membroId: string) {}
+export async function removerMembroAction(membroId: string) {
+  const slug = await getSlugOrganizacaoAtual()
+
+  try {
+    await RemoverAfiliacao({
+      slug: slug!,
+      membroId,
+    })
+
+    revalidateTag(`${slug}/membros`)
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+      return {
+        success: false,
+        message,
+      }
+    }
+
+    return {
+      success: false,
+      message: 'Erro inesperado! Tente novamente em instantes.',
+    }
+  }
+
+  return {
+    success: true,
+    message: 'Profissional removido com sucesso.',
+  }
+}
+
 export async function cancelarConviteAction(conviteId: string) {}
 
 export async function BuscarUsuarioPorEmailAction(email: string) {
