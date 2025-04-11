@@ -65,7 +65,7 @@ export function CriarAfiliacao(app: FastifyInstance) {
 
         if (membroOrganizacaoByUsuarioId) {
           throw new BadRequestError(
-            'Este usuário já possui afiliação com esta organização.',
+            'Este usuário já faz parte deste estabelecimento.',
           )
         }
 
