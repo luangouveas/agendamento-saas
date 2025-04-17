@@ -1,4 +1,5 @@
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
+import TrocarAvatar from '@/components/trocar-avatar'
 import {
   Card,
   CardContent,
@@ -9,7 +10,6 @@ import {
 import { BuscarOrganizacao } from '@/http/buscar-organizacao'
 
 import { EstabelecimentoForm } from '../../estabelecimento-form'
-import AvatarOrganizacao from './avatar-organizacao'
 import { DesativarOrganizacaoBotao } from './desativar-organizacao'
 
 export default async function DadosOrganizacao() {
@@ -23,7 +23,13 @@ export default async function DadosOrganizacao() {
         <Card>
           <CardHeader className="border-b">
             <div className="flex w-full flex-row items-center gap-8">
-              <AvatarOrganizacao organizacao={organizacao} size={20} />
+              <TrocarAvatar
+                tipoRegistro="estabelecimentos"
+                idRegistro={organizacao.id}
+                avatarUrlAtual={organizacao.avatarUrl}
+                nomeTagRevalidar="organizacao"
+                size={16}
+              />
               <CardTitle>{organizacao.nome}</CardTitle>
             </div>
           </CardHeader>

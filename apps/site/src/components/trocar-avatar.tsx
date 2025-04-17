@@ -3,19 +3,26 @@
 import { ImageUp, Loader2 } from 'lucide-react'
 import { useRef, useState } from 'react'
 
+import { UploadAvatarAction } from '@/app/actions'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
 import { toast } from '@/hooks/use-toast'
-import { IUsuario } from '@/interfaces/usuario'
 
-import { UploadAvatarUsuarioAction } from './actions'
-
-interface AvatarUsuarioProps {
-  usuario: IUsuario
+interface TrocarAvatarProps {
+  tipoRegistro: 'estabelecimentos' | 'usuarios' | 'servicos'
+  idRegistro: string
+  avatarUrlAtual?: string | null
+  nomeTagRevalidar: string
   size: number
 }
 
-export default function AvatarUsuario({ usuario, size }: AvatarUsuarioProps) {
+export default function AvatarUsuario({
+  tipoRegistro,
+  idRegistro,
+  avatarUrlAtual,
+  nomeTagRevalidar,
+  size,
+}: TrocarAvatarProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
@@ -35,11 +42,13 @@ export default function AvatarUsuario({ usuario, size }: AvatarUsuarioProps) {
         description: 'O arquivo selecionao não é uma imagem.',
       })
     } else {
-      const result = await UploadAvatarUsuarioAction(
-        usuario.id,
+      const result = await UploadAvatarAction({
+        tipoRegistro,
+        idRegistro,
         file,
-        usuario.avatarUrl,
-      )
+        avatarUrlAtual,
+        nomeTagRevalidar,
+      })
       toast({
         variant: result.success ? 'success' : 'destructive',
         title: result.success ? 'Sucesso' : 'Erro!',
@@ -78,7 +87,7 @@ export default function AvatarUsuario({ usuario, size }: AvatarUsuarioProps) {
             className={`border-secondary-foreground-foreground size-${size} rounded-3xl border-2 hover:cursor-pointer`}
           >
             <AvatarImage
-              src={usuario.avatarUrl ?? ''}
+              src={avatarUrlAtual ?? ''}
               className={isHovered ? 'blur-sm' : ''}
             />
             <AvatarFallback />

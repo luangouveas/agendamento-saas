@@ -1,16 +1,13 @@
 'use server'
 
-import { getTime } from 'date-fns'
 import { HTTPError } from 'ky'
 import { revalidateTag } from 'next/cache'
 import { currency } from 'remask'
 import { z } from 'zod'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
-import { AtualizarAvatarUrl } from '@/http/atualizar-avatar'
 import { AtualizarServico } from '@/http/atualizar-servico'
 import { CriarServico } from '@/http/criar-servico'
-import { supabase } from '@/lib/supabase'
 
 const servicoSchema = z.object({
   id: z.string().optional(),
@@ -119,92 +116,5 @@ export async function atualizarServicoAction(data: FormData) {
     success: true,
     message: 'Serviço atualizado com sucesso!',
     errors: null,
-  }
-}
-
-const uploadSchema = z.object({
-  idServico: z.string(),
-  file: z.instanceof(File).refine((file) => file.size > 0, {
-    message: 'Escolha um arquivo',
-  }),
-})
-
-export async function UploadAvatarServicoAction(
-  idServico: string,
-  file: File,
-  avatarUrlAntiga?: string | null,
-) {
-  const slug = await getSlugOrganizacaoAtual()
-
-  const resultParse = uploadSchema.safeParse({ idServico, file })
-
-  if (!resultParse.success) {
-    return {
-      success: false,
-      message: 'Verifique se o arquivo escolhido é uma imagem válida.',
-      imageUrl: null,
-    }
-  }
-
-  try {
-    const timestamp = getTime(new Date())
-    const { error } = await supabase.storage
-      .from('avatars')
-      .upload(`servicos/${idServico}-${timestamp}`, file, {
-        cacheControl: '3600',
-        contentType: file.type,
-        upsert: true,
-      })
-
-    if (error) {
-      return {
-        success: false,
-        message: error.message,
-        imageUrl: null,
-      }
-    }
-
-    const { data } = supabase.storage
-      .from('avatars')
-      .getPublicUrl(`servicos/${idServico}-${timestamp}`)
-
-    await AtualizarAvatarUrl({
-      avatarUrl: data.publicUrl,
-      id: idServico,
-      tipo: 'servicos',
-    })
-
-    if (avatarUrlAntiga) {
-      const arrUrl = avatarUrlAntiga.split('/')
-      console.log(arrUrl)
-      console.log(arrUrl.length - 1)
-      console.log(`excluir: servicos/${arrUrl[arrUrl.length - 1]}`)
-      await supabase.storage
-        .from('avatars')
-        .remove([`servicos/${arrUrl[arrUrl.length - 1]}`])
-    }
-
-    revalidateTag(`${slug}/servicos`)
-
-    return {
-      success: true,
-      message: 'Avatar enviado com suecsso.',
-      imageUrl: 'data.publicUrl',
-    }
-  } catch (err) {
-    if (err instanceof HTTPError) {
-      const { message } = await err.response.json()
-      return {
-        success: false,
-        message,
-        imageUrl: null,
-      }
-    }
-
-    return {
-      success: false,
-      message: 'Ocorreu um erro inesperado.',
-      imageUrl: null,
-    }
   }
 }

@@ -1,7 +1,7 @@
+import TrocarAvatar from '@/components/trocar-avatar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { buscarPerfil } from '@/http/buscar-perfil'
 
-import AvatarUsuario from './avatar-usuario'
 import MeuPerfilForm from './meu-perfil-form'
 
 export default async function MinhaConta() {
@@ -13,7 +13,13 @@ export default async function MinhaConta() {
         <Card>
           <CardHeader className="border-b">
             <div className="flex w-full flex-row items-center gap-8">
-              <AvatarUsuario usuario={perfilUsuario} size={16} />
+              <TrocarAvatar
+                tipoRegistro="usuarios"
+                idRegistro={perfilUsuario.id}
+                avatarUrlAtual={perfilUsuario.avatarUrl}
+                nomeTagRevalidar="atualizou-perfil"
+                size={16}
+              />
               <CardTitle>{perfilUsuario.nome}</CardTitle>
             </div>
           </CardHeader>

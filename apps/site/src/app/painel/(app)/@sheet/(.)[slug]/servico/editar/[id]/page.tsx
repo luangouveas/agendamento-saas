@@ -1,6 +1,7 @@
 import ServicoForm from '@/app/painel/(app)/[slug]/servico/servico-form'
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { InterceptedSheetContent } from '@/components/interceptador-conteudo-sheet'
+import TrocarAvatar from '@/components/trocar-avatar'
 import { Sheet, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { buscarServicoPorId } from '@/http/buscar-servico'
 interface EditarServicoPageProps {
@@ -20,7 +21,18 @@ export default async function EditarServicoPage({
     <Sheet defaultOpen>
       <InterceptedSheetContent>
         <SheetHeader>
-          <SheetTitle>{servico.nome}</SheetTitle>
+          <SheetTitle>
+            <div className="flex w-full flex-row items-center gap-4">
+              <TrocarAvatar
+                tipoRegistro="servicos"
+                idRegistro={servico.id}
+                avatarUrlAtual={servico.avatarUrl}
+                nomeTagRevalidar={`${slug}/servicos`}
+                size={16}
+              />
+              <h2 className="text-xl">{servico.nome}</h2>
+            </div>
+          </SheetTitle>
         </SheetHeader>
 
         <div className="py-4">
