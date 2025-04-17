@@ -9,6 +9,7 @@ import {
 import { BuscarOrganizacao } from '@/http/buscar-organizacao'
 
 import { EstabelecimentoForm } from '../../estabelecimento-form'
+import AvatarOrganizacao from './avatar-organizacao'
 import { DesativarOrganizacaoBotao } from './desativar-organizacao'
 
 export default async function DadosOrganizacao() {
@@ -20,13 +21,13 @@ export default async function DadosOrganizacao() {
       <h1 className="text-2xl font-bold">Configurações</h1>
       <div className="space-y-4">
         <Card>
-          <CardHeader>
-            <CardTitle>Configurações do estabelecimento</CardTitle>
-            <CardDescription>
-              Atualize as informações do seu estabelecimento
-            </CardDescription>
+          <CardHeader className="border-b">
+            <div className="flex w-full flex-row items-center gap-8">
+              <AvatarOrganizacao organizacao={organizacao} size={20} />
+              <CardTitle>{organizacao.nome}</CardTitle>
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-4">
             <EstabelecimentoForm
               isUpdating
               initialData={{
