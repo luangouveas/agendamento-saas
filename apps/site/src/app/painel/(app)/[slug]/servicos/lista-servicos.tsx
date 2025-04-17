@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { currency } from 'remask'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { buscarServicos } from '@/http/buscar-servicos'
@@ -34,6 +34,7 @@ export default async function ListaServicos() {
                           className="aspect-square size-full"
                         />
                       )}
+                      <AvatarFallback />
                     </Avatar>
                   </TableCell>
                   <TableCell className="py-2.5">

@@ -18,7 +18,7 @@ export default async function EditarServicoPage({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-semibold">Nome do Serviço</h2>
+      <h2 className="text-2xl font-semibold">{servico.nome}</h2>
       <div className="space-y-4">
         <ServicoForm isUpdating={true} initialData={servico} />
       </div>
