@@ -3,11 +3,15 @@ import { revalidateTag } from 'next/cache'
 import { api } from './api-client'
 
 export interface AtualizarPerfilRequest {
-  slug: string
   nome: string
   email?: string
-  avatarUrl?: string
   numeroCelular: string
+  dataNascimento: string
+  cep?: string
+  rua?: string
+  bairro?: string
+  cidade?: string
+  estado?: string
 }
 
 type AtualizarPerfilResponse = void
@@ -15,12 +19,17 @@ type AtualizarPerfilResponse = void
 export async function AtualizarDadosPerfil(
   dadosPerfil: AtualizarPerfilRequest,
 ): Promise<AtualizarPerfilResponse> {
-  await api.put(`organizacao/${dadosPerfil.slug}/perfil`, {
+  await api.put(`perfil`, {
     json: {
       nome: dadosPerfil.nome,
       email: dadosPerfil.email,
       numeroCelular: dadosPerfil.numeroCelular,
-      avatarUrl: dadosPerfil.avatarUrl,
+      dataNascimento: dadosPerfil.dataNascimento,
+      cep: dadosPerfil.cep,
+      rua: dadosPerfil.rua,
+      bairro: dadosPerfil.bairro,
+      cidade: dadosPerfil.cidade,
+      estado: dadosPerfil.estado,
     },
   })
 

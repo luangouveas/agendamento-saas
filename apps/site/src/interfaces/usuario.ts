@@ -11,3 +11,18 @@ export interface IUsuario {
   cidade: string | null
   estado: string | null
 }
+
+export interface IPerfilUsuario {
+  id: string
+  nome: string | null
+  dataNascimento: string | null
+  email: string | null
+  ddi: string
+  numeroCelular: string
+  avatarUrl: string | null
+  cep: string | null
+  rua: string | null
+  bairro: string | null
+  cidade: string | null
+  estado: string | null
+}
