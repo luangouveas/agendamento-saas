@@ -3,15 +3,16 @@ import { env } from '@agendamento-saas/env'
 export const config = {
   stripe: {
     publishableKey: env.NEXT_PUBLIC_STRIPE_PUBLISHABE_KEY,
-    secretKey: env.NEXT_PUBLIC_STRIPE_SECRET_KEY,
-    webhookkey: env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET,
+    secretKey: env.STRIPE_SECRET_KEY,
     plans: {
       free: {
-        priceId: env.NEXT_PUBLIC_STRIPE_PLAN_PRICE_FREE_ID,
+        name: 'FREE',
+        priceId: '',
         quota: { estabelecimentos: 1, servicos: 3, profissionais: 2 },
       },
       pro: {
-        priceId: env.NEXT_PUBLIC_STRIPE_PLAN_PRICE_PRO_ID,
+        name: 'PRO',
+        priceId: env.STRIPE_PLAN_PRICE_PRO_ID,
         quota: { estabelecimentos: 5, servicos: 50, profissionais: 10 },
       },
     },

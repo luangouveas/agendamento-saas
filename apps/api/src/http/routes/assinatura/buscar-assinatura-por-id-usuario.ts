@@ -64,6 +64,7 @@ export function BuscarAssinaturaUsuarioPorIdUsuario(app: FastifyInstance) {
 
         const countServicos = await prisma.servico.count({
           where: {
+            ativo: true,
             organizacao: {
               ownerId: usuarioId,
             },

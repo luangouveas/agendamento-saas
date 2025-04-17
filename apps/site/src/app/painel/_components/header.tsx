@@ -18,9 +18,9 @@ import {
 } from '@/components/header/index'
 import { ProfileButton } from '@/components/profile-button'
 import { ComutadorTema } from '@/components/theme/comutador-tema'
+import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { buscarMinhasOrganizacoes } from '@/http/buscar-minhas-organizacoes'
-import { cn } from '@/lib/utils'
 import { getUserCurrentPlan } from '@/services/stripe'
 
 export default async function Header() {
@@ -64,20 +64,18 @@ export default async function Header() {
         </HeaderContentLeft>
         <HeaderContentRight>
           <ComutadorTema />
+
+          {name === 'PRO' && (
+            <>
+              <Separator orientation="vertical" className="h-5" />
+              <Badge className="border border-amber-500 bg-amber-400 text-white hover:cursor-default hover:bg-amber-300">
+                PRO
+              </Badge>
+            </>
+          )}
+
           <Separator orientation="vertical" className="h-5" />
-          <div
-            className={cn(
-              'rounded-xl border-2 border-border px-2 py-1 shadow dark:shadow-sm',
-              name?.toString().toUpperCase() === 'PRO'
-                ? 'text-yellow-500 shadow-yellow-400 dark:shadow-yellow-400'
-                : 'dark:shadow-white',
-            )}
-          >
-            <span className="font-bold uppercase" title="Sua assinatura atual">
-              {name}
-            </span>
-          </div>
-          <Separator orientation="vertical" className="h-5" />
+
           <ProfileButton />
         </HeaderContentRight>
       </HeaderContent>

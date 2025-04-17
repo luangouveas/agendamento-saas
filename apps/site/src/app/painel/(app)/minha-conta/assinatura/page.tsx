@@ -1,6 +1,3 @@
-import { AlertTriangle } from 'lucide-react'
-
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   Card,
   CardContent,
@@ -10,18 +7,16 @@ import {
 } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import * as stripeService from '@/services/stripe'
+import { config } from '@/services/stripe/config'
 
 import { AssinarFree } from './assinar-free'
 import { AssinarPro } from './assinar-pro'
 
-export default async function AssinaturasPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ ok: string }>
-}) {
+export default async function AssinaturasPage() {
   const { name, quota } = await stripeService.getUserCurrentPlan()
-  const planoAtualizado = (await searchParams)?.ok
-  console.log(planoAtualizado)
+
+  const freeQuota = config.stripe.plans.free.quota
+
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-semibold">Minha assinatura</h2>
@@ -34,32 +29,6 @@ export default async function AssinaturasPage({
                 Analise aqui o estado da sua assinatura{' '}
                 <span className="font-bold uppercase">{name}</span>
               </div>
-
-              {planoAtualizado === 'true' && (
-                <div className="w-[600px]">
-                  <Alert variant="success">
-                    <AlertTriangle className="size-4" />
-                    <AlertTitle>Sucesso!</AlertTitle>
-                    <AlertDescription>
-                      <p>Sua assinatura foi atualizada com sucesso!</p>
-                    </AlertDescription>
-                  </Alert>
-                </div>
-              )}
-
-              {planoAtualizado === 'false' && (
-                <div className="w-[600px]">
-                  <Alert variant="destructive">
-                    <AlertTriangle className="size-4" />
-                    <AlertTitle>Erro!</AlertTitle>
-                    <AlertDescription>
-                      <p>
-                        Ocorreu um erro durante a atualização da sua assinatura
-                      </p>
-                    </AlertDescription>
-                  </Alert>
-                </div>
-              )}
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
@@ -128,7 +97,15 @@ export default async function AssinaturasPage({
             </div>
           </CardContent>
           <CardFooter className="border-t border-border pt-2">
-            {name === 'free' ? <AssinarPro /> : <AssinarFree />}
+            {name.toUpperCase() === 'FREE' ? (
+              <AssinarPro />
+            ) : (
+              <AssinarFree
+                quotaEstabelecimentos={freeQuota.estabelecimentos}
+                quotaProfissionais={freeQuota.profissionais}
+                quotaServicos={freeQuota.servicos}
+              />
+            )}
           </CardFooter>
         </Card>
       </div>

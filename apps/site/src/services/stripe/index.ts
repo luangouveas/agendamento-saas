@@ -1,11 +1,10 @@
 import Stripe from 'stripe'
 
-import { config } from '@/config'
 import {
   AtualizarAssinatura,
-  BuscarAssinante,
   BuscarAssinaturaUsuarioPorIdUsuario,
 } from '@/http/assinatura'
+import { config } from '@/services/stripe/config'
 
 export const stripe = new Stripe(config.stripe.secretKey, {
   apiVersion: '2025-03-31.basil',
@@ -17,120 +16,80 @@ export const getStripeCustomerByEmail = async (email: string) => {
   return customers.data[0]
 }
 
-export const createStripeCustomer = async (input: {
-  name?: string
-  email: string
-}) => {
-  const customer = await getStripeCustomerByEmail(input.email)
-  if (customer) return customer
-
-  const createdCustomer = await stripe.customers.create({
-    email: input.email,
-    name: input.name,
+export const getSubscriptionByCustomerId = async (stripeCustomerId: string) => {
+  const subscriptions = await stripe.subscriptions.list({
+    customer: stripeCustomerId,
   })
-
-  const createdCustomerSubscription = await stripe.subscriptions.create({
-    customer: createdCustomer.id,
-    items: [{ price: config.stripe.plans.free.priceId }],
-  })
-
-  await AtualizarAssinatura({
-    stripeCustomerId: createdCustomer.id,
-    stripeSubscriptionId: createdCustomerSubscription.id,
-    stripeSubscriptionStatus: createdCustomerSubscription.status,
-    stripePriceId: config.stripe.plans.free.priceId,
-  })
-
-  return createdCustomer
+  return subscriptions.data[0]
 }
 
-export const createCheckoutSession = async (
-  userEmail: string,
-  userStripeSubscriptionId: string,
+export const buscarCartosDeCreditoCliente = async (customerId: string) => {
+  const cartoes = await stripe.paymentMethods.list({
+    customer: customerId,
+    type: 'card',
+  })
+
+  return cartoes
+}
+
+export const atualizarAssinaturaUsuario = async (email: string) => {
+  const custumer = await getStripeCustomerByEmail(email)
+
+  if (!custumer) {
+    throw new Error('Assinatura não localizada.')
+  }
+
+  const subscription = await getSubscriptionByCustomerId(custumer.id)
+
+  if (!subscription) {
+    throw new Error('Assinatura não localizada.')
+  }
+
+  await AtualizarAssinatura({
+    email,
+    stripeCustomerId: custumer.id,
+    stripeSubscriptionId: subscription.id,
+    stripeSubscriptionStatus: subscription.status,
+    stripePriceId: subscription.items.data[0].price.id,
+  })
+}
+
+export const cancelarAssinaturaUsuarioByEmail = async (email: string) => {
+  const customer = await getStripeCustomerByEmail(email)
+  const subscription = await getSubscriptionByCustomerId(customer.id)
+
+  await stripe.subscriptions.cancel(subscription.id)
+
+  await AtualizarAssinatura({
+    email,
+    stripeCustomerId: null,
+    stripeSubscriptionId: null,
+    stripeSubscriptionStatus: null,
+    stripePriceId: null,
+  })
+}
+
+export const cancelarEstornarAssinaturaUsuarioByEmail = async (
+  email: string,
 ) => {
-  try {
-    const customer = await createStripeCustomer({
-      email: userEmail,
-    })
-
-    const subscription = await stripe.subscriptionItems.list({
-      subscription: userStripeSubscriptionId,
-      limit: 1,
-    })
-
-    const session = await stripe.billingPortal.sessions.create({
-      customer: customer.id,
-      return_url: 'http://localhost:3000/painel/minha-conta/assinatura',
-      flow_data: {
-        type: 'subscription_update_confirm',
-        after_completion: {
-          type: 'redirect',
-          redirect: {
-            return_url:
-              'http://localhost:3000/painel/minha-conta/assinatura?ok=true',
-          },
-        },
-        subscription_update_confirm: {
-          subscription: userStripeSubscriptionId,
-          items: [
-            {
-              id: subscription.data[0].id,
-              price: config.stripe.plans.pro.priceId,
-              quantity: 1,
-            },
-          ],
-        },
-      },
-    })
-
-    return {
-      url: session.url,
-    }
-  } catch (error) {
-    console.error(error)
-    throw new Error('Error to create checkout session')
-  }
-}
-
-export const downgradePlanToFree = async (userStripeSubscriptionId: string) => {
-  const subscription = await stripe.subscriptionItems.list({
-    subscription: userStripeSubscriptionId,
-    limit: 1,
+  const customer = await getStripeCustomerByEmail(email)
+  const subscription = await getSubscriptionByCustomerId(customer.id)
+  const paymentIntent = await stripe.paymentIntents.list({
+    customer: customer.id,
   })
 
-  const result = await stripe.subscriptions.update(userStripeSubscriptionId, {
-    items: [
-      {
-        id: subscription.data[0].id,
-        price: config.stripe.plans.free.priceId,
-        quantity: 1,
-      },
-    ],
+  await stripe.refunds.create({
+    payment_intent: paymentIntent.data[0].id,
   })
 
-  return result.status
-}
-
-export const handleProcessWebhookUpdatedSubscription = async (event: {
-  object: Stripe.Subscription
-}) => {
-  const stripeCustomerId = event.object.customer as string
-  const stripeSubscriptionId = event.object.id as string
-  const stripeSubscriptionStatus = event.object.status
-  const stripePriceId = event.object.items.data[0].price.id
-
-  // chamar a api
-  const { assinante } = await BuscarAssinante({ stripeCustomerId })
-
-  if (!assinante) {
-    throw new Error('user of stripeCustomerId not found')
-  }
+  await stripe.subscriptions.cancel(subscription.id)
 
   await AtualizarAssinatura({
-    stripeCustomerId,
-    stripeSubscriptionId,
-    stripeSubscriptionStatus,
-    stripePriceId,
+    email,
+    stripeCustomerId: null,
+    stripeSubscriptionId: null,
+    stripeSubscriptionStatus: null,
+    stripePriceId: null,
   })
 }
 
@@ -182,12 +141,13 @@ export const getPrice = async (priceId: string) => {
 
 export const getUserCurrentPlan = async () => {
   const { assinatura } = await BuscarAssinaturaUsuarioPorIdUsuario()
+  let plan
 
-  if (!assinatura || !assinatura.stripePriceId) {
-    throw new Error('User or user stripePriceId not found')
+  if (!assinatura.stripeSubscriptionId) {
+    plan = config.stripe.plans.free
+  } else {
+    plan = config.stripe.plans.pro
   }
-
-  const plan = getPlanByPrice(assinatura.stripePriceId)
 
   const availableEstabelecimentos = plan.quota.estabelecimentos
   const currentEstabelecimentos = assinatura.totalEstabelecimentos

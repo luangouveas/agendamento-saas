@@ -1,11 +1,12 @@
-import { Button } from '@/components/ui/button'
-import { config } from '@/config'
+import { BuscarAssinaturaUsuarioPorIdUsuario } from '@/http/assinatura'
 import { formatarValorParaMoeda } from '@/lib/utils'
 import { getPrice } from '@/services/stripe'
+import { config } from '@/services/stripe/config'
 
-import { atualizarAssinaturaPROAction } from './actions'
+import BotaoPagamento from './botao-pagamento'
 
 export async function AssinarPro() {
+  const { assinatura } = await BuscarAssinaturaUsuarioPorIdUsuario()
   const planPro = config.stripe.plans.pro
   const {
     estabelecimentos: quotaEstabelecimentos,
@@ -25,12 +26,9 @@ export async function AssinarPro() {
             <span>{quotaServicos} Serviços</span>
           </div>
         </div>
-
-        <form action={atualizarAssinaturaPROAction}>
-          <Button type="submit" disabled={!proPrice?.ativo} variant="default">
-            {proPrice?.ativo ? 'Assinar PRO' : 'Assinatura desabilitada'}
-          </Button>
-        </form>
+        <BotaoPagamento emailUsuario={assinatura.email}>
+          {proPrice?.ativo ? 'Assinar PRO' : 'Assinatura desabilitada'}
+        </BotaoPagamento>
       </div>
     </div>
   )

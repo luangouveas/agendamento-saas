@@ -9,15 +9,13 @@ export const env = createEnv({
     TOKEN_ADMIN: z.string(),
     SUPABASE_URL: z.string().url(),
     SUPABASE_SECRET_KEY: z.string(),
+    STRIPE_SECRET_KEY: z.string(),
+    STRIPE_PLAN_PRICE_PRO_ID: z.string(),
   },
   client: {},
   shared: {
     NEXT_PUBLIC_API_URL: z.string().url(),
     NEXT_PUBLIC_STRIPE_PUBLISHABE_KEY: z.string(),
-    NEXT_PUBLIC_STRIPE_SECRET_KEY: z.string(),
-    NEXT_PUBLIC_STRIPE_PLAN_PRICE_FREE_ID: z.string(),
-    NEXT_PUBLIC_STRIPE_PLAN_PRICE_PRO_ID: z.string(),
-    NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET: z.string(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -29,13 +27,8 @@ export const env = createEnv({
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     NEXT_PUBLIC_STRIPE_PUBLISHABE_KEY:
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABE_KEY,
-    NEXT_PUBLIC_STRIPE_SECRET_KEY: process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY,
-    NEXT_PUBLIC_STRIPE_PLAN_PRICE_FREE_ID:
-      process.env.NEXT_PUBLIC_STRIPE_PLAN_PRICE_FREE_ID,
-    NEXT_PUBLIC_STRIPE_PLAN_PRICE_PRO_ID:
-      process.env.NEXT_PUBLIC_STRIPE_PLAN_PRICE_PRO_ID,
-    NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET:
-      process.env.NEXT_PUBLIC_STRIPE_WEBHOOK_SECRET,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    STRIPE_PLAN_PRICE_PRO_ID: process.env.STRIPE_PLAN_PRICE_PRO_ID,
   },
   emptyStringAsUndefined: true,
 })

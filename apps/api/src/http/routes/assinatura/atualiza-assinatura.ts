@@ -16,13 +16,14 @@ export function AtualizarAssinatura(app: FastifyInstance) {
       {
         schema: {
           tags: ['Assinatura'],
-          summary: 'Busca os dados do assinante',
+          summary: 'Atualiza assinatura do cliente',
           security: [{ bearerAuth: [] }],
           body: z.object({
-            stripeCustomerId: z.string(),
-            stripeSubscriptionId: z.string(),
-            stripeSubscriptionStatus: z.string(),
-            stripePriceId: z.string(),
+            email: z.string().email(),
+            stripeCustomerId: z.string().nullable(),
+            stripeSubscriptionId: z.string().nullable(),
+            stripeSubscriptionStatus: z.string().nullable(),
+            stripePriceId: z.string().nullable(),
           }),
           response: {
             204: z.null(),
@@ -31,15 +32,16 @@ export function AtualizarAssinatura(app: FastifyInstance) {
       },
       async (request, reply) => {
         const {
+          email,
           stripeCustomerId,
           stripePriceId,
           stripeSubscriptionId,
           stripeSubscriptionStatus,
         } = request.body
 
-        const usuario = await prisma.usuario.findFirst({
+        const usuario = await prisma.usuario.findUnique({
           where: {
-            stripeCustomerId,
+            email,
           },
         })
 

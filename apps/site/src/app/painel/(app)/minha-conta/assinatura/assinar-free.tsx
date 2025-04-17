@@ -1,27 +1,39 @@
 'use client'
 
 import { Loader2 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 
 import { Button } from '@/components/ui/button'
-import { config } from '@/config'
 import { useFormState } from '@/hooks/use-form-state'
+import { toast } from '@/hooks/use-toast'
 
 import { atualizarAssinaturaFREEAction } from './actions'
 
-export function AssinarFree() {
-  const {
-    estabelecimentos: quotaEstabelecimentos,
-    profissionais: quotaProfissionais,
-    servicos: quotaServicos,
-  } = config.stripe.plans.free.quota
+interface AssinarFreeProps {
+  quotaEstabelecimentos: number
+  quotaProfissionais: number
+  quotaServicos: number
+}
 
-  const route = useRouter()
-
-  const [{ message }, handleSubmit, isPending] = useFormState(
+export function AssinarFree({
+  quotaEstabelecimentos,
+  quotaProfissionais,
+  quotaServicos,
+}: AssinarFreeProps) {
+  const [, handleSubmit, isPending] = useFormState(
     atualizarAssinaturaFREEAction,
-    () => {
-      route.push('/painel/minha-conta/assinatura?ok=true')
+    (message) => {
+      toast({
+        variant: 'success',
+        title: 'Sucesso!',
+        description: message,
+      })
+    },
+    (message) => {
+      toast({
+        variant: 'destructive',
+        title: 'Erro!',
+        description: message,
+      })
     },
   )
 
@@ -45,7 +57,7 @@ export function AssinarFree() {
                 Processando...
               </div>
             ) : (
-              'Voltar ao FREE'
+              'Cancelar assinatura PRO'
             )}
           </Button>
         </form>

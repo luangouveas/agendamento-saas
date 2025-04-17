@@ -2,27 +2,70 @@
 
 import { HTTPError } from 'ky'
 import { revalidateTag } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 import { BuscarAssinaturaUsuarioPorIdUsuario } from '@/http/assinatura'
 import * as stripeService from '@/services/stripe'
+import { config } from '@/services/stripe/config'
 
-export async function atualizarAssinaturaPROAction() {
-  const { assinatura } = await BuscarAssinaturaUsuarioPorIdUsuario()
+export async function atualizarAssinaturaPROAction(email: string) {
+  try {
+    await stripeService.atualizarAssinaturaUsuario(email)
 
-  const checkoutSession = await stripeService.createCheckoutSession(
-    assinatura.email,
-    assinatura.stripeSubscriptionId,
-  )
+    return {
+      success: true,
+      message: 'Assinatura atualizada com sucesso!',
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      const { message } = await err.response.json()
+      return {
+        success: false,
+        message,
+      }
+    }
 
-  redirect(checkoutSession.url)
+    return {
+      success: false,
+      message: err.message,
+    }
+  }
 }
 
 export async function atualizarAssinaturaFREEAction() {
   try {
     const { assinatura } = await BuscarAssinaturaUsuarioPorIdUsuario()
 
-    await stripeService.downgradePlanToFree(assinatura.stripeSubscriptionId)
+    const {
+      estabelecimentos: maxEstabelecimentos,
+      profissionais: maxProfissionais,
+      servicos: maxServicos,
+    } = config.stripe.plans.free.quota
+
+    if (assinatura.totalEstabelecimentos > maxEstabelecimentos) {
+      return {
+        success: false,
+        message: `Você não pode voltar ao plano FREE pois possui mais de ${maxEstabelecimentos} estabelecimentos ativos.`,
+        errors: null,
+      }
+    }
+
+    if (assinatura.totalProfissionais > maxProfissionais) {
+      return {
+        success: false,
+        message: `Você não pode voltar ao plano FREE pois possui mais de ${maxProfissionais} profissionais ativos.`,
+        errors: null,
+      }
+    }
+
+    if (assinatura.totalServicos > maxServicos) {
+      return {
+        success: false,
+        message: `Você não pode voltar ao plano FREE pois possui mais de ${maxServicos} serviços ativos.`,
+        errors: null,
+      }
+    }
+
+    await stripeService.cancelarAssinaturaUsuarioByEmail(assinatura.email)
 
     revalidateTag('assinatura-usuario')
   } catch (err) {
@@ -43,7 +86,7 @@ export async function atualizarAssinaturaFREEAction() {
 
   return {
     success: true,
-    message: 'Sua assinatura foi atualizada!',
+    message: 'Sua assinatura foi cancelada com sucesso!',
     errors: null,
   }
 }
