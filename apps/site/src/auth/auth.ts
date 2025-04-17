@@ -29,5 +29,5 @@ export async function authAdmin() {
     return usuario
   } catch {}
 
-  redirect('/panel/api/auth/sign-out')
+  redirect('/painel/api/auth/sign-out')
 }
