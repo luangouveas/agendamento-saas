@@ -29,7 +29,6 @@ export default async function EditarServicoPage({
         />
         <h2 className="text-2xl font-semibold">{servico.nome}</h2>
       </div>
-      <h2 className="text-2xl font-semibold">{servico.nome}</h2>
       <div className="space-y-4">
         <ServicoForm isUpdating={true} initialData={servico} />
       </div>
