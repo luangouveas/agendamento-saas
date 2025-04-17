@@ -21,6 +21,7 @@ import { ConfirmarAgendamento } from './routes/agendamento/confirmar-agendamento
 import { CriarAgendamento } from './routes/agendamento/criar-agendamento'
 import { ReabrirAgendamento } from './routes/agendamento/reabrir-agendamento'
 import { TransferirAgendamento } from './routes/agendamento/transferir-agendamento'
+import { AtualizarAvatar } from './routes/arquivos/atualizar-avatar'
 import { AtualizarAssinatura } from './routes/assinatura/atualiza-assinatura'
 import { BuscarAssinante } from './routes/assinatura/buscar-assinante'
 import { BuscarAssinaturaUsuarioPorIdUsuario } from './routes/assinatura/buscar-assinatura-por-id-usuario'
@@ -162,6 +163,8 @@ app.register(BuscarConvite)
 app.register(BuscarUsuarioPorEmail)
 app.register(BuscarConvitesPendentes)
 app.register(AceitarConvite)
+
+app.register(AtualizarAvatar)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log(`HTTP Server running on http://localhost:${env.SERVER_PORT}/docs`)
