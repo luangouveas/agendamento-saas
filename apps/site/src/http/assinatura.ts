@@ -1,7 +1,6 @@
 import { api } from './api-client'
 
 export interface AtualizarAssinaturaRequest {
-  email: string
   stripeCustomerId: string | null
   stripeSubscriptionId: string | null
   stripeSubscriptionStatus: string | null
@@ -15,7 +14,6 @@ export async function AtualizarAssinatura(
 ): Promise<AtualizarAssinaturaResponse> {
   await api.put(`assinatura`, {
     json: {
-      email: data.email,
       stripeCustomerId: data.stripeCustomerId,
       stripeSubscriptionId: data.stripeSubscriptionId,
       stripeSubscriptionStatus: data.stripeSubscriptionStatus,

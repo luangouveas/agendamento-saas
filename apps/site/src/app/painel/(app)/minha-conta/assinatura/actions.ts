@@ -7,9 +7,12 @@ import { BuscarAssinaturaUsuarioPorIdUsuario } from '@/http/assinatura'
 import * as stripeService from '@/services/stripe'
 import { config } from '@/services/stripe/config'
 
-export async function atualizarAssinaturaPROAction(email: string) {
+export async function atualizarAssinaturaPROAction(
+  customerId: string,
+  subscriptionId: string,
+) {
   try {
-    await stripeService.atualizarAssinaturaUsuario(email)
+    await stripeService.atualizarAssinaturaUsuario(customerId, subscriptionId)
 
     return {
       success: true,
@@ -65,7 +68,7 @@ export async function atualizarAssinaturaFREEAction() {
       }
     }
 
-    await stripeService.cancelarAssinaturaUsuarioByEmail(assinatura.email)
+    await stripeService.cancelarAssinaturaUsuario(assinatura.stripeCustomerId)
 
     revalidateTag('assinatura-usuario')
   } catch (err) {

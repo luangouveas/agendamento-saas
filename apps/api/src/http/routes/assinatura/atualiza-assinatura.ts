@@ -5,8 +5,6 @@ import { z } from 'zod'
 import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 
-import { BadRequestError } from '../_errors/bad-request-error'
-
 export function AtualizarAssinatura(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
@@ -19,7 +17,6 @@ export function AtualizarAssinatura(app: FastifyInstance) {
           summary: 'Atualiza assinatura do cliente',
           security: [{ bearerAuth: [] }],
           body: z.object({
-            email: z.string().email(),
             stripeCustomerId: z.string().nullable(),
             stripeSubscriptionId: z.string().nullable(),
             stripeSubscriptionStatus: z.string().nullable(),
@@ -32,26 +29,17 @@ export function AtualizarAssinatura(app: FastifyInstance) {
       },
       async (request, reply) => {
         const {
-          email,
           stripeCustomerId,
           stripePriceId,
           stripeSubscriptionId,
           stripeSubscriptionStatus,
         } = request.body
 
-        const usuario = await prisma.usuario.findUnique({
-          where: {
-            email,
-          },
-        })
-
-        if (!usuario) {
-          throw new BadRequestError('Usuário assinante não encontrado')
-        }
+        const usuarioId = await request.getCurrentUserId()
 
         await prisma.usuario.update({
           where: {
-            id: usuario.id,
+            id: usuarioId,
           },
           data: {
             stripeCustomerId,

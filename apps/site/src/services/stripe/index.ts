@@ -32,50 +32,41 @@ export const buscarCartosDeCreditoCliente = async (customerId: string) => {
   return cartoes
 }
 
-export const atualizarAssinaturaUsuario = async (email: string) => {
-  const custumer = await getStripeCustomerByEmail(email)
-
-  if (!custumer) {
-    throw new Error('Assinatura não localizada.')
-  }
-
-  const subscription = await getSubscriptionByCustomerId(custumer.id)
+export const atualizarAssinaturaUsuario = async (
+  customerId: string,
+  subscriptionId: string,
+) => {
+  const subscription = await getSubscriptionByCustomerId(customerId)
 
   if (!subscription) {
     throw new Error('Assinatura não localizada.')
   }
 
   await AtualizarAssinatura({
-    email,
-    stripeCustomerId: custumer.id,
-    stripeSubscriptionId: subscription.id,
+    stripeCustomerId: customerId,
+    stripeSubscriptionId: subscriptionId,
     stripeSubscriptionStatus: subscription.status,
     stripePriceId: subscription.items.data[0].price.id,
   })
 }
 
-export const cancelarAssinaturaUsuarioByEmail = async (email: string) => {
-  const customer = await getStripeCustomerByEmail(email)
-  const subscription = await getSubscriptionByCustomerId(customer.id)
+export const cancelarAssinaturaUsuario = async (customerId: string) => {
+  const subscription = await getSubscriptionByCustomerId(customerId)
 
   await stripe.subscriptions.cancel(subscription.id)
 
   await AtualizarAssinatura({
-    email,
-    stripeCustomerId: null,
+    stripeCustomerId: customerId,
     stripeSubscriptionId: null,
     stripeSubscriptionStatus: null,
     stripePriceId: null,
   })
 }
 
-export const cancelarEstornarAssinaturaUsuarioByEmail = async (
-  email: string,
-) => {
-  const customer = await getStripeCustomerByEmail(email)
-  const subscription = await getSubscriptionByCustomerId(customer.id)
+export const cancelarEstornarAssinaturaUsuario = async (customerId: string) => {
+  const subscription = await getSubscriptionByCustomerId(customerId)
   const paymentIntent = await stripe.paymentIntents.list({
-    customer: customer.id,
+    customer: customerId,
   })
 
   await stripe.refunds.create({
@@ -85,8 +76,7 @@ export const cancelarEstornarAssinaturaUsuarioByEmail = async (
   await stripe.subscriptions.cancel(subscription.id)
 
   await AtualizarAssinatura({
-    email,
-    stripeCustomerId: null,
+    stripeCustomerId: customerId,
     stripeSubscriptionId: null,
     stripeSubscriptionStatus: null,
     stripePriceId: null,
