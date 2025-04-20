@@ -83,35 +83,26 @@ export const cancelarEstornarAssinaturaUsuario = async (customerId: string) => {
   })
 }
 
-type Plan = {
-  priceId: string
+export type Plan = {
+  name: string
+  stripeCustomerId: string | null
+  stripeSubscriptionId: string | null
   quota: {
-    estabelecimentos: number
-    servicos: number
-    profissionais: number
-  }
-}
-
-type Plans = {
-  [key: string]: Plan
-}
-
-export const getPlanByPrice = (priceId: string) => {
-  const plans: Plans = config.stripe.plans
-
-  const planKey = Object.keys(plans).find(
-    (key) => plans[key].priceId === priceId,
-  ) as keyof Plans | undefined
-
-  const plan = planKey ? plans[planKey] : null
-
-  if (!plan) {
-    throw new Error(`Plan not found for priceId: ${priceId}`)
-  }
-
-  return {
-    name: planKey,
-    quota: plan.quota,
+    estabelecimentos: {
+      available: number
+      current: number
+      usageEstabelecimentos: number
+    }
+    servicos: {
+      available: number
+      current: number
+      usageServicos: number
+    }
+    profissionais: {
+      available: number
+      current: number
+      usageProfissionais: number
+    }
   }
 }
 
@@ -129,7 +120,7 @@ export const getPrice = async (priceId: string) => {
   }
 }
 
-export const getUserCurrentPlan = async () => {
+export const getUserCurrentPlan = async (): Promise<Plan> => {
   const { assinatura } = await BuscarAssinaturaUsuarioPorIdUsuario()
   let plan
 
@@ -155,6 +146,8 @@ export const getUserCurrentPlan = async () => {
 
   return {
     name: plan.name,
+    stripeCustomerId: assinatura.stripeCustomerId,
+    stripeSubscriptionId: assinatura.stripeSubscriptionId,
     quota: {
       estabelecimentos: {
         available: availableEstabelecimentos,
@@ -172,5 +165,41 @@ export const getUserCurrentPlan = async () => {
         usageProfissionais,
       },
     },
+  }
+}
+
+export function translateSubscriptionStatus(status: string) {
+  switch (status) {
+    case 'active':
+      return 'Ativo'
+    case 'canceled':
+      return 'Cancelado'
+    case 'incomplete':
+      return 'Incompleto'
+    case 'incomplete_expired':
+      return 'Incompleto Expirado'
+    case 'past_due':
+      return 'Atrasado'
+    case 'trialing':
+      return 'Em Teste'
+    case 'unpaid':
+      return 'Não Pago'
+    default:
+      return status
+  }
+}
+
+export function translateSubscriptionInterval(interval: string) {
+  switch (interval) {
+    case 'day':
+      return 'Diário'
+    case 'week':
+      return 'Semanal'
+    case 'month':
+      return 'Mensal'
+    case 'year':
+      return 'Anual'
+    default:
+      return interval
   }
 }

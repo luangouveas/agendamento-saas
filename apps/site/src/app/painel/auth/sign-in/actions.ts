@@ -5,7 +5,6 @@ import { cookies } from 'next/headers'
 import { z } from 'zod'
 
 import { entrarComSenha } from '@/http/entrar-com-email-senha'
-import * as stripeService from '@/services/stripe'
 
 const signInSchema = z.object({
   email: z
@@ -37,10 +36,6 @@ export async function signInWithEmailAndPassword(data: FormData) {
     cookieStore.set('ag-tk-admin', token, {
       path: '/',
       maxAge: 60 * 60 * 24 * 2, // 2 days
-    })
-
-    await stripeService.createStripeCustomer({
-      email,
     })
   } catch (err) {
     if (err instanceof HTTPError) {

@@ -43,10 +43,10 @@ interface BuscarAssinaturaUsuarioPorIdUsuarioResponse {
   assinatura: {
     id: string
     email: string
-    stripePriceId: string
-    stripeCustomerId: string
-    stripeSubscriptionId: string
-    stripeSubscriptionStatus: string
+    stripePriceId: string | null
+    stripeCustomerId: string | null
+    stripeSubscriptionId: string | null
+    stripeSubscriptionStatus: string | null
     totalEstabelecimentos: number
     totalServicos: number
     totalProfissionais: number
