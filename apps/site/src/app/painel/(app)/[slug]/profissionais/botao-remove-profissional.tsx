@@ -33,7 +33,7 @@ export function BotaoRemoveMembroProfissional({
   }
 
   return (
-    <Button onClick={removerProfissional} {...props} disabled={isPending}>
+    <Button onClick={removerProfissional} disabled={isPending} {...props}>
       {isPending ? (
         <>
           <Loader2 className="mr-2 size-4 animate-spin" />

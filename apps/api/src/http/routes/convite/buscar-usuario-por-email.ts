@@ -6,6 +6,7 @@ import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 import { buscarPermissoesUsuario } from '@/utils/buscar-permissoes-usuario'
 
+import { BadRequestError } from '../_errors/bad-request-error'
 import { UnauthorizedError } from '../_errors/unauthorized-error'
 
 export async function BuscarUsuarioPorEmail(app: FastifyInstance) {
@@ -39,7 +40,8 @@ export async function BuscarUsuarioPorEmail(app: FastifyInstance) {
       async (request) => {
         const { email, slug } = request.params
         const usuarioId = await request.getCurrentUserId()
-        const { membership } = await request.getUserMembership(slug)
+        const { membership, organizacao } =
+          await request.getUserMembership(slug)
 
         const { cannot } = buscarPermissoesUsuario(usuarioId, membership.role)
 
@@ -59,6 +61,23 @@ export async function BuscarUsuarioPorEmail(app: FastifyInstance) {
             nome: true,
           },
         })
+
+        if (usuario) {
+          const membroDaOrganizacao = await prisma.membro.findFirst({
+            where: {
+              organizacaoId: organizacao.id,
+              usuario: {
+                email,
+              },
+            },
+          })
+
+          if (membroDaOrganizacao) {
+            throw new BadRequestError(
+              'O usuário com este e-mail já faz parte do estabelecimento',
+            )
+          }
+        }
 
         return { usuario }
       },
