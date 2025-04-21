@@ -1,7 +1,11 @@
+import { AlertTriangle } from 'lucide-react'
+
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { BuscarConvitesPendentes } from '@/http/buscar-convites-pendentes'
+import { getUserCurrentPlan } from '@/services/stripe'
 
 import { BotaoCancelaConvite } from './botao-cancela-convite'
 import { CriarConviteForm } from './criar-convite-form'
@@ -10,6 +14,9 @@ export async function Convites() {
   const slug = await getSlugOrganizacaoAtual()
   const { convites } = await BuscarConvitesPendentes({ slug: slug! })
 
+  const { quota } = await getUserCurrentPlan()
+  const podeCriarProfissionais = quota.profissionais.percentUsed < 100
+
   return (
     <div className="space-y-4">
       <Card>
@@ -17,7 +24,17 @@ export async function Convites() {
           <CardTitle>Associar profissional</CardTitle>
         </CardHeader>
         <CardContent>
-          <CriarConviteForm />
+          {podeCriarProfissionais ? (
+            <CriarConviteForm />
+          ) : (
+            <Alert variant="destructive">
+              <AlertTriangle className="size-4" />
+              <AlertTitle>Ação não permitida</AlertTitle>
+              <AlertDescription>
+                <p>Você chegou ao limite de profissionais nesta conta.</p>
+              </AlertDescription>
+            </Alert>
+          )}
         </CardContent>
       </Card>
 

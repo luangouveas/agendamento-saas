@@ -56,6 +56,7 @@ export async function removerMembroAction(membroId: string) {
     })
 
     revalidateTag(`${slug}/membros`)
+    revalidateTag('assinatura-usuario')
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()
@@ -87,6 +88,7 @@ export async function cancelarConviteAction(conviteId: string) {
     })
 
     revalidateTag(`${slug}/convites-pendentes`)
+    revalidateTag('assinatura-usuario')
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()
@@ -171,6 +173,7 @@ export async function AssociarUsuarioExistenteAction(
     })
     revalidateTag(`${slug}/membros`)
     revalidateTag(`${slug}/convites-pendentes`)
+    revalidateTag('assinatura-usuario')
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()
@@ -201,6 +204,7 @@ export async function ConvidarNovoUsuarioAction(email: string, role: string) {
   try {
     await CriarConvite({ slug: slug!, email, role })
     revalidateTag(`${slug}/convites-pendentes`)
+    revalidateTag('assinatura-usuario')
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()

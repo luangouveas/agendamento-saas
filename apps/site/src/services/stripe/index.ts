@@ -91,17 +91,17 @@ export type Plan = {
     estabelecimentos: {
       available: number
       current: number
-      usageEstabelecimentos: number
+      percentUsed: number
     }
     servicos: {
       available: number
       current: number
-      usageServicos: number
+      percentUsed: number
     }
     profissionais: {
       available: number
       current: number
-      usageProfissionais: number
+      percentUsed: number
     }
   }
 }
@@ -152,17 +152,17 @@ export const getUserCurrentPlan = async (): Promise<Plan> => {
       estabelecimentos: {
         available: availableEstabelecimentos,
         current: currentEstabelecimentos,
-        usageEstabelecimentos,
+        percentUsed: usageEstabelecimentos,
       },
       servicos: {
         available: availableServicos,
         current: currentServicos,
-        usageServicos,
+        percentUsed: usageServicos,
       },
       profissionais: {
         available: availableProfissionais,
         current: currentProfissionais,
-        usageProfissionais,
+        percentUsed: usageProfissionais,
       },
     },
   }

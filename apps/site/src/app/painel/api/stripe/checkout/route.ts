@@ -33,8 +33,6 @@ export async function POST(request: NextRequest) {
       )}/painel/minha-conta/assinatura/confirmacao-pagamento?session_id={CHECKOUT_SESSION_ID}`,
     })
 
-    console.log(session)
-
     return NextResponse.json({
       id: session.id,
       client_secret: session.client_secret,

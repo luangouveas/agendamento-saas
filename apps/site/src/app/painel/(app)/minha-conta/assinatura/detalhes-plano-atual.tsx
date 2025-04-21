@@ -66,13 +66,11 @@ export default async function DetalhesPlanoAtual({
                   {quota.estabelecimentos.available}
                 </span>
                 <span className="text-sm text-muted-foreground">
-                  {quota.estabelecimentos.usageEstabelecimentos}%
+                  {quota.estabelecimentos.percentUsed}%
                 </span>
               </header>
               <main>
-                <Progress
-                  value={quota.estabelecimentos.usageEstabelecimentos}
-                />
+                <Progress value={quota.estabelecimentos.percentUsed} />
               </main>
             </CardContent>
           </Card>
@@ -86,11 +84,11 @@ export default async function DetalhesPlanoAtual({
                   {quota.profissionais.current}/{quota.profissionais.available}
                 </span>
                 <span className="text-sm text-muted-foreground">
-                  {quota.profissionais.usageProfissionais}%
+                  {quota.profissionais.percentUsed}%
                 </span>
               </header>
               <main>
-                <Progress value={quota.profissionais.usageProfissionais} />
+                <Progress value={quota.profissionais.percentUsed} />
               </main>
             </CardContent>
           </Card>
@@ -104,11 +102,11 @@ export default async function DetalhesPlanoAtual({
                   {quota.servicos.current}/{quota.servicos.available}
                 </span>
                 <span className="text-sm text-muted-foreground">
-                  {quota.servicos.usageServicos}%
+                  {quota.servicos.percentUsed}%
                 </span>
               </header>
               <main>
-                <Progress value={quota.servicos.usageServicos} />
+                <Progress value={quota.servicos.percentUsed} />
               </main>
             </CardContent>
           </Card>

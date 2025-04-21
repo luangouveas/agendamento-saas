@@ -85,11 +85,19 @@ export function BuscarAssinaturaUsuarioPorIdUsuario(app: FastifyInstance) {
           },
         })
 
+        const countConvites = await prisma.convite.count({
+          where: {
+            organizacao: {
+              ownerId: usuarioId,
+            },
+          },
+        })
+
         const assinatura = {
           ...assinaturaUsuario,
           totalEstabelecimentos: countEstabelecimentos,
           totalServicos: countServicos,
-          totalProfissionais: countProfissionais,
+          totalProfissionais: countProfissionais + countConvites,
         }
 
         return { assinatura }
