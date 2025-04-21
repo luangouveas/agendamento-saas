@@ -67,7 +67,6 @@ export async function atualizarOrganizacao(formData: FormData) {
   const resultSchema = organizacaoSchema.safeParse(Object.fromEntries(formData))
 
   if (!resultSchema.success) {
-    console.log(resultSchema.error.flatten())
     return {
       success: false,
       message: 'Erro de validação nos campos do formulário',

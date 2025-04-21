@@ -24,7 +24,6 @@ export default async function DetalhesAssinatura({
   const cartaoPrincipal = cartoes.data.find(
     (c) => c.id === subscription.default_payment_method,
   )
-  console.dir(cartoes, { depth: null, colors: true })
 
   return (
     <Card className="">

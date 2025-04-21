@@ -12,8 +12,6 @@ interface CriarServicoResponse {
 }
 
 export async function CriarServico(servico: CriarServicoRequest, slug: string) {
-  console.log(servico)
-
   const result = await api
     .post(`organizacao/${slug}/servico`, {
       json: {
@@ -24,8 +22,6 @@ export async function CriarServico(servico: CriarServicoRequest, slug: string) {
       },
     })
     .json<CriarServicoResponse>()
-
-  console.log(result)
 
   return result
 }

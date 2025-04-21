@@ -22,8 +22,6 @@ export async function AtualizarPerfilUsuarioAction(formData: FormData) {
     Object.fromEntries(formData),
   )
 
-  console.log(Object.fromEntries(formData))
-
   if (!resultParse.success) {
     return {
       success: false,

@@ -66,7 +66,6 @@ export default async function CheckoutReturnPage(props: {
   }
 
   if (session?.status === 'complete') {
-    console.log('session', session)
     const customerId = session.customer as string
     const subscriprionId = session.subscription as string
 
