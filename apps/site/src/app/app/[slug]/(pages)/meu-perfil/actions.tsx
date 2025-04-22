@@ -1,7 +1,6 @@
 'use server'
 
 import { HTTPError } from 'ky'
-import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 
 import { AtualizarDadosPerfil } from '@/http/atualizar-perfil'
@@ -45,8 +44,6 @@ export async function atualizarDadosDoPerfilDoUsuario(formData: FormData) {
       numeroCelular: ddiNumeroCelular,
       ...data,
     })
-
-    // revalidateTag('atualizou-perfil')
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()

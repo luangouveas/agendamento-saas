@@ -63,7 +63,12 @@ export default async function ListaMeusAgendamentosPendentes() {
               <div className="flex w-full flex-col gap-3">
                 <div className="grid w-full">
                   <span className="text-lg font-medium">{agP.nomeServico}</span>
-                  <span className="text-sm">R$ {agP.valor}</span>
+                  <span className="text-sm">
+                    {agP.valor.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })}
+                  </span>
                   <span className="text-sm text-muted-foreground">
                     Profissional: {agP.nomeProfissional}
                   </span>

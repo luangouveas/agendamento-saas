@@ -14,3 +14,11 @@ export const formatarValorParaMoeda = (valor: string | null): string => {
   const centavos = valorStr.slice(-2)
   return `${reais},${centavos}`
 }
+
+export const converterMinutosEmTempo = (tempoMinutos: number) => {
+  const horas = Math.floor(tempoMinutos / 60)
+  const minutos = Math.floor(tempoMinutos % 60)
+  const tempo = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`
+
+  return tempo
+}

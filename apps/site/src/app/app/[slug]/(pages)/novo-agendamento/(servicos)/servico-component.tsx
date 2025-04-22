@@ -7,6 +7,7 @@ import { useContext } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { AgendamentoContext } from '@/context/agendamento-context'
 import { IServico } from '@/interfaces/servico'
+import { converterMinutosEmTempo } from '@/lib/utils'
 
 interface ServicoComponentProps {
   servico: IServico
@@ -39,7 +40,11 @@ export default function ServicoComponent({
           <div className="flex flex-col">
             <span>{servico.nome}</span>
             <span className="text-xs">
-              {servico.tempo} min - R$ {servico.valor}
+              {converterMinutosEmTempo(servico.tempo)} -{' '}
+              {servico.valor.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              })}
             </span>
           </div>
         </div>

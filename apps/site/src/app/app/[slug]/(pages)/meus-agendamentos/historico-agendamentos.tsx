@@ -73,7 +73,12 @@ export default async function ListaHistoricoMeusAgendamentos() {
               <div className="flex w-full flex-col gap-3">
                 <div className="grid w-full">
                   <span className="text-md font-medium">{agH.nomeServico}</span>
-                  <span className="text-sm">R$ {agH.valor}</span>
+                  <span className="text-sm">
+                    {agH.valor.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })}
+                  </span>
                   <span className="text-sm text-muted-foreground">
                     Profissional: {agH.nomeProfissional}
                   </span>

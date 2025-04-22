@@ -83,7 +83,11 @@ export default function ConfirmarAgendamentoClienteForm({
                 </Avatar>
                 <div className="flex flex-col">
                   <span className="text-xl font-medium">
-                    {servico!.nome} - R$ {servico!.valor}
+                    {servico!.nome} -{' '}
+                    {servico!.valor.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })}
                   </span>
                   <span>{profissional!.nome}</span>
                   <span className="text-sm text-muted-foreground">
