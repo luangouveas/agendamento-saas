@@ -1,25 +1,21 @@
-import { AlertTriangle } from 'lucide-react'
+import TrocarAvatar from '@/components/trocar-avatar'
+import { buscarPerfil } from '@/http/buscar-perfil'
 
-import { Alert, AlertTitle } from '@/components/ui/alert'
-
-import { buscarPerfilDoUsuarioLogado } from '../actions'
 import MeuPerfilForm from './meu-perfil-form'
 
 export default async function MeuPerfilPage() {
-  const { usuario, success, message } = await buscarPerfilDoUsuarioLogado()
+  const { usuario } = await buscarPerfil()
 
   return (
     <div className="space-y-4 px-4">
-      {!success && message ? (
-        <Alert variant="destructive">
-          <AlertTriangle className="size-4" />
-          <AlertTitle>
-            <p>{message}</p>
-          </AlertTitle>
-        </Alert>
-      ) : (
-        <MeuPerfilForm usuario={usuario!} />
-      )}
+      <TrocarAvatar
+        tipoRegistro="usuarios"
+        idRegistro={usuario.id}
+        avatarUrlAtual={usuario.avatarUrl}
+        nomeTagRevalidar="atualizou-perfil"
+        size={16}
+      />
+      <MeuPerfilForm usuario={usuario!} />
     </div>
   )
 }
