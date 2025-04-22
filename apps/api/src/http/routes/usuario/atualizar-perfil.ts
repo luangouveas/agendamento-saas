@@ -65,17 +65,19 @@ export function AtualizarPerfil(app: FastifyInstance) {
           throw new BadRequestError('Este número de telefone já está em uso.')
         }
 
-        const usuarioComMesmoEmail = await prisma.usuario.findFirst({
-          where: {
-            email,
-            NOT: {
-              id: usuarioLogadoId,
+        if (email) {
+          const usuarioComMesmoEmail = await prisma.usuario.findFirst({
+            where: {
+              email,
+              NOT: {
+                id: usuarioLogadoId,
+              },
             },
-          },
-        })
+          })
 
-        if (usuarioComMesmoEmail) {
-          throw new BadRequestError('Este e-mail já está em uso.')
+          if (usuarioComMesmoEmail) {
+            throw new BadRequestError('Este e-mail já está em uso.')
+          }
         }
 
         await prisma.usuario.update({
