@@ -1,4 +1,3 @@
-import { expedienteSchema } from '@agendamento-saas/auth'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
@@ -15,7 +14,7 @@ export function MarcarExpedientePrincipal(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .patch(
-      '/organizacao/:slug/expediente/:expedienteId',
+      '/organizacao/:slug/membro/:membroId/expediente/:expedienteId',
       {
         schema: {
           tags: ['Expediente'],
@@ -23,6 +22,7 @@ export function MarcarExpedientePrincipal(app: FastifyInstance) {
           security: [{ bearerAuth: [] }],
           params: z.object({
             slug: z.string(),
+            membroId: z.string().uuid(),
             expedienteId: z.string().uuid(),
           }),
           response: {
@@ -31,19 +31,14 @@ export function MarcarExpedientePrincipal(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        const { slug, expedienteId } = request.params
+        const { slug, expedienteId, membroId } = request.params
 
         const usuarioId = await request.getCurrentUserId()
         const { membership } = await request.getUserMembership(slug)
 
         const { cannot } = buscarPermissoesUsuario(usuarioId, membership.role)
 
-        const authExpediente = expedienteSchema.parse({
-          usuarioId,
-          membroId: membership.id,
-        })
-
-        if (!cannot('marcar_principal', authExpediente)) {
+        if (cannot('marcar_principal', 'Expediente')) {
           throw new UnauthorizedError(
             'Você não tem permissão para marcar este expediente como principal.',
           )
@@ -51,7 +46,7 @@ export function MarcarExpedientePrincipal(app: FastifyInstance) {
 
         const expedientePrincipalAtual = await prisma.expediente.findFirst({
           where: {
-            membroId: membership.id,
+            membroId,
             expedientePrincipal: true,
           },
         })

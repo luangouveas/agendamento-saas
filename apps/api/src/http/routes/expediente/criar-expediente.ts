@@ -23,6 +23,7 @@ export function CriarExpediente(app: FastifyInstance) {
             slug: z.string(),
           }),
           body: z.object({
+            membroId: z.string().uuid(),
             nome: z.string(),
             diasExpediente: z.array(
               z.object({
@@ -43,14 +44,14 @@ export function CriarExpediente(app: FastifyInstance) {
       },
       async (request, reply) => {
         const { slug } = request.params
-        const { nome, diasExpediente } = request.body
+        const { nome, diasExpediente, membroId } = request.body
 
         const usuarioId = await request.getCurrentUserId()
         const { membership } = await request.getUserMembership(slug)
 
         const { cannot } = buscarPermissoesUsuario(usuarioId, membership.role)
 
-        if (!cannot('create', 'Expediente')) {
+        if (cannot('create', 'Expediente')) {
           throw new UnauthorizedError(
             'Você não tem permissões para criar um expediente.',
           )
@@ -58,14 +59,15 @@ export function CriarExpediente(app: FastifyInstance) {
 
         const expedientePrincipal = await prisma.expediente.findFirst({
           where: {
-            membroId: membership.id,
+            membroId,
+            expedientePrincipal: true,
           },
         })
 
         const { id: expedienteId } = await prisma.expediente.create({
           data: {
             nome,
-            membroId: membership.id,
+            membroId,
             expedientePrincipal: !expedientePrincipal,
             diasExpediente: {
               createMany: {

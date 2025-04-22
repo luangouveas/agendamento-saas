@@ -42,7 +42,7 @@ export function DeletarExpediente(app: FastifyInstance) {
           membroId: membership.id,
         })
 
-        if (!cannot('delete', authExpediente)) {
+        if (cannot('delete', authExpediente)) {
           throw new UnauthorizedError(
             'Você não tem permissão para excluir este expediente.',
           )

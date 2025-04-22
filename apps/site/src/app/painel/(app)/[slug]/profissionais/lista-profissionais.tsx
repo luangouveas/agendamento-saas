@@ -1,7 +1,9 @@
-import { Crown } from 'lucide-react'
+import { CalendarCog, Crown } from 'lucide-react'
+import Link from 'next/link'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { buscarMembros } from '@/http/buscar-membros'
 import { BuscarOrganizacao } from '@/http/buscar-organizacao'
@@ -65,6 +67,20 @@ export default async function ListaProfissionais() {
                         value={membro.role}
                         disabled={membro.usuarioId === organizacao.ownerId}
                       />
+
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={membro.usuarioId === organizacao.ownerId}
+                      >
+                        <Link
+                          href={`/painel/${slug}/profissionais/${membro.id}/expedientes`}
+                          className="flex items-center"
+                        >
+                          <CalendarCog className="mr-2 size-4" />
+                          Editar Expedientes
+                        </Link>
+                      </Button>
 
                       <BotaoRemoveMembroProfissional
                         membroId={membro.id}

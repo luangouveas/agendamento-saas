@@ -1,4 +1,3 @@
-import { expedienteSchema } from '@agendamento-saas/auth'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
@@ -50,12 +49,7 @@ export function AtualizarExpediente(app: FastifyInstance) {
 
         const { cannot } = buscarPermissoesUsuario(usuarioId, membership.role)
 
-        const authExpediente = expedienteSchema.parse({
-          usuarioId,
-          membroId: membership.id,
-        })
-
-        if (!cannot('update', authExpediente)) {
+        if (cannot('update', 'Expediente')) {
           throw new UnauthorizedError(
             'Você não tem permissão para atualizar este expediente.',
           )
@@ -80,7 +74,6 @@ export function AtualizarExpediente(app: FastifyInstance) {
             },
             data: {
               nome,
-              membroId: membership.id,
               expedientePrincipal: expedienteAtual!.expedientePrincipal,
               diasExpediente: {
                 createMany: {

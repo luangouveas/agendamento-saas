@@ -15,7 +15,7 @@ export function BuscarExpediente(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/organizacao/:slug/expediente/expedienteId',
+      '/organizacao/:slug/expediente/:expedienteId',
       {
         schema: {
           tags: ['Expediente'],

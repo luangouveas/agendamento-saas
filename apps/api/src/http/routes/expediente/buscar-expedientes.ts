@@ -13,7 +13,7 @@ export function BuscarExpedientes(app: FastifyInstance) {
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .get(
-      '/organizacao/:slug/expedientes',
+      '/organizacao/:slug/expedientes/:membroId',
       {
         schema: {
           tags: ['Expediente'],
@@ -21,6 +21,7 @@ export function BuscarExpedientes(app: FastifyInstance) {
           security: [{ bearerAuth: [] }],
           params: z.object({
             slug: z.string(),
+            membroId: z.string().uuid(),
           }),
           response: {
             200: z.object({
@@ -38,7 +39,7 @@ export function BuscarExpedientes(app: FastifyInstance) {
         },
       },
       async (request) => {
-        const { slug } = request.params
+        const { slug, membroId } = request.params
 
         const usuarioId = await request.getCurrentUserId()
         const { membership } = await request.getUserMembership(slug)
@@ -58,7 +59,10 @@ export function BuscarExpedientes(app: FastifyInstance) {
             expedientePrincipal: true,
           },
           where: {
-            membroId: membership.id,
+            membroId,
+          },
+          orderBy: {
+            createdAt: 'asc',
           },
         })
 
