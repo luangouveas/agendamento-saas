@@ -14,16 +14,16 @@ export default function CarregandoListaSkeleton() {
 
 function ItemSkeleton() {
   return (
-    <div className="flex items-center justify-between border-b border-border px-4 py-3">
+    <div className="flex items-center justify-between border-b border-border px-4 py-4">
       <div className="flex items-center space-x-6">
-        <Skeleton className="h-11 w-11 rounded-full" />
+        <Skeleton className="h-10 w-10 rounded-full" />
         <div className="space-y-2">
-          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[180px] sm:w-[300px]" />
           <Skeleton className="h-2 w-[100px]" />
-          <Skeleton className="h-2 w-[200px]" />
+          <Skeleton className="h-2 w-[150px] sm:w-[200px]" />
         </div>
       </div>
-      <div className="flex flex-1 items-center justify-end space-x-2">
+      <div className="flex flex-1 items-center justify-end gap-2">
         <Skeleton className="h-10 w-10" />
         <Skeleton className="h-10 w-10" />
       </div>
