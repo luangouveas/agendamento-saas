@@ -53,7 +53,9 @@ export default async function ListaMeusAgendamentosPendentes() {
                   </CardDescription>
                 </div>
                 <div className="flex flex-row items-start justify-start gap-1">
-                  <AcaoAgendamentoForm id={agP.id} acao="confirmar" />
+                  {agP.status !== 'CONFIRMADO' && (
+                    <AcaoAgendamentoForm id={agP.id} acao="confirmar" />
+                  )}
                   <AcaoAgendamentoForm id={agP.id} acao="cancelar" />
                 </div>
               </div>

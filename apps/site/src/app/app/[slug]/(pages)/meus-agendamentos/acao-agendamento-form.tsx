@@ -3,7 +3,6 @@
 import { CheckCircle, Loader2 } from 'lucide-react'
 import { useState } from 'react'
 
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { cn } from '@/lib/utils'
+import { toast } from '@/hooks/use-toast'
 
 import {
   cancelarAgendamentoAction,
@@ -31,9 +30,6 @@ export default function AcaoAgendamentoForm({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [modalOpen, setModalOpen] = useState<boolean>(false)
 
-  const [success, setSuccess] = useState<boolean | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
-
   function confirmarAcap() {
     if (acao === 'confirmar') {
       confirmarAgendamento()
@@ -46,14 +42,12 @@ export default function AcaoAgendamentoForm({
     setIsSubmitting(true)
     confirmarAgendamentoAction(id)
       .then((result) => {
-        if (result.success) {
-          setSuccess(true)
-          setMessage(null)
-          setModalOpen(false)
-        } else {
-          setSuccess(false)
-          setMessage(result.message)
-        }
+        toast({
+          variant: result.success ? 'success' : 'destructive',
+          title: result.success ? 'Sucesso!' : 'Erro!',
+          description: result.message,
+        })
+        setModalOpen(false)
       })
       .finally(() => setIsSubmitting(false))
   }
@@ -62,14 +56,12 @@ export default function AcaoAgendamentoForm({
     setIsSubmitting(true)
     cancelarAgendamentoAction(id)
       .then((result) => {
-        if (result.success) {
-          setSuccess(true)
-          setMessage(null)
-          setModalOpen(false)
-        } else {
-          setSuccess(false)
-          setMessage(result.message)
-        }
+        toast({
+          variant: result.success ? 'success' : 'destructive',
+          title: result.success ? 'Sucesso!' : 'Erro!',
+          description: result.message,
+        })
+        setModalOpen(false)
       })
       .finally(() => setIsSubmitting(false))
   }
@@ -97,14 +89,6 @@ export default function AcaoAgendamentoForm({
           </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-
-        {!success && message && (
-          <Alert variant="destructive">
-            <AlertDescription className="text-center font-semibold">
-              <p>{message}</p>
-            </AlertDescription>
-          </Alert>
-        )}
 
         <div className="flex w-full flex-row items-end justify-center">
           <Button

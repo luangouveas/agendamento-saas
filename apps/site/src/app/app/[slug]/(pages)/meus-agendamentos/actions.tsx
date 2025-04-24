@@ -53,7 +53,7 @@ export async function confirmarAgendamentoAction(id: string) {
 
     return {
       success: true,
-      message: null,
+      message: 'Agendamento confirmado com sucesso.',
       data: null,
     }
   } catch (err) {
@@ -64,7 +64,7 @@ export async function confirmarAgendamentoAction(id: string) {
 
     return {
       success: true,
-      message: null,
+      message: 'Ocorreu um erro inesperado.',
       data: null,
     }
   }
@@ -78,7 +78,7 @@ export async function cancelarAgendamentoAction(id: string) {
 
     return {
       success: true,
-      message: null,
+      message: 'Agendamento cancelado com sucesso.',
       data: null,
     }
   } catch (err) {
@@ -89,7 +89,7 @@ export async function cancelarAgendamentoAction(id: string) {
 
     return {
       success: true,
-      message: null,
+      message: 'Ocorreu um erro inesperado.',
       data: null,
     }
   }
