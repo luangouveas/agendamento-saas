@@ -10,10 +10,12 @@ import { FinalizarAtendimentoAction } from './actions'
 
 interface BotaoFinalizarAtendimentoProps {
   agendamentoId: string
+  onSuccess: () => void
 }
 
 export default function BotaoFinalizarAtendimento({
   agendamentoId,
+  onSuccess,
 }: BotaoFinalizarAtendimentoProps) {
   const [isPending, setIsPending] = useState(false)
 
@@ -28,6 +30,10 @@ export default function BotaoFinalizarAtendimento({
     })
 
     setIsPending(false)
+
+    if (success) {
+      onSuccess()
+    }
   }
 
   return (

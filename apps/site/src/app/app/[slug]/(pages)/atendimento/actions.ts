@@ -2,7 +2,6 @@
 
 import { addHours, addMinutes, startOfDay } from 'date-fns'
 import { HTTPError } from 'ky'
-import { revalidateTag } from 'next/cache'
 
 import { getSlugOrganizacaoAtual } from '@/auth/auth'
 import { BuscarAgendamentos } from '@/http/buscar-agendamentos'
@@ -24,7 +23,7 @@ export async function BuscarAgendamentosAction(data?: Date) {
       profissionalId: usuario.id,
       inicio: inicio.toISOString(),
       fim: fim.toISOString(),
-      status: 'AGENDADO',
+      status: 'PENDENTE',
     })
 
     const { agendamentos } = await BuscarAgendamentos(slug!, parms)

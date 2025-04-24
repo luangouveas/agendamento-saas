@@ -10,10 +10,12 @@ import { CancelarAgendamentoAction } from './actions'
 
 interface BotaoCancelarAgendamentoProps {
   agendamentoId: string
+  onSuccess: () => void
 }
 
 export default function BotaoCancelarAgendamento({
   agendamentoId,
+  onSuccess,
 }: BotaoCancelarAgendamentoProps) {
   const [isPending, setIsPending] = useState(false)
 
@@ -28,6 +30,10 @@ export default function BotaoCancelarAgendamento({
     })
 
     setIsPending(false)
+
+    if (success) {
+      onSuccess()
+    }
   }
 
   return (

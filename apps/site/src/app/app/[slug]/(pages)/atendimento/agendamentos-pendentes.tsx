@@ -19,29 +19,34 @@ import CarregandoListaSkeleton from './carregando-lista-skeleton'
 export default function AgendamentosPendentesPage() {
   const [loading, setLoading] = useState(false)
   const [agendamentos, setAgendamentos] = useState<Agendamento[] | null>(null)
+  const [dataSelecionada, setDataSelecionada] = useState<Date | undefined>()
 
   const fetchData = async (data?: Date) => {
     setLoading(true)
     setAgendamentos(null)
+    setDataSelecionada(data)
 
-    const { success, message, agendamentos } =
-      await BuscarAgendamentosAction(data)
-
-    if (!success) {
-      toast({
-        variant: 'destructive',
-        title: 'Erro!',
-        description: message,
+    BuscarAgendamentosAction(data)
+      .then((result) => {
+        if (!result.success) {
+          toast({
+            variant: 'destructive',
+            title: 'Erro!',
+            description: result.message,
+          })
+        }
+        return result.agendamentos
       })
-    } else {
-      setAgendamentos(agendamentos)
-    }
-
-    setLoading(false)
+      .then((agendamentos) => setAgendamentos(agendamentos))
+      .finally(() => setLoading(false))
   }
 
   const onFilter = (data?: Date) => {
     fetchData(data)
+  }
+
+  const onSuccess = () => {
+    fetchData(dataSelecionada)
   }
 
   useEffect(() => {
@@ -109,10 +114,12 @@ export default function AgendamentosPendentesPage() {
                       <div className="flex items-center justify-end gap-2">
                         <BotaoFinalizarAtendimento
                           agendamentoId={agendamento.id}
+                          onSuccess={onSuccess}
                         />
 
                         <BotaoCancelarAgendamento
                           agendamentoId={agendamento.id}
+                          onSuccess={onSuccess}
                         />
                       </div>
                     </TableCell>
