@@ -47,9 +47,12 @@ export function BuscarAgendamentos(app: FastifyInstance) {
                   nomeServico: z.string(),
                   clienteId: z.string().uuid(),
                   nomeCliente: z.string(),
+                  avatarCliente: z.string().url().nullable(),
                   profissionalId: z.string().uuid(),
                   nomeProfissional: z.string(),
+                  avatarProfissional: z.string().url().nullable(),
                   servicoId: z.string().uuid(),
+                  avatarServico: z.string().url().nullable(),
                   tempo: z.number(),
                   status: z.union([
                     z.literal('AGENDADO'),
@@ -93,12 +96,14 @@ export function BuscarAgendamentos(app: FastifyInstance) {
               select: {
                 id: true,
                 nome: true,
+                avatarUrl: true,
               },
             },
             profissional: {
               select: {
                 id: true,
                 nome: true,
+                avatarUrl: true,
               },
             },
             servico: {
@@ -106,6 +111,7 @@ export function BuscarAgendamentos(app: FastifyInstance) {
                 id: true,
                 nome: true,
                 tempo: true,
+                avatarUrl: true,
               },
             },
             id: true,
@@ -138,19 +144,35 @@ export function BuscarAgendamentos(app: FastifyInstance) {
 
         const agendamentos = listaAgendamentos.map(
           ({
-            cliente: { id: clienteId, nome: nomeCliente },
-            profissional: { id: profissionalId, nome: nomeProfissional },
-            servico: { id: servicoId, nome: nomeServico, ...servico },
+            cliente: {
+              id: clienteId,
+              nome: nomeCliente,
+              avatarUrl: avatarCliente,
+            },
+            profissional: {
+              id: profissionalId,
+              nome: nomeProfissional,
+              avatarUrl: avatarProfissional,
+            },
+            servico: {
+              id: servicoId,
+              nome: nomeServico,
+              avatarUrl: avatarServico,
+              ...servico
+            },
             ...agendamento
           }) => {
             return {
               ...agendamento,
               ...servico,
               nomeServico,
+              avatarServico,
               clienteId,
               nomeCliente,
+              avatarCliente,
               profissionalId,
               nomeProfissional,
+              avatarProfissional,
               servicoId,
             }
           },
