@@ -1,18 +1,19 @@
 'use client'
 
 import { format } from 'date-fns'
-import { AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import DateSelectCalendar from '@/components/date-select-calendar'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/hooks/use-toast'
 import { Agendamento } from '@/http/buscar-agendamentos'
 
 import { BuscarAgendamentosAction } from './actions'
+import BotaoCancelarAgendamento from './botao-cancelar-agendamento'
+import BotaoFinalizarAtendimento from './botao-finalizar-atendimento'
 import CarregandoListaSkeleton from './carregando-lista-skeleton'
 
 export default function AgendamentosPendentesPage() {
@@ -106,18 +107,13 @@ export default function AgendamentosPendentesPage() {
                     </TableCell>
                     <TableCell className="py-2.5">
                       <div className="flex items-center justify-end gap-2">
-                        <Button className="text-xs" size="sm" variant="success">
-                          <CheckCircle className="size-4 sm:mr-2" />
-                          <span className="hidden sm:block">Finalizar</span>
-                        </Button>
-                        <Button
-                          className="text-xs"
-                          size="sm"
-                          variant="destructive"
-                        >
-                          <XCircle className="size-4 sm:mr-2" />
-                          <span className="hidden sm:block">Cancelar</span>
-                        </Button>
+                        <BotaoFinalizarAtendimento
+                          agendamentoId={agendamento.id}
+                        />
+
+                        <BotaoCancelarAgendamento
+                          agendamentoId={agendamento.id}
+                        />
                       </div>
                     </TableCell>
                   </TableRow>

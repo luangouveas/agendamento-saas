@@ -25,7 +25,7 @@ export async function BuscarAgendamentos(slug: string, parms: string) {
   const result = await api
     .get(`organizacao/${slug}/agendamentos?${parms}`, {
       next: {
-        tags: ['agendamentos-pendentes'],
+        tags: [`${slug}/agendamentos-pendentes`],
       },
     })
     .json<BuscarAgendamentosResponse>()

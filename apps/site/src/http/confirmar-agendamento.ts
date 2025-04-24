@@ -16,5 +16,5 @@ export async function ConfirmarAgendamento(
     .patch(`organizacao/${data.slug}/confirmar-agendamento/${data.id}`)
     .json<ConfirmarAgendamentoResponse>()
 
-  revalidateTag('agendamentos-pendentes')
+  revalidateTag(`${data.slug}/agendamentos-pendentes`)
 }

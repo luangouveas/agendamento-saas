@@ -16,5 +16,5 @@ export async function CancelarAgendamento(
     .patch(`organizacao/${data.slug}/cancelar-agendamento/${data.id}`)
     .json<CancelarAgendamentoResponse>()
 
-  revalidateTag('agendamentos-pendentes')
+  revalidateTag(`${data.slug}/agendamentos-pendentes`)
 }

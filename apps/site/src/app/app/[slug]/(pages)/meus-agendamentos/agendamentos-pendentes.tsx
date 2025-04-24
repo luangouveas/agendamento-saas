@@ -15,7 +15,6 @@ import AcaoAgendamentoForm from './acao-agendamento-form'
 import { buscarMeusAgendamentosAction } from './actions'
 export default async function ListaMeusAgendamentosPendentes() {
   const agora = addMinutes(new Date(), -180).toISOString()
-  console.log(agora)
   const { usuario } = await buscarPerfil()
 
   const {
