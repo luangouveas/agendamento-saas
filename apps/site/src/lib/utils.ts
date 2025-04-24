@@ -1,5 +1,17 @@
+import { defineAbilityFor, Role, usuarioSchema } from '@agendamento-saas/auth'
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+
+export function buscarPermissoesUsuario(userId: string, role: Role) {
+  const authUser = usuarioSchema.parse({
+    id: userId,
+    role,
+  })
+
+  const ability = defineAbilityFor(authUser)
+
+  return ability
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

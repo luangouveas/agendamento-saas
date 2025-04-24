@@ -7,37 +7,17 @@ import { BuscarAgendamentos } from '@/http/buscar-agendamentos'
 import { CancelarAgendamento } from '@/http/cancelar-agendamento'
 import { ConfirmarAgendamento } from '@/http/confirmar-agendamento'
 
-interface BuscarMeusAgendamentosAction {
-  clienteId: string
-  profissionalId?: string
-  inicio?: string
-  fim?: string
-  status?:
-    | 'AGENDADO'
-    | 'CONFIRMADO'
-    | 'CANCELADO'
-    | 'CONCLUIDO'
-    | 'PENDENTE'
-    | 'NAO_PENDENTE'
-}
-
-function createQueryString(filtros: BuscarMeusAgendamentosAction): string {
-  const queryParams = new URLSearchParams()
-  queryParams.append('clienteId', filtros.clienteId)
-  if (filtros.profissionalId)
-    queryParams.append('profissionalId', filtros.profissionalId)
-  if (filtros.inicio) queryParams.append('inicio', filtros.inicio)
-  if (filtros.fim) queryParams.append('fim', filtros.fim)
-  if (filtros.status) queryParams.append('status', filtros.status)
-  return queryParams.toString()
-}
+import {
+  BuscarAgendamentosFiltros,
+  createQueryStringAgendamentos,
+} from '../utils'
 
 export async function buscarMeusAgendamentosAction(
-  filtros: BuscarMeusAgendamentosAction,
+  filtros: BuscarAgendamentosFiltros,
 ) {
   try {
     const slug = await getSlugOrganizacaoAtual()
-    const parms = createQueryString(filtros)
+    const parms = createQueryStringAgendamentos(filtros)
 
     const { agendamentos } = await BuscarAgendamentos(slug!, parms)
     return {
