@@ -4,7 +4,10 @@ import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { evolutionApi } from '@/lib/evolution'
 import { prisma } from '@/lib/prisma'
+
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -60,8 +63,24 @@ export async function requisitaAutenticacaoComOTP(app: FastifyInstance) {
         },
       })
 
-      // enviar token via wpp
-      console.log(`Olá este é seu código de verificação de acesso: ${tokenOtp}`)
+      const message = `Olá este é seu código de verificação de acesso: ${tokenOtp}`
+
+      await evolutionApi
+        .sendMessage({
+          phone: telefone.replace('+', '').replace(' ', ''),
+          message,
+        })
+        .then((response) => response.json())
+        .then((ret) => {
+          console.log(ret)
+          if (ret.status === 400) {
+            throw new BadRequestError(
+              'O número fornecido não está no WhatsApp.',
+            )
+          }
+        })
+
+      console.log(message)
 
       return reply.status(201).send()
     },

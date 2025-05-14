@@ -11,6 +11,10 @@ export const env = createEnv({
     SUPABASE_SECRET_KEY: z.string(),
     STRIPE_SECRET_KEY: z.string(),
     STRIPE_PLAN_PRICE_PRO_ID: z.string(),
+    WPP_API_URL: z.string().url(),
+    WPP_API_INSTANCE_NAME: z.string(),
+    WPP_API_KEY: z.string(),
+    WPP_API_DELAY: z.coerce.number(),
   },
   client: {},
   shared: {
@@ -29,6 +33,10 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABE_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_PLAN_PRICE_PRO_ID: process.env.STRIPE_PLAN_PRICE_PRO_ID,
+    WPP_API_URL: process.env.WPP_API_URL,
+    WPP_API_INSTANCE_NAME: process.env.WPP_API_INSTANCE_NAME,
+    WPP_API_KEY: process.env.WPP_API_KEY,
+    WPP_API_DELAY: process.env.WPP_API_DELAY,
   },
   emptyStringAsUndefined: true,
 })
