@@ -126,10 +126,15 @@ export default function SignInPage(props: { params: Params }) {
   }
 
   function handleReenviarCodigoVerificacao() {
-    solicitarEntrarComTelefone(numeroEnviado).then(() => {
-      setNumeroEnviado(numeroEnviado)
-      setStep(2)
-      setResendTimer(30)
+    solicitarEntrarComTelefone(numeroEnviado).then((result) => {
+      if (result.success) {
+        setNumeroEnviado(numeroEnviado)
+        setStep(2)
+        setResendTimer(30)
+      } else {
+        setSuccess(false)
+        setMessage(result.message)
+      }
     })
   }
 
