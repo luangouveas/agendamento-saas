@@ -14,7 +14,7 @@ export const env = createEnv({
     WPP_API_URL: z.string().url(),
     WPP_API_INSTANCE_NAME: z.string(),
     WPP_API_KEY: z.string(),
-    WPP_API_DELAY: z.coerce.number(),
+    WPP_API_DELAY: z.coerce.number().default(2000),
   },
   client: {},
   shared: {

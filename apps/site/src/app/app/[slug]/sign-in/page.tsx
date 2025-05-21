@@ -97,6 +97,7 @@ export default function SignInPage(props: { params: Params }) {
         setSuccess(false)
         setMessage(result!.message)
       } else {
+        setMessage(null)
         setNumeroEnviado(telefone)
         setStep(2)
         setResendTimer(30)
@@ -128,6 +129,7 @@ export default function SignInPage(props: { params: Params }) {
   function handleReenviarCodigoVerificacao() {
     solicitarEntrarComTelefone(numeroEnviado).then((result) => {
       if (result.success) {
+        setMessage(null)
         setNumeroEnviado(numeroEnviado)
         setStep(2)
         setResendTimer(30)
