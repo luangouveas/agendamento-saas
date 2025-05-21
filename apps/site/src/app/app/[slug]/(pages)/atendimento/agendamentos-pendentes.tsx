@@ -1,6 +1,5 @@
 'use client'
 
-import { format } from 'date-fns'
 import { AlertTriangle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -10,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { toast } from '@/hooks/use-toast'
 import { Agendamento } from '@/http/buscar-agendamentos'
+import { formatarDataHoraBR } from '@/lib/utils'
 
 import { BuscarAgendamentosAction } from './actions'
 import BotaoCancelarAgendamento from './botao-cancelar-agendamento'
@@ -101,7 +101,7 @@ export default function AgendamentosPendentesPage() {
                       <div className="flex flex-col text-xs text-muted-foreground">
                         <span>{agendamento.nomeServico}</span>
                         <span>
-                          {format(agendamento.dataHora, 'dd/MM/yyyy HH:mm')}
+                          {formatarDataHoraBR(agendamento.dataHora)}
                           {' - '}
                           {agendamento.valor.toLocaleString('pt-BR', {
                             style: 'currency',

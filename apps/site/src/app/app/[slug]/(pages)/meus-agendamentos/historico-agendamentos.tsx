@@ -1,4 +1,4 @@
-import { addMinutes, format, startOfDay } from 'date-fns'
+import { addMinutes, endOfDay, format, startOfDay } from 'date-fns'
 import { AlertTriangle } from 'lucide-react'
 
 import { Alert, AlertTitle } from '@/components/ui/alert'
@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils'
 import { buscarMeusAgendamentosAction } from './actions'
 export default async function ListaHistoricoMeusAgendamentos() {
   const inicio = addMinutes(startOfDay(new Date()), 10 * -1440).toISOString()
-  const agora = addMinutes(new Date(), -180).toISOString()
+  const agora = endOfDay(new Date()).toISOString()
 
   const { usuario } = await buscarPerfil()
 

@@ -13,7 +13,7 @@ export type Agendamento = {
   servicoAvatar: string | null
   tempo: string
   status: 'AGENDADO' | 'CONFIRMADO' | 'CANCELADO' | 'CONCLUIDO'
-  dataHora: string
+  dataHora: Date
   valor: number
 }
 interface BuscarAgendamentosResponse {

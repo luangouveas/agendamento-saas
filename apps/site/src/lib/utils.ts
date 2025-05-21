@@ -1,5 +1,7 @@
 import { defineAbilityFor, Role, usuarioSchema } from '@agendamento-saas/auth'
 import { type ClassValue, clsx } from 'clsx'
+import { addHours, format } from 'date-fns'
+import { ptBR } from 'date-fns/locale/pt-BR'
 import { twMerge } from 'tailwind-merge'
 
 export function buscarPermissoesUsuario(userId: string, role: Role) {
@@ -33,4 +35,10 @@ export const converterMinutosEmTempo = (tempoMinutos: number) => {
   const tempo = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}`
 
   return tempo
+}
+
+export const formatarDataHoraBR = (data: string | Date) => {
+  return format(addHours(data, 3), 'dd/MM/yyyy HH:mm', {
+    locale: ptBR,
+  })
 }
