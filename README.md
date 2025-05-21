@@ -1,6 +1,6 @@
 # Agendador SaaS
 
-Este projeto contempla uma aplicação fullstack "multi-tenant" para gerenciamento de serviços via agendamento, utilizando Next.Js incluindo autorização com RBAC, autenticação via email/senha e acesso OTP via Whatsapp.
+Este projeto contempla uma aplicação fullstack "multi-tenant" para agendamento e realização de serviços, utilizando Next.Js incluindo autorização com RBAC, autenticação via email/senha e acesso OTP via Whatsapp, controle de assinatura via Stripe.
 
 ## Principais Caracteristicas
 
@@ -48,7 +48,7 @@ Controle de autorização RBAC com CASL utilizando "roles" e "permissions".
 > ❌ = não permitido
 > ⚠️ = permitido com restrição
 
-#### Conditions
+#### Condições
 
 - Atendente só pode visualizar, criar, atualizar econfirmar agendamentos que estejam atrelados a ele como atendente.
 - Atendente só pode atualizar seu próprio usuário.
