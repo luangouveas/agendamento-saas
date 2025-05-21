@@ -1,84 +1,84 @@
-# Turborepo starter
+# Agendador SaaS
 
-This Turborepo starter is maintained by the Turborepo core team.
+Este projeto contempla uma aplicação fullstack "multi-tenant" para gerenciamento de serviços via agendamento, utilizando Next.Js incluindo autorização com RBAC, autenticação via email/senha e acesso OTP via Whatsapp.
 
-## Using this example
+## Principais Caracteristicas
 
-Run the following command:
+### Autenticação
 
-```sh
-npx create-turbo@latest
-```
+- Autenticação administrativa com email e senha no painel
+- Autenticação via acesso OTP com token enviado via Whatsapp para clientes
 
-## What's inside?
+### Autorização
 
-This Turborepo includes the following packages/apps:
+Controle de autorização RBAC com CASL utilizando "roles" e "permissions".
 
-### Apps and Packages
+#### Roles
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- ADMIN
+- ATENDENTE
+- CLIENTE
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+#### Tabela de permissões
 
-### Utilities
+|                           | ADMIN | ATENDENTE | CLIENTE |
+| ------------------------- | ----- | --------- | --------|
+| Criar estabelecimento     | ✅    | ❌       | ❌      |
+| Atualizar estabelecimento | ✅    | ❌       | ❌      |
+| Excluir estabelecimento   | ✅    | ❌       | ❌      |
+| Associar profissional     | ✅    | ❌       | ❌      |
+| Visualizar profissionais  | ✅    | ❌       | ❌      |
+| Remover profissional      | ✅    | ❌       | ❌      |
+| Criar serviço             | ✅    | ❌       | ❌      |
+| Visualizar serviços       | ✅    | ❌       | ❌      |
+| Atualizar serviço         | ✅    | ❌       | ❌      |
+| Excluir serviço           | ✅    | ❌       | ❌      |
+| Criar expediente          | ✅    | ❌       | ❌      |
+| Visualizar expedientes    | ✅    | ❌       | ❌      |
+| Atualizar expediente      | ✅    | ❌       | ❌      |
+| Criar agendamento         | ✅    | ⚠️       | ⚠️      |
+| Visualizar agendamentos   | ✅    | ⚠️       | ⚠️      |
+| Atualizar agendamento     | ✅    | ⚠️       | ⚠️      |
+| Confirmar agendamento     | ✅    | ⚠️       | ⚠️      |
+| Cancelar agendamento      | ✅    | ⚠️       | ⚠️      |
+| Concluir agendamento      | ✅    | ✅       | ❌      |
+| Atualizar usuário         | ⚠️    | ⚠️       | ⚠️      |
 
-This Turborepo has some additional tools already setup for you:
+> ✅ = permitido
+> ❌ = não permitido
+> ⚠️ = permitido com restrição
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+#### Conditions
 
-### Build
+- Atendente só pode visualizar, criar, atualizar econfirmar agendamentos que estejam atrelados a ele como atendente.
+- Atendente só pode atualizar seu próprio usuário.
+- Cliente só pode visualizar, criar, atualizar econfirmar agendamentos que estejam atrelados a ele como cliente.
+- Cliente só pode atualizar seu próprio usuário.
+- Admin só pode atualizar seu próprio usuário.
 
-To build all apps and packages, run the following command:
+### Agendador
 
-```
-cd my-turborepo
-pnpm build
-```
+Área que permite o cliente realizar o próprio agendamento escolhendo:
 
-### Develop
+- Serviço, profissional, dia e horario de preferencia.
+- Controle dos agendamentos agendados e realizados
 
-To develop all apps and packages, run the following command:
+### Painel administrativo
 
-```
-cd my-turborepo
-pnpm dev
-```
+Área de acesso restrito a proprietários para gerenciamento dos seus estabelecimentos:
 
-### Remote Caching
+- Cadastro e atualização de serviços
+- Cadastro e atualização de profissionais
+  - Associação à profissionais que já possuem conta na plataforma
+  - Convite a criação de conta na plataforma e associação imediata ao estabelecimento
+- Gerenciamento de assinatura via integração com Stripe
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Controle de assinatura
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+Sistema gerencia a assinatura do proprietário de forma global, permitindo transitar entre os planos FREE e PRO a qualquer momento, fazendo o controle de permissões baseado no nivel da assinatura atual.
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+|                          | FREE    | PRO    |
+| ------------------------ | ------- | -------|
+| Estabelecimentos         | 1       | 5      |
+| Serviços                 | 3       | 50     |
+| Profissionais            | 5       | 10     |
